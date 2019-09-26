@@ -165,12 +165,13 @@ public class CoClassLinker
 
                         if (!score.ignore()) {
                             // checking that results are sorted in decreasing order
-                            assert (score.totalScore < previousScore);
-                            previousScore = score.totalScore;
+                            Double avgScore = score.getAverage();
+                            assert (avgScore < previousScore);
+                            previousScore = avgScore;
 
                             AnnotationFS annotation = aCas.createAnnotation(predictedType,
                                     token.getBegin(), token.getEnd());
-                            annotation.setDoubleValue(confidenceFeature, score.totalScore);
+                            annotation.setDoubleValue(confidenceFeature, score.getAverage());
                             annotation.setStringValue(confidenceExplanationFeature,
                                     score.getExplanation());
                             annotation.setStringValue(labelFeature, iri);
@@ -265,6 +266,10 @@ public class CoClassLinker
         {
             components.put(aPredictorName, aScore);
             totalScore += aScore;
+        }
+        
+        public Double getAverage() {
+            return totalScore / components.size();
         }
         
         public boolean ignore() {
