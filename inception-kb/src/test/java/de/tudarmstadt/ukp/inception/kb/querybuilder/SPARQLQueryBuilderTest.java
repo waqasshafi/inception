@@ -1364,6 +1364,42 @@ public class SPARQLQueryBuilderTest
                 .containsExactlyInAnyOrder("NN", "NNP", "NNPS", "NNS");
     }
     
+    @Test
+    public void testWithDescriptionContainingAnyOf_RDF4J_withLanguage_FTS() throws Exception
+    {
+        kb.setFullTextSearchIri(IriConstants.FTS_LUCENE);
+        
+        __testWithDescriptionContainingAnyOf_RDF4J_withLanguage(rdf4jLocalRepo);
+    }
+    
+    @Test
+    public void testWithDescriptionContainingAnyOf_RDF4J_withLanguage_noFTS() throws Exception
+    {
+        kb.setFullTextSearchIri(null);
+        
+        __testWithDescriptionContainingAnyOf_RDF4J_withLanguage(rdf4jLocalRepo);
+    }
+    
+    public void __testWithDescriptionContainingAnyOf_RDF4J_withLanguage(Repository aRepository) throws Exception
+    {
+        importDataFromString(TURTLE, TURTLE_PREFIX, DATA_LABELS_AND_DESCRIPTIONS_WITH_LANGUAGE);
+        
+        List<KBHandle> results = asHandles(aRepository, SPARQLQueryBuilder
+                .forItems(kb)
+                .withDescriptionContainingAnyOf("monster"));
+        
+        assertThat(results).extracting(KBHandle::getUiLabel)
+                .allMatch(label -> label.contains("Goblin"));
+        assertThat(results).extracting(KBHandle::getIdentifier).doesNotHaveDuplicates();
+        assertThat(results)
+                .usingElementComparatorOnFields(
+                        "identifier", "name", "language")
+                .containsExactlyInAnyOrder(
+                        new KBHandle("http://example.org/#red-goblin", "Red Goblin"),
+                        new KBHandle("http://example.org/#green-goblin", "Green Goblin",
+                                null, "en"));
+    }
+    
 
     @Test
     public void thatRootsCanBeRetrieved_BritishMuseum()

@@ -124,6 +124,7 @@ public class SPARQLQueryBuilder
     public static final String VAR_LABEL_PROPERTY_NAME = "pLabel";
     public static final String VAR_LABEL_NAME = "l";
     public static final String VAR_LABEL_CANDIDATE_NAME = "lc";
+    public static final String VAR_DESCRIPTION_PROPERTY_NAME = "pDescription";
     public static final String VAR_DESCRIPTION_NAME = "d";
     public static final String VAR_DESCRIPTION_CANDIDATE_NAME = "dc";
     public static final String VAR_RANGE_NAME = "range";
@@ -139,6 +140,7 @@ public class SPARQLQueryBuilder
     public static final Variable VAR_LABEL_PROPERTY = var(VAR_LABEL_PROPERTY_NAME);
     public static final Variable VAR_DESCRIPTION = var(VAR_DESCRIPTION_NAME);
     public static final Variable VAR_DESC_CANDIDATE = var(VAR_DESCRIPTION_CANDIDATE_NAME);
+    public static final Variable VAR_DESCRIPTION_PROPERTY = var(VAR_DESCRIPTION_PROPERTY_NAME);
 
     public static final Prefix PREFIX_LUCENE_SEARCH = prefix("search",
             iri("http://www.openrdf.org/contrib/lucenesail#"));
@@ -601,7 +603,7 @@ public class SPARQLQueryBuilder
         
         return optional(aVariable.has(Path.of(zeroOrMore(pSubProperty)), pLabel));
     }
-
+    
     @Override
     public SPARQLQueryPrimaryConditions withIdentifier(String... aIdentifiers)
     {
@@ -1148,6 +1150,79 @@ public class SPARQLQueryBuilder
                                 literalOf(queryString)))
                         .andHas(VAR_LABEL_PROPERTY, VAR_LABEL_CANDIDATE)
                         .filter(startsWithPattern(VAR_LABEL_CANDIDATE, aPrefixQuery)));
+    }
+    
+    @Override
+    public SPARQLQueryBuilder withDescriptionContainingAnyOf(String... aValues)
+    {
+        if (aValues.length == 0) {
+            returnEmptyResult = true;
+            return this;
+        }
+        
+        IRI ftsMode = forceDisableFTS ? FTS_NONE : kb.getFullTextSearchIri();
+        
+        if (FTS_LUCENE.equals(ftsMode)) {
+            addPattern(PRIMARY, withDescriptionContainingAnyOf_RDF4J_FTS(aValues));
+        }
+        else if (FTS_NONE.equals(ftsMode) || ftsMode == null) {
+            addPattern(PRIMARY, withDescriptionContainingAnyOf_No_FTS(aValues));
+        }
+        else {
+            throw new IllegalStateException(
+                    "Unknown FTS mode: [" + kb.getFullTextSearchIri() + "]");
+        }
+        
+        // Retain only the first description - do this here since we change the server-side reduce
+        // flag above when using Lucene FTS
+        projections.add(getLabelProjection());
+        labelImplicitlyRetrieved = true;
+        
+        return this;
+    }
+    
+    private GraphPattern withDescriptionContainingAnyOf_No_FTS(String... aValues) 
+    {
+        List<GraphPattern> valuePatterns = new ArrayList<>();
+        for (String value : aValues) {
+            if (StringUtils.isBlank(value)) {
+                continue;
+            }
+            
+            valuePatterns.add(VAR_SUBJECT
+                    .has(VAR_LABEL_PROPERTY, VAR_LABEL_CANDIDATE)
+                    .andHas(VAR_DESCRIPTION_PROPERTY, VAR_DESC_CANDIDATE)
+                    .filter(containsPattern(VAR_DESC_CANDIDATE, value)));
+        }
+        
+        return GraphPatterns.and(
+                bindLabelProperties(VAR_LABEL_PROPERTY),
+                union(valuePatterns.toArray(new GraphPattern[valuePatterns.size()])));
+    }
+    
+    private GraphPattern withDescriptionContainingAnyOf_RDF4J_FTS(String... aValues) {
+        prefixes.add(PREFIX_LUCENE_SEARCH);
+        
+        List<GraphPattern> valuePatterns = new ArrayList<>();
+        for (String value : aValues) {
+            String sanitizedValue = sanitizeQueryStringForFTS(value);
+
+            if (StringUtils.isBlank(sanitizedValue)) {
+                continue;
+            }
+
+            valuePatterns.add(VAR_SUBJECT
+                    .has(FTS_LUCENE,
+                            bNode(LUCENE_QUERY, literalOf(sanitizedValue + "*"))
+                            .andHas(LUCENE_PROPERTY, VAR_DESCRIPTION_PROPERTY))
+                    .andHas(VAR_LABEL_PROPERTY, VAR_LABEL_CANDIDATE)
+                    .andHas(VAR_DESCRIPTION_PROPERTY, VAR_DESC_CANDIDATE)
+                    .filter(containsPattern(VAR_DESC_CANDIDATE, value)));
+        }
+        
+        return GraphPatterns.and(
+                bindLabelProperties(VAR_LABEL_PROPERTY),
+                union(valuePatterns.toArray(new GraphPattern[valuePatterns.size()])));
     }
 
     private Expression<?> startsWithPattern(Variable aVariable, String aPrefixQuery)

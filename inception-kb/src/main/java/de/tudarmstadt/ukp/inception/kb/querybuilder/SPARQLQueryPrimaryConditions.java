@@ -77,6 +77,15 @@ public interface SPARQLQueryPrimaryConditions
      * @return the builder (fluent API)
      */
     SPARQLQueryPrimaryConditions withLabelContainingAnyOf(String... aValues);
+    
+    /**
+     * Match any items with a description containing any of the given values.
+     * 
+     * @param aValues
+     *            values to match.
+     * @return the builder (fluent API)
+     */
+    SPARQLQueryPrimaryConditions withDescriptionContainingAnyOf(String... aValues);
 
     /**
      * Match all the roots of the class hierarchy.
@@ -148,5 +157,4 @@ public interface SPARQLQueryPrimaryConditions
      * @return the builder (fluent API)
      */
     SPARQLQueryPrimaryConditions matchingDomain(String aIdentifier);
-
 }

@@ -1114,6 +1114,7 @@ public class KnowledgeBaseServiceImpl
                 reindexSupported = true;
                 LuceneSail luceneSail = (LuceneSail) (sailRepo.getSail());
                 try (RepositoryConnection conn = getConnection(aKB)) {
+                    System.out.println(luceneSail.getReindexQuery());
                     luceneSail.reindex();
                     conn.commit();
                 }

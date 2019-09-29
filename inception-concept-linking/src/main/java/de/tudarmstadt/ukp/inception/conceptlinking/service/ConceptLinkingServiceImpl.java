@@ -240,29 +240,40 @@ public class ConceptLinkingServiceImpl
             
             
             // Collect containing matches
-            SPARQLQueryPrimaryConditions containingBuilder = newQueryBuilder(aValueType, aKB);
-
-            if (aConceptScope != null) {
-                // Scope-limiting must always happen before label matching!
-                containingBuilder.descendantsOf(aConceptScope);
-            }
-            
-            String[] containingLabels = asList(
+            String[] containingTerms = asList(
                     (aQuery != null && aQuery.length() > threshold) ? aQuery : null, aMention)
                     .stream()
                     .filter(Objects::nonNull)
                     .toArray(String[]::new);
-            containingBuilder.withLabelContainingAnyOf(containingLabels);
             
-            List<KBHandle> containingMatches = containingBuilder
+            SPARQLQueryPrimaryConditions containingLabelBuilder = newQueryBuilder(aValueType, aKB);
+            SPARQLQueryPrimaryConditions containingDescBuilder = newQueryBuilder(aValueType, aKB);
+
+            if (aConceptScope != null) {
+                // Scope-limiting must always happen before label matching!
+                containingLabelBuilder.descendantsOf(aConceptScope);
+                containingDescBuilder.descendantsOf(aConceptScope);
+            }
+            
+            containingLabelBuilder.withLabelContainingAnyOf(containingTerms);
+            containingDescBuilder.withDescriptionContainingAnyOf(containingTerms);
+            
+            List<KBHandle> containingLabelMatches = containingLabelBuilder
+                    .retrieveLabel()
+                    .retrieveDescription()
+                    .asHandles(conn, true);
+            List<KBHandle> containingDescMatches = containingDescBuilder
                     .retrieveLabel()
                     .retrieveDescription()
                     .asHandles(conn, true);
             
-            log.debug("Found [{}] candidates using containing {}",
-                    containingMatches.size(), asList(containingLabels));
+            log.debug("Found [{}] candidates using containing label {}",
+                    containingLabelMatches.size(), asList(containingTerms));
+            log.debug("Found [{}] candidates using containing description {}",
+                    containingDescMatches.size(), asList(containingTerms));
             
-            result.addAll(containingMatches);
+            result.addAll(containingLabelMatches);
+            result.addAll(containingDescMatches);
         }
 
         log.debug("Generated [{}] candidates in {}ms", result.size(),
