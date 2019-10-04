@@ -116,10 +116,6 @@ public class WikiDataReificationTest
     {
         importDataFromString(RDFFormat.TURTLE, TURTLE_PREFIX, DATA_MONA_LISA);
 
-//        try (RepositoryConnection conn = rdf4jLocalRepo.getConnection()) {
-//            RDFWriter rdfWriter = Rio.createWriter(RDFFormat.TURTLE, System.out);
-//            conn.export(rdfWriter);
-//        }
         
         ValueFactory vf = SimpleValueFactory.getInstance();
         final String STMT1 = "http://www.wikidata.org/entity/statement/statement1";

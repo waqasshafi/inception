@@ -618,22 +618,22 @@ public class SPARQLQueryBuilder
     {
         forceDisableFTS = true;
         
-        // The original code considered owl:unionOf in the domain defintion... we do not do this
-        // at the moment, but to see how it was before and potentially restore that behavior, we
-        // keep a copy of the old query here.
-//        return String.join("\n"
-//                , SPARQL_PREFIX
-//                , "SELECT DISTINCT ?s ?l ((?labelGeneral) AS ?lGen) WHERE {"
-//                , "{  ?s rdfs:domain/(owl:unionOf/rdf:rest*/rdf:first)* ?aDomain }"
-//                , " UNION "
-//                , "{ ?s a ?prop "
-//                , "    VALUES ?prop { rdf:Property owl:ObjectProperty owl:DatatypeProperty owl:AnnotationProperty} "
-//                , "    FILTER NOT EXISTS {  ?s rdfs:domain/(owl:unionOf/rdf:rest*/rdf:first)* ?x } }"
-//                , optionalLanguageFilteredValue("?pLABEL", aKB.getDefaultLanguage(),"?s","?l")
-//                , optionalLanguageFilteredValue("?pLABEL", null,"?s","?labelGeneral")
-//                , queryForOptionalSubPropertyLabel(labelProperties, aKB.getDefaultLanguage(),"?s","?spl")
-//                , "}"
-//                , "LIMIT " + aKB.getMaxResults());
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
 
         Iri subClassProperty = iri(kb.getSubclassIri());
         Iri subPropertyProperty = iri(kb.getSubPropertyIri());
@@ -1164,7 +1164,7 @@ public class SPARQLQueryBuilder
     {
         String value = aValue;
         // Escape metacharacters 
-        // value = value.replaceAll("[{}()\\[\\].+*?^$\\\\|]", "\\\\\\\\$0");
+
         value = value.replaceAll("[{}()\\[\\].+*?^$\\\\|]+", ".+");
         // Replace consecutive whitespace or control chars with a whitespace matcher
         value = value.replaceAll("[\\p{Space}\\p{Cntrl}]+", "\\\\\\\\s+");
@@ -1247,8 +1247,8 @@ public class SPARQLQueryBuilder
                 function(LANGMATCHES, function(LANG, aVariable), EMPTY_STRING))
                         .parenthesize());
 
-        // Match with any language (the reduce code doesn't handle this properly atm)
-        // expressions.add(function(aFunction, variable, literalOf(value)));
+
+        
 
         return or(expressions.toArray(new Expression<?>[expressions.size()]));
     }
@@ -1326,9 +1326,9 @@ public class SPARQLQueryBuilder
         classPatterns.add(bNode().has(subClassProperty, VAR_SUBJECT));
         // ... it has any superclass
         classPatterns.add(VAR_SUBJECT.has(subClassProperty, bNode()));
-        // ... it is used as the type of some instance
-        // This can be a very slow condition - so we have to skip it
-        // classPatterns.add(bNode().has(typeOfProperty, VAR_SUBJECT));
+ 
+
+
         // ... it participates in an owl:intersectionOf
         if (OWL.CLASS.equals(kb.getClassIri())) {
             classPatterns.add(VAR_SUBJECT.has(
@@ -1380,9 +1380,9 @@ public class SPARQLQueryBuilder
         // ... it has any superproperties
         propertyPatterns.add(VAR_SUBJECT.has(subPropertyProperty, bNode()));
         
-        // This may be a bit too general... e.g. it takes forever to complete on YAGO
-        //// ... or it essentially appears in the predicate position :)
-        //propertyPatterns.add(bNode().has(VAR_SUBJECT, bNode()));
+
+        
+        
         
         return union(propertyPatterns.stream().toArray(GraphPattern[]::new));
     }
@@ -1403,8 +1403,8 @@ public class SPARQLQueryBuilder
         
         List<GraphPattern> labelPatterns = new ArrayList<>();
 
-        // Match with any language (the reduce code doesn't handle this properly atm)
-        // labelPatterns.add(VAR_SUBJECT.has(VAR_LABEL_PROPERTY, VAR_LABEL_CANDIDATE));
+
+        
         
         // Find all labels without any language
         labelPatterns.add(VAR_SUBJECT.has(VAR_LABEL_PROPERTY, VAR_LABEL_CANDIDATE)
@@ -1419,9 +1419,9 @@ public class SPARQLQueryBuilder
 
         addPattern(SECONDARY, bindLabelProperties(VAR_LABEL_PROPERTY));
         
-        // Virtuoso has trouble with multiple OPTIONAL clauses causing results which would 
-        // normally match to be removed from the results set. Using a UNION seems to address this
-        //labelPatterns.forEach(pattern -> addPattern(Priority.SECONDARY, optional(pattern)));
+
+        
+        
         addPattern(SECONDARY,
                 optional(union(labelPatterns.toArray(new GraphPattern[labelPatterns.size()]))));
         
@@ -1446,16 +1446,16 @@ public class SPARQLQueryBuilder
                             literalOf(language))));
         }
 
-        // Match with any language (the reduce code doesn't handle this properly atm)
-        // descriptionPatterns.add(VAR_SUBJECT.has(descProperty, VAR_DESC_CANDIDATE));
+
+        
         
         // Find all descriptions without any language
         descriptionPatterns.add(VAR_SUBJECT.has(descProperty, VAR_DESC_CANDIDATE)
                 .filter(function(LANGMATCHES, function(LANG, VAR_DESC_CANDIDATE), EMPTY_STRING)));
 
-        // Virtuoso has trouble with multiple OPTIONAL clauses causing results which would 
-        // normally match to be removed from the results set. Using a UNION seems to address this
-        //descriptionPatterns.forEach(pattern -> addPattern(SECONDARY, optional(pattern)));
+
+        
+        
         addPattern(SECONDARY, optional(
                 union(descriptionPatterns.toArray(new GraphPattern[descriptionPatterns.size()]))));
         
@@ -1531,8 +1531,7 @@ public class SPARQLQueryBuilder
         String queryId = toHexString(hashCode());
 
         String queryString = selectQuery().getQueryString();
-        //queryString = QueryParserUtil.parseQuery(QueryLanguage.SPARQL, queryString, null)
-        //        .toString();
+
         LOG.trace("[{}] Query: {}", queryId, queryString);
 
         List<KBHandle> results;
@@ -1646,7 +1645,7 @@ public class SPARQLQueryBuilder
                     continue;
                 }
                 
-                // LOG.trace("[{}] Bindings: {}", toHexString(hashCode()), bindings);
+
     
                 String id = bindings.getBinding(VAR_SUBJECT_NAME).getValue().stringValue();
                 if (!id.contains(":") || (!aAll && hasImplicitNamespace(kb, id))) {

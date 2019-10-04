@@ -51,18 +51,7 @@ import de.tudarmstadt.ukp.inception.kb.exporter.KnowledgeBaseExporter;
 })
 @EnableAutoConfiguration
 public class SpringConfig {
-//    @Bean(name = "formats")
-//    public Properties getFileFormats()
-//    {
-//        return new Properties();
-//    }
-//
-//    @Bean
-//    @Primary
-//    public DocumentService documentService()
-//    {
-//        return Mockito.mock(DocumentService.class);
-//    }
+
 
     @Bean
     @Primary

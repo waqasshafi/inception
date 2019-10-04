@@ -143,16 +143,14 @@ public class OpenNlpPosRecommender
 
             Sequence[] bestSequences = tagger.topKSequences(tokens);
 
-//            LOG.debug("Total number of sequences predicted: {}", bestSequences.length);
+
 
             for (int s = 0; s < Math.min(bestSequences.length, maxRecommendations); s++) {
                 Sequence sequence = bestSequences[s];
                 List<String> outcomes = sequence.getOutcomes();
                 double[] probabilities = sequence.getProbs();
 
-//                LOG.debug("Sequence {} score {}", s, sequence.getScore());
-//                LOG.debug("Outcomes: {}", outcomes);
-//                LOG.debug("Probabilities: {}", asList(probabilities));
+
 
                 for (int i = 0; i < outcomes.size(); i++) {
                     String label = outcomes.get(i);

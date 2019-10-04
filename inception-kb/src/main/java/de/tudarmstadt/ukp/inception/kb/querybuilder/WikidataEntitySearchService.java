@@ -48,15 +48,6 @@ public class WikidataEntitySearchService implements GraphPattern
     
     private static final Iri BD_SERVICE_PARAM = BD.iri("serviceParam");
 
-//  SERVICE wikibase:mwapi {
-//      bd:serviceParam wikibase:api "EntitySearch" .
-//      bd:serviceParam wikibase:endpoint "www.wikidata.org" .
-//      bd:serviceParam mwapi:search $query .
-//      bd:serviceParam mwapi:language "en" .
-//      ?item wikibase:apiOutputItem mwapi:item .
-//      ?label wikibase:apiOutputItem mwapi:label .
-//      ?num wikibase:apiOrdinal true .
-//  }
     private final Collection<TriplePattern> patterns;
 
     /**

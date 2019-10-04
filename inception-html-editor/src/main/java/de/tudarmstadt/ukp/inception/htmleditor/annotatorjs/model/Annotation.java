@@ -19,11 +19,6 @@ package de.tudarmstadt.ukp.inception.htmleditor.annotatorjs.model;
 
 import java.util.List;
 
-// {
-//   "ranges":[{"start":"","startOffset":2855,"end":"","endOffset":2863}],
-//   "quote":"Castilho",
-//   "text":"asd"
-// }
 public class Annotation
 {
     private String id;

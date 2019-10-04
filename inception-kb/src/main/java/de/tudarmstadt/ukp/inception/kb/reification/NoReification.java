@@ -280,7 +280,6 @@ public class NoReification
                     continue;
                 }
                 
-                // LOG.trace("[{}] Bindings: {}", toHexString(hashCode()), bindings);
                 
                 Binding subj = bindings.getBinding(VAR_SUBJECT_NAME);
                 Binding pred = bindings.getBinding(VAR_PREDICATE_NAME);

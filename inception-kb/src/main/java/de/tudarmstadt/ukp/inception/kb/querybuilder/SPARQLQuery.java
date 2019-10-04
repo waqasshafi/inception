@@ -76,6 +76,5 @@ public interface SPARQLQuery
         return asHandles(aConnection, aAll).stream().findFirst();
     }
 
-    // This has been moved to NoReification
-//    List<KBStatement> asStatements(RepositoryConnection aConnection, boolean aAll);
+
 }

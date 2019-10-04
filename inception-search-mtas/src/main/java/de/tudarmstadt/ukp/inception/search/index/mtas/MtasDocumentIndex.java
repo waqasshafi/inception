@@ -383,9 +383,7 @@ public class MtasDocumentIndex
                             // Retrieve document title
                             String documentTitle = document.get(FIELD_TITLE);
 
-                            // String idValue = segmentReader.document(spans.docID())
-                            // .getField(FIELD_ID).stringValue();
-                            // log.debug("******** New doc {}-{}", + spans.docID(), idValue);
+                            
 
                             while (spans.nextStartPosition() != Spans.NO_MORE_POSITIONS) {
                                 int matchStart = spans.startPosition();
@@ -582,7 +580,6 @@ public class MtasDocumentIndex
                 // Prepare bytearray with document content to be indexed
                 String encodedCAS; 
                 try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
-                    //XmiCasSerializer.serialize(aCas, null, bos, true, null);
                     CasIOUtils.save(aCas, bos, SERIALIZED_TSI);
                     encodedCAS = new String(MtasUtils.bytesToChars(bos.toByteArray()));
                 }

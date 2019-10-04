@@ -343,9 +343,9 @@ public class KnowledgeBaseServiceImpl
     @Override
     public RepositoryImplConfig getNativeConfig()
     {
-        // See #221 - Disabled because it is too slow during import
-        // return new SailRepositoryConfig(
-        //   new ForwardChainingRDFSInferencerConfig(new NativeStoreConfig()));
+
+    	
+    	
 
         LuceneSailConfig config = new LuceneSailConfig(new NativeStoreConfig());
         // NOTE: We do not set the index dir here but when the KB is registered because we want each
@@ -1063,17 +1063,7 @@ public class KnowledgeBaseServiceImpl
 
     private void reconfigureLocalKnowledgeBase(KnowledgeBase aKB)
     {
-        /*
-        log.info("Forcing update of configuration for {}", aKB);
-        Model model = new TreeModel();
-        ValueFactory vf = SimpleValueFactory.getInstance();
-        IRI root = vf
-                .createIRI("http://inception-project.github.io/kbexport#" + aKB.getRepositoryId());
-        repoManager.getRepositoryConfig(aKB.getRepositoryId()).export(model, root);
-        StringWriter out = new StringWriter();
-        Rio.write(model, out, RDFFormat.TURTLE);
-        log.info("Current configuration: {}", out.toString());
-        */
+
         
         RepositoryImplConfig config = getNativeConfig();
         setIndexDir(aKB, config);

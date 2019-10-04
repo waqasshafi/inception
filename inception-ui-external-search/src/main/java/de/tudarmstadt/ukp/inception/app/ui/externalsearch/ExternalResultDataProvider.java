@@ -49,8 +49,6 @@ public class ExternalResultDataProvider
 
     public ExternalResultDataProvider(ExternalSearchService aExternalSearchService, User aUser)
     {
-//        // Set default sort
-//        setSort("documentTitle", SortOrder.ASCENDING);
 
         // Set external search service
         externalSearchService = aExternalSearchService;

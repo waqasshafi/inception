@@ -290,7 +290,6 @@ public class AccessSpecificSettingsPanel
         config.showPreview(false);
         config.showUpload(false);
         config.removeIcon("<i class=\"fa fa-remove\"></i>");
-//        config.uploadIcon("<i class=\"fa fa-upload\"></i>");
         config.browseIcon("<i class=\"fa fa-folder-open\"></i>");
         importProjectForm.add(fileUpload = new BootstrapFileInputField(aFieldId,
             new ListModel<>(), config));

@@ -113,7 +113,6 @@ public class MtasUimaParserLuceneTest
         IndexWriterConfig config = new IndexWriterConfig(analyzer);
         config.setUseCompoundFile(false);
         config.setCodec(Codec.forName(MtasCodec.MTAS_CODEC_NAME));
-        // config.setCodec(Codec.forName("MtasSimpleTextCodec"));
         IndexWriter w = new IndexWriter(directory, config);
         // delete
         w.deleteAll();
@@ -176,7 +175,6 @@ public class MtasUimaParserLuceneTest
 
         String cql = "([][Token=\"test\" | Token=\"Test\"]) within <Sentence/>";
         cql = "([Token=\"this\" | Token=\"This\"])";
-        // cql = "([])";
         IndexReader indexReader = DirectoryReader.open(directory);
 
         MtasSpanQuery q = createQuery(FIELD_CONTENT, cql);
@@ -245,8 +243,7 @@ public class MtasUimaParserLuceneTest
                                         + ", ");
                             }
                         }
-                        // if (prefixes != null && !prefixes.isEmpty()) {
-                        // }
+
                     }
                 }
             }

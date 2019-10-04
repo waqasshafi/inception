@@ -111,7 +111,6 @@ public class HtmlAnnotationEditor
 
         if (getModelObject().getDocument() != null) {
             initAnnotatorJs(aResponse, vis, storeAdapter);
-            //render(RequestCycle.get().find(AjaxRequestTarget.class));
         }
     }
 
@@ -204,7 +203,6 @@ public class HtmlAnnotationEditor
         script.append("        search:  '" + callbackUrl + "'");
         script.append("    }");
         script.append("});");
-        // script.append("Wicket.$('" + vis.getMarkupId() + "').annotator = ann;");
         aResponse.render(OnDomReadyHeaderItem.forScript(script.toString()));
     }
 
@@ -305,11 +303,9 @@ public class HtmlAnnotationEditor
 
             List<Annotation> annotations = new ArrayList<>();
 
-            // Render visible (custom) layers
-            // Map<String[], Queue<String>> colorQueues = new HashMap<>();
+
             for (AnnotationLayer layer : vdoc.getAnnotationLayers()) {
-                // ColoringStrategy coloringStrategy = ColoringStrategy.getBestStrategy(
-                // annotationService, layer, aState.getPreferences(), colorQueues);
+
 
                 TypeAdapter typeAdapter = annotationService.getAdapter(layer);
 

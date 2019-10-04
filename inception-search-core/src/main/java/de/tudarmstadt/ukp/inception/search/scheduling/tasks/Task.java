@@ -40,7 +40,7 @@ public abstract class Task
 
     public Task(Project aProject, String aUser)
     {
-        // notNull(aUser);
+
         notNull(aProject);
 
         project = aProject;

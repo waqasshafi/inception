@@ -102,11 +102,6 @@ public class Trie<V>
             throw new IllegalArgumentException("Zero-length keys are illegal");
         }
 
-        // if (key.length() == 0) {
-        // V oldval = _root.value;
-        // _root.value = value;
-        // return oldval;
-        // }
 
         Node last = _root;
         int level = 1;

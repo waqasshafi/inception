@@ -125,7 +125,6 @@ public class StatementEditor extends Panel
 
         EditMode editMode = new EditMode(CONTENT_MARKUP_ID, shallowCopyModel, false);
         content = content.replaceWith(editMode);
-        // aTarget.focusComponent(editMode.getFocusComponent());
         aTarget.add(this);
     }
 

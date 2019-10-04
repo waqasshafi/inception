@@ -267,21 +267,6 @@ public class KnowledgeBasePanel
         return labelProperties.contains(aStatement.getProperty().getIdentifier());
         
         
-//        SimpleValueFactory vf = SimpleValueFactory.getInstance();
-//        
-//        String propertyIri = aStatement.getProperty().getIdentifier();
-//        IRI subjectIri = vf.createIRI(aStatement.getInstance().getIdentifier());
-//        IRI labelIri = kbModel.getObject().getLabelIri();
-//
-//        try (RepositoryConnection conn = kbService.getConnection(kbModel.getObject())) {
-//            
-//            boolean hasMainLabel = RdfUtils
-//                    .readFirst(conn, subjectIri, labelIri, null, kbModel.getObject()).isPresent();
-//            
-//            return propertyIri.equals(labelIri.stringValue())
-//                    || (kbService.isLabelProperty(kbModel.getObject(), propertyIri)
-//                            && !hasMainLabel);
-//        }
     }
 
     @OnEvent

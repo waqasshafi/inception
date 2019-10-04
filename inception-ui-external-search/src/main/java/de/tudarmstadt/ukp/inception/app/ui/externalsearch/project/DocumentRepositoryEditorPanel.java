@@ -202,11 +202,7 @@ public class DocumentRepositoryEditorPanel
     private void actionDelete(AjaxRequestTarget aTarget)
     {
         externalSearchService.deleteDocumentRepository(repositoryModel.getObject());
-        // TODO
-        // Add a deleted event or not?
-        // appEventPublisherHolder.get().publishEvent(
-        // new RecommenderDeletedEvent(this, repositoryModel.getObject(),
-        // userDao.getCurrentUser().getUsername(), projectModel.getObject()));
+
         actionCancel(aTarget);
     }
 

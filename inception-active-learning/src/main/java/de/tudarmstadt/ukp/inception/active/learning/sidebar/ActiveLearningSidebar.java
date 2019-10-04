@@ -1063,9 +1063,6 @@ public class ActiveLearningSidebar
             AnnotatorState state = getModelObject();
             ActiveLearningUserState alState = alStateModel.getObject();
             
-//            // Make sure we know about the current suggestions and their visibility state
-//            refreshSuggestions();
-    
             // Update visibility in case the annotation where the feature was set overlaps with 
             // any suggestions that need to be hidden now.
             recommendationService.calculateVisibility(getAnnotationPage().getEditorCas(),

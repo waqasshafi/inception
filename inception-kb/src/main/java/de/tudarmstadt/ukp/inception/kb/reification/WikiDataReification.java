@@ -446,7 +446,7 @@ public class WikiDataReification
         Resource stmt = aStatement.getStatementId() != null
                 ? vf.createIRI(aStatement.getStatementId())
                 : vf.createIRI(generateStatementIdentifier(aConnection, aKB));
-                //: vf.createBNode();
+
         IRI pred2 =  vf.createIRI(propStatementIri);
         Value value = valueMapper.mapStatementValue(aStatement, vf);
         

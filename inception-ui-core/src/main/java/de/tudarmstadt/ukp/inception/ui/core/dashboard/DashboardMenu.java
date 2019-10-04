@@ -94,10 +94,6 @@ public class DashboardMenu
                 menulink.add(new Image("icon", imageRef));
                 menulink.add(new Label("label", item.getLabel()));
 
-//                Project project = Session.get().getMetaData(SessionMetaData.CURRENT_PROJECT);
-//
-//                boolean isAdminItem = asList("ProjectPage", "ManageUsersPage")
-//                        .contains(item.getPageClass().getSimpleName());
 
                 aItem.add(menulink);
                 aItem.setVisible(item.applies() /*&& (project != null || isAdminItem)*/);

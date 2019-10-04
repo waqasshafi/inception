@@ -182,36 +182,6 @@ public class KnowledgeBaseServiceRemoteTest
         }
 
 
-//        {
-//            ValueFactory vf = SimpleValueFactory.getInstance();
-//            KnowledgeBase kb_hucit = new KnowledgeBase();
-//            kb_hucit.setName("Hucit");
-//            kb_hucit.setType(profile.getType());
-//            kb_hucit.setReification(Reification.NONE);
-//            kb_hucit.setBasePrefix("http://www.ukp.informatik.tu-darmstadt.de/inception/1.0#");
-//            kb_hucit.setClassIri(vf.createIRI("http://www.w3.org/2002/07/owl#Class"));
-//            kb_hucit.setSubclassIri(
-//                    vf.createIRI("http://www.w3.org/2000/01/rdf-schema#subClassOf"));
-//            kb_hucit.setTypeIri(vf.createIRI("http://www.w3.org/1999/02/22-rdf-syntax-ns#type"));
-//            kb_hucit.setDescriptionIri(
-//                    vf.createIRI("http://www.w3.org/2000/01/rdf-schema#comment"));
-//            kb_hucit.setLabelIri(vf.createIRI("http://www.w3.org/2000/01/rdf-schema#label"));
-//            kb_hucit.setPropertyTypeIri(
-//                    vf.createIRI("http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"));
-//            kb_hucit.setPropertyLabelIri(RDFS.LABEL);
-//            kb_hucit.setPropertyDescriptionIri(RDFS.COMMENT);
-//            kb_hucit.setDefaultLanguage("en");
-//            kb_hucit.setMaxResults(maxResults);
-//            rootConcepts = new HashSet<String>();
-//            rootConcepts.add("http://www.w3.org/2000/01/rdf-schema#Class");
-//            parentChildConcepts = new HashMap<String, String>();
-//            parentChildConcepts.put("http://www.w3.org/2000/01/rdf-schema#Class",
-//                    "http://www.w3.org/2002/07/owl#Class");
-//            kbList.add(new TestConfiguration("http://nlp.dainst.org:8888/sparql", kb_hucit,
-//                    // person -> Achilles :: urn:cts:cwkb:1137
-//                    "http://purl.org/hucit/kb/authors/1137", rootConcepts, parentChildConcepts));
-//        }
-
         {
             KnowledgeBaseProfile profile = PROFILES.get("wikidata");
             KnowledgeBase kb_wikidata_direct = new KnowledgeBase();
@@ -232,19 +202,6 @@ public class KnowledgeBaseServiceRemoteTest
                     "http://www.wikidata.org/entity/Q5", rootConcepts, parentChildConcepts));
         }
 
-        // {
-        // KnowledgeBaseProfile profile = PROFILES.get("virtuoso");
-        // KnowledgeBase kb_wikidata_direct = new KnowledgeBase();
-        // kb_wikidata_direct.setName("UKP_Wikidata (Virtuoso)");
-        // kb_wikidata_direct.setType(profile.getType());
-        // kb_wikidata_direct.setReification(profiles.getReification());
-        // kb_wikidata_direct.applyMapping(profile.getMapping());
-        // kb_wikidata_direct.setDefaultLanguage(profiles.getDefaultLanguage);
-        // rootConcepts = new HashSet<String>();
-        // rootConcepts.add("http://www.wikidata.org/entity/Q2419");
-        // kbList.add(new TestConfiguration(profile.getAccess().getAccessUrl(), kb_wikidata_direct,
-        // "http://www.wikidata.org/entity/Q19576436", rootConcepts));
-        // }
 
         {
             KnowledgeBaseProfile profile = PROFILES.get("db_pedia");
@@ -308,18 +265,6 @@ public class KnowledgeBaseServiceRemoteTest
                     kb_zbw_stw_economics, "http://zbw.eu/stw/thsys/71020", rootConcepts, parentChildConcepts));
         }
 
-        // Commenting this out for the moment becuase we expect that every ontology contains
-        // property definitions. However, this one does not include any property definitions!
-        // {
-        // KnowledgeBaseProfile profile = PROFILES.get("zbw-gnd");
-        // KnowledgeBase kb_zbw_gnd = new KnowledgeBase();
-        // kb_zbw_gnd.setName(profile.getName());
-        // kb_zbw_gnd.setType(profile.getType());
-        // kb_zbw_gnd.setReification(profile.getReification());
-        // kb_zbw_gnd.applyMapping(profile.getMapping());
-        // kb_zbw_gnd.setDefaultLanguage(profile.getDefaultLanguage());
-        // kbList.add(new TestConfiguration(profile.getSparqlUrl(), kb_zbw_gnd));
-        // }
 
         List<Object[]> dataList = new ArrayList<>();
         for (TestConfiguration kb : kbList) {

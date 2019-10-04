@@ -133,7 +133,7 @@ public class RecommenderInfoPanel
         
         CAS cas = page.getEditorCas();
         
-        //SourceDocument document = state.getDocument();
+
         Predictions predictions = recommendationService.getPredictions(user, state.getProject());
 
         // TODO #176 use the document Id once it it available in the CAS
@@ -164,25 +164,11 @@ public class RecommenderInfoPanel
                 // status for the entire document or even for the part visible on screen.
                 suggestion.hide(FLAG_TRANSIENT_ACCEPTED);
             
-//               // Log the action to the learning record
-//               learningRecordService.logRecord(document, aState.getUser().getUsername(),
-//                       suggestion, layer, feature, ACCEPTED, MAIN_EDITOR);
-//            
-//               // Send an application event that the suggestion has been accepted
-//               AnnotationFS fs = WebAnnoCasUtil.selectByAddr(aCas, AnnotationFS.class, address);
-//               applicationEventPublisher.publishEvent(new RecommendationAcceptedEvent(this,
-//                   document, aState.getUser().getUsername(), fs, feature, suggestion.getLabel()));
-//            
-//               // Send a UI event that the suggestion has been accepted
-//               aTarget.getPage().send(aTarget.getPage(), Broadcast.BREADTH,
-//                       new AjaxRecommendationAcceptedEvent(aTarget, aState, aVID));    }
+
                 accepted++;
             }
             catch (AnnotationException e) {
-                // FIXME We assume that any exception thrown here is because of a conflict with 
-                // an existing annotation - but actually it would be good to have proper
-                // subclasses of the AnnotationException for different cases such that we can 
-                // provide a better account of why certain suggestions were not accepted.
+
                 skippedDueToConflict++;
             }
         }

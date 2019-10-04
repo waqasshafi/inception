@@ -243,9 +243,7 @@ public class DL4JSequenceRecommender
             boolean aIncludeLabels)
         throws IOException
     {
-        // vectorize is pretty fast taking around 1-2ms
-        
-        // long start = System.currentTimeMillis();
+
         int maxSentenceLength = traits.getMaxSentenceLength();
         
         // Create data for training
@@ -295,7 +293,6 @@ public class DL4JSequenceRecommender
             sampleIdx++;
         }
 
-        // log.trace("Vectorizing took {}ms", System.currentTimeMillis() - start);
         
         return new DataSet(featureVec, labelVec, featureMask, labelMask);
     }
@@ -419,7 +416,7 @@ public class DL4JSequenceRecommender
                         AnnotationFS token = tokenFSes.get(tokenIdx);
                         AnnotationFS annotation = aCas.createAnnotation(predictedType,
                                 token.getBegin(), token.getEnd());
-                        //annotation.setDoubleValue(scoreFeature, prediction.getProb());
+
                         annotation.setStringValue(predictedFeature,
                                 outcomes.get(outcomeIdx).getLabels().get(tokenIdx));
                         annotation.setBooleanValue(isPredictionFeature, true);
@@ -593,12 +590,10 @@ public class DL4JSequenceRecommender
                         .build())
                 .build();
         
-        // log.info("Network configuration: {}", conf.toYaml());
 
         MultiLayerNetwork net = new MultiLayerNetwork(conf);
         net.init();
 
-        // net.setListeners(new ScoreIterationListener(1));
         
         log.trace("Setting up the model took {}ms", System.currentTimeMillis() - start);
         

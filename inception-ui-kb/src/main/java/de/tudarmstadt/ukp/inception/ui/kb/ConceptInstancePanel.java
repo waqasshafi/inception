@@ -163,17 +163,6 @@ public class ConceptInstancePanel
 //     * @return true if the event is a renaming event, false otherwise
 //     */
 //    private boolean isRenamingEvent(AjaxStatementChangedEvent aEvent)
-//    {
-//        KBStatement changedStatement = aEvent.getStatement();
-//        String propertyIdentifier = changedStatement.getProperty().getIdentifier();
-//        SimpleValueFactory vf = SimpleValueFactory.getInstance();
-//        boolean hasMainLabel = RdfUtils.readFirst(kbService.getConnection(kbModel.getObject()),
-//            vf.createIRI(changedStatement.getInstance().getIdentifier()),
-//            kbModel.getObject().getLabelIri(), null, kbModel.getObject()).isPresent();
-//        return propertyIdentifier.equals(kbModel.getObject().getLabelIri().stringValue()) || (
-//            kbService.isLabelProperty(kbModel.getObject(), propertyIdentifier)
-//                && !hasMainLabel);
-//    }
     
     /**
      * Checks if the given statement is (potentially) assigning the label to the item in subject

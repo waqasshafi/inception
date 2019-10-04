@@ -17,7 +17,7 @@
  */
 package de.tudarmstadt.ukp.inception.htmleditor.annotatorjs.model;
 
-// {"start":"","startOffset":2855,"end":"","endOffset":2863}
+
 public class Range
 {
     private String start;

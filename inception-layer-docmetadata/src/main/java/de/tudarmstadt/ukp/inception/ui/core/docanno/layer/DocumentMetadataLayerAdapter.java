@@ -123,11 +123,6 @@ public class DocumentMetadataLayerAdapter
     {
         List<Pair<LogMessage, AnnotationFS>> messages = new ArrayList<>();
         // There are no behaviors for document metadata annotations yet
-        /*
-        for (SpanLayerBehavior behavior : behaviors) {
-            messages.addAll(behavior.onValidate(this, aJCas));
-        }
-        */
         return messages;
     }
 }

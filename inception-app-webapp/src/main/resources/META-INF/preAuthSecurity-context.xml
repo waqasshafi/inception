@@ -33,7 +33,6 @@
         </beans:property>
         <beans:property name="locations">
             <beans:list>
-                <!-- <value>classpath:META-INF/settings.properties</value> -->
                 <beans:value>file:#{systemProperties['inception.home'] ?:
                     systemProperties['user.home'].concat('/.inception') }/settings.properties
                 </beans:value>

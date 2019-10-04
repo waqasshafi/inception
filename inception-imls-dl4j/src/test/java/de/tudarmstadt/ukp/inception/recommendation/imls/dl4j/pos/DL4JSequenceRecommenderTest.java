@@ -70,12 +70,6 @@ public class DL4JSequenceRecommenderTest
     {
         // By default, ND4J will use a value equal to the number of physical CPU cores (not logical
         // cores) as this will give optimal performance
-        // Nd4jBlas nd4jBlas = (Nd4jBlas) Nd4j.factory().blas();
-        // nd4jBlas.setMaxThreads(2);
-
-        // NativeOpsHolder instance = NativeOpsHolder.getInstance();
-        // NativeOps deviceNativeOps = instance.getDeviceNativeOps();
-        // deviceNativeOps.setOmpNumThreads(2);
 
         context = new RecommenderContext();
         traits = new DL4JSequenceRecommenderTraits();

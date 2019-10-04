@@ -98,7 +98,6 @@ public class SPARQLQueryBuilderGenericTest
     public void setup() throws Exception
     {
         // Force POST request instead of GET request
-        // System.setProperty(SPARQLProtocolSession.MAXIMUM_URL_LENGTH_PARAM, "100");
         
         ValueFactory vf = SimpleValueFactory.getInstance();
         
