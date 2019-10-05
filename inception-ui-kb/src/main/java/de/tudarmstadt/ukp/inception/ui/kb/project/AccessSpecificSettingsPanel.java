@@ -79,6 +79,9 @@ import de.tudarmstadt.ukp.inception.ui.kb.project.validators.Validators;
 public class AccessSpecificSettingsPanel
     extends Panel
 {
+	private static final String CONST_WEB = "websiteURL";
+	
+	
     private static final long serialVersionUID = -7834443872889805698L;
 
     private static final Logger log = LoggerFactory.getLogger(AccessSpecificSettingsPanel.class);
@@ -235,8 +238,8 @@ public class AccessSpecificSettingsPanel
             .add(LambdaBehavior.visibleWhen(() -> kbInfoModel.getObject() != null)));
         wmc.add(new Label("authorName", kbInfoModel.bind("authorName"))
             .add(LambdaBehavior.visibleWhen(() -> kbInfoModel.getObject() != null)));
-        wmc.add(new ExternalLink("websiteURL", kbInfoModel.bind("websiteURL"),
-            kbInfoModel.bind("websiteURL"))
+        wmc.add(new ExternalLink(CONST_WEB, kbInfoModel.bind(CONST_WEB),
+            kbInfoModel.bind(CONST_WEB))
             .add(LambdaBehavior.visibleWhen(() -> kbInfoModel.getObject() != null)));
         return wmc;
     }

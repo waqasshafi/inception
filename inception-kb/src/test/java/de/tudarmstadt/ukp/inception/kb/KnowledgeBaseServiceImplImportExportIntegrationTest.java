@@ -63,10 +63,19 @@ import de.tudarmstadt.ukp.inception.kb.yaml.KnowledgeBaseProfile;
 @ContextConfiguration(classes = SpringConfig.class)
 @Transactional
 @DataJpaTest
-public class KnowledgeBaseServiceImplImportExportIntegrationTest {
+public class KnowledgeBaseServiceImplImportExportIntegrationTest
+{
+	
+private static final String CONST_CHR = "Character";
+
+private static final String CONST_DATA = "data/pets.ttl";
+
+private static final String CONST_HAS_CHR = "Has Character";
+
 
     private static final String PROJECT_NAME = "Test project";
     private static final String KB_NAME = "Test knowledge base";
+    
 
     @Rule
     public TemporaryFolder temporaryFolder = new TemporaryFolder();
@@ -109,16 +118,16 @@ public class KnowledgeBaseServiceImplImportExportIntegrationTest {
     public void importData_WithExistingTtl_ShouldImportTriples() throws Exception {
         sut.registerKnowledgeBase(kb, sut.getNativeConfig());
 
-        importKnowledgeBase("data/pets.ttl");
+        importKnowledgeBase(CONST_DATA);
 
         Stream<String> conceptLabels = sut.listAllConcepts(kb, false).stream().map(KBObject::getName);
         Stream<String> propertyLabels = sut.listProperties(kb, false).stream().map(KBObject::getName);
         assertThat(conceptLabels)
             .as("Check that concepts all have been imported")
-            .containsExactlyInAnyOrder("Animal", "Character", "Cat", "Dog");
+            .containsExactlyInAnyOrder("Animal", CONST_CHR, "Cat", "Dog");
         assertThat(propertyLabels)
             .as("Check that properties all have been imported")
-            .containsExactlyInAnyOrder("Loves", "Hates", "Has Character", "Year Of Birth");
+            .containsExactlyInAnyOrder("Loves", "Hates", CONST_HAS_CHR, "Year Of Birth");
     }
 
     @Test
@@ -126,7 +135,7 @@ public class KnowledgeBaseServiceImplImportExportIntegrationTest {
         sut.registerKnowledgeBase(kb, sut.getNativeConfig());
         kb.setReadOnly(true);
 
-        importKnowledgeBase("data/pets.ttl");
+        importKnowledgeBase(CONST_DATA);
 
         Stream<String> conceptLabels = sut.listAllConcepts(kb, false).stream().map(KBObject::getName);
         Stream<String> propertyLabels = sut.listProperties(kb, false).stream().map(KBObject::getName);
@@ -141,7 +150,7 @@ public class KnowledgeBaseServiceImplImportExportIntegrationTest {
     @Test
     public void importData_WithTwoFilesAndOneKnowledgeBase_ShouldImportAllTriples() throws Exception {
         sut.registerKnowledgeBase(kb, sut.getNativeConfig());
-        String[] resourceNames = {"data/pets.ttl", "data/more_pets.ttl"};
+        String[] resourceNames = {CONST_DATA, "data/more_pets.ttl"};
         for (String resourceName : resourceNames) {
             importKnowledgeBase(resourceName);
         }
@@ -151,10 +160,10 @@ public class KnowledgeBaseServiceImplImportExportIntegrationTest {
 
         assertThat(conceptLabels)
             .as("Check that concepts all have been imported")
-            .containsExactlyInAnyOrder("Animal", "Character", "Cat", "Dog", "Manatee", "Turtle", "Biological class");
+            .containsExactlyInAnyOrder("Animal", CONST_CHR, "Cat", "Dog", "Manatee", "Turtle", "Biological class");
         assertThat(propertyLabels)
             .as("Check that properties all have been imported")
-            .containsExactlyInAnyOrder("Loves", "Hates", "Has Character", "Year Of Birth", "Has biological class");
+            .containsExactlyInAnyOrder("Loves", "Hates", CONST_HAS_CHR, "Year Of Birth", "Has biological class");
     }
 
     @Test
@@ -176,10 +185,10 @@ public class KnowledgeBaseServiceImplImportExportIntegrationTest {
             .map(KBStatement::getValue);
         assertThat(conceptLabels)
             .as("Check that all concepts have been imported")
-            .containsExactlyInAnyOrder("Cat", "Character");
+            .containsExactlyInAnyOrder("Cat", CONST_CHR);
         assertThat(propertyLabels)
             .as("Check that all properties have been imported")
-            .containsExactlyInAnyOrder("Has Character");
+            .containsExactlyInAnyOrder(CONST_HAS_CHR);
         assertThat(kahmiValues)
             .as("Check that statements with wrong types have been imported")
             .containsExactlyInAnyOrder(666);

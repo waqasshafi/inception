@@ -64,6 +64,9 @@ import de.tudarmstadt.ukp.inception.kb.yaml.KnowledgeBaseProfile;
 @DataJpaTest
 public class KnowledgeBaseSubPropertyLabelTest
 {
+	private static final String CONST_STRZBW = "zbw-gnd";
+	
+	
     private static final String PROJECT_NAME = "Test project";
 
     @Rule
@@ -122,7 +125,7 @@ public class KnowledgeBaseSubPropertyLabelTest
     public void thatChildConceptsLabel() throws IOException
     {
         kb = buildRemoteKnowledgeBase(project, "GND");
-        String gndAccessURL = PROFILES.get("zbw-gnd").getAccess().getAccessUrl();
+        String gndAccessURL = PROFILES.get(CONST_STRZBW).getAccess().getAccessUrl();
         testFixtures.assumeEndpointIsAvailable(gndAccessURL);
         sut.registerKnowledgeBase(kb, sut.getRemoteConfig(gndAccessURL));
 
@@ -146,7 +149,7 @@ public class KnowledgeBaseSubPropertyLabelTest
     public void readInstance_ShouldReturnInstanceWithSubPropertyLabel() throws IOException
     {
         kb = buildRemoteKnowledgeBase(project, "GND");
-        String gndAccessURL = PROFILES.get("zbw-gnd").getAccess().getAccessUrl();
+        String gndAccessURL = PROFILES.get(CONST_STRZBW).getAccess().getAccessUrl();
         testFixtures.assumeEndpointIsAvailable(gndAccessURL);
         sut.registerKnowledgeBase(kb, sut.getRemoteConfig(gndAccessURL));
 
@@ -198,8 +201,8 @@ public class KnowledgeBaseSubPropertyLabelTest
         gnd.setProject(project);
         gnd.setName(name);
         gnd.setType(RepositoryType.REMOTE);
-        gnd.applyMapping(PROFILES.get("zbw-gnd").getMapping());
-        gnd.applyRootConcepts(PROFILES.get("zbw-gnd"));
+        gnd.applyMapping(PROFILES.get(CONST_STRZBW).getMapping());
+        gnd.applyRootConcepts(PROFILES.get(CONST_STRZBW));
         gnd.setReification(reification);
         gnd.setDefaultLanguage("en");
         gnd.setMaxResults(1000);

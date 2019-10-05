@@ -37,6 +37,9 @@ import de.tudarmstadt.ukp.inception.kb.graph.KBHandle;
 public class KnowledgeBaseItemAutoCompleteField
     extends AutoCompleteTextField<KBHandle>
 {
+	
+	private static final String CONST_STR = "  </div>";
+	
     private static final long serialVersionUID = -1276017349261462683L;
 
     private SerializableFunction<String, List<KBHandle>> choiceProvider;
@@ -100,17 +103,17 @@ public class KnowledgeBaseItemAutoCompleteField
                 sb.append("<div style=\"max-width: 450px\">");
                 sb.append("  <div class=\"item-title\">");
                 sb.append("    ${ data.name }");
-                sb.append("  </div>");
+                sb.append(CONST_STR);
                 sb.append("  <div class=\"item-identifier\">");
                 sb.append("    ${ data.identifier }");
-                sb.append("  </div>");
+                sb.append(CONST_STR);
                 sb.append("  <div class=\"item-description\">");
                 sb.append("    ${ data.description }");
-                sb.append("  </div>");
+                sb.append(CONST_STR);
                 if (DEVELOPMENT.equals(getApplication().getConfigurationType())) {
                     sb.append("  <div class=\"item-description\">");
                     sb.append("    ${ data.debugInfo }");
-                    sb.append("  </div>");
+                    sb.append(CONST_STR);
                 }
                 sb.append("</div>");
                 return sb.toString();

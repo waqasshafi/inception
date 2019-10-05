@@ -37,6 +37,9 @@ public class MetricSelectDropDownPanel
     extends Panel
 {
 
+	private static final String CONST_GETELMT_ID = "document.getElementById('";
+	
+	
     private static final long serialVersionUID = 4988942370126340112L;
 
     private static final List<RecommenderEvaluationScoreMetricEnum> METRICS = Arrays
@@ -73,9 +76,9 @@ public class MetricSelectDropDownPanel
                 
                 Effects.hide(target, dropdown);
                 Effects.show(target, dropdown);
-                target.appendJavaScript("document.getElementById('" + link.getMarkupId()
+                target.appendJavaScript(CONST_GETELMT_ID + link.getMarkupId()
                         + "').classList.remove('fa-chevron-circle-right');");
-                target.appendJavaScript("document.getElementById('" + link.getMarkupId()
+                target.appendJavaScript(CONST_GETELMT_ID + link.getMarkupId()
                         + "').classList.add('fa-chevron-circle-left');");
             }
         });
@@ -92,9 +95,9 @@ public class MetricSelectDropDownPanel
             {
                 if (isDropdownVisible) {
                     Effects.hide(target, dropdown);
-                    target.appendJavaScript("document.getElementById('" + link.getMarkupId()
+                    target.appendJavaScript(CONST_GETELMT_ID + link.getMarkupId()
                             + "').classList.remove('fa-chevron-circle-left');");
-                    target.appendJavaScript("document.getElementById('" + link.getMarkupId()
+                    target.appendJavaScript(CONST_GETELMT_ID + link.getMarkupId()
                             + "').classList.add('fa-chevron-circle-right');");
                     isDropdownVisible = false;
 
@@ -102,9 +105,9 @@ public class MetricSelectDropDownPanel
                 else {
 
                     Effects.show(target, dropdown);
-                    target.appendJavaScript("document.getElementById('" + link.getMarkupId()
+                    target.appendJavaScript(CONST_GETELMT_ID + link.getMarkupId()
                             + "').classList.remove('fa-chevron-circle-right');");
-                    target.appendJavaScript("document.getElementById('" + link.getMarkupId()
+                    target.appendJavaScript(CONST_GETELMT_ID + link.getMarkupId()
                             + "').classList.add('fa-chevron-circle-left');");
                     isDropdownVisible = true;
                 }

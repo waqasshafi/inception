@@ -39,6 +39,19 @@ import de.tudarmstadt.ukp.clarin.webanno.security.model.User;
 import de.tudarmstadt.ukp.inception.scheduling.config.SchedulingProperties;
 
 public class SchedulingServiceTest {
+	
+	private static final String CONST_PROJ1 = "project1";
+	
+	private static final String CONST_PROJ2 = "project2";
+
+	private static final String CONST_PROJ3 = "project3" ;
+
+	private static final String CONST_PROJ4 = "project4" ;
+	
+	private static final String CONST_TST_USR = "testUser" ;
+
+
+	
 
     @Mock
     private ApplicationContext mockContext;
@@ -67,9 +80,9 @@ public class SchedulingServiceTest {
     public void thatRunningTasksCanBeRetrieved()
     {
         List<Task> tasks = asList(
-            buildDummyTask("user1", "project1"),
-            buildDummyTask("user1", "project2"),
-            buildDummyTask("user2", "project1")
+            buildDummyTask("user1", CONST_PROJ1),
+            buildDummyTask("user1", CONST_PROJ2),
+            buildDummyTask("user2", CONST_PROJ1)
         );
 
         for (Task task : tasks) {
@@ -87,29 +100,29 @@ public class SchedulingServiceTest {
     public void thatTasksForUserCanBeStopped()
     {
         List<Task> tasks = asList(
-                buildDummyTask("testUser", "project1"),
-                buildDummyTask("unimportantUser1", "project1"),
-                buildDummyTask("unimportantUser2", "project2"),
-                buildDummyTask("unimportantUser3", "project3"),
-                buildDummyTask("testUser", "project2"),
-                buildDummyTask("unimportantUser4", "project4"),
-                buildDummyTask("testUser", "project3"),
-                buildDummyTask("unimportantUser1", "project2"),
-                buildDummyTask("testUser", "project4"),
-                buildDummyTask("unimportantUser2", "project3"),
-                buildDummyTask("unimportantUser3", "project4"),
-                buildDummyTask("testUser", "project2"),
-                buildDummyTask("testUser", "project2")
+                buildDummyTask(CONST_TST_USR, CONST_PROJ1),
+                buildDummyTask("unimportantUser1", CONST_PROJ1),
+                buildDummyTask("unimportantUser2", CONST_PROJ2),
+                buildDummyTask("unimportantUser3", CONST_PROJ3),
+                buildDummyTask(CONST_TST_USR, CONST_PROJ2),
+                buildDummyTask("unimportantUser4", CONST_PROJ4),
+                buildDummyTask(CONST_TST_USR, CONST_PROJ3),
+                buildDummyTask("unimportantUser1", CONST_PROJ2),
+                buildDummyTask(CONST_TST_USR, CONST_PROJ4),
+                buildDummyTask("unimportantUser2", CONST_PROJ3),
+                buildDummyTask("unimportantUser3", CONST_PROJ4),
+                buildDummyTask(CONST_TST_USR, CONST_PROJ2),
+                buildDummyTask(CONST_TST_USR, CONST_PROJ2)
         );
         Task[] tasksToRemove = tasks.stream()
-                .filter(t -> t.getUser().getUsername().equals("testUser"))
+                .filter(t -> t.getUser().getUsername().equals(CONST_TST_USR))
                 .toArray(Task[]::new);
 
         for (Task task : tasks) {
             sut.enqueue(task);
         }
 
-        sut.stopAllTasksForUser("testUser");
+        sut.stopAllTasksForUser(CONST_TST_USR);
 
         assertThat(sut.getScheduledTasks()).as("Tasks for 'testUser' should have been removed'")
                 .doesNotContain(tasksToRemove);

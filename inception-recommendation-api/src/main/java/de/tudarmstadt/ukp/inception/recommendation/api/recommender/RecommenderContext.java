@@ -31,7 +31,12 @@ import de.tudarmstadt.ukp.clarin.webanno.support.logging.LogMessage;
 
 public class RecommenderContext
 {
-    /**
+  
+	private static final String CONST_ADD_DATA = "Adding data to a closed context is not permitted.";
+	
+	
+	
+	/**
      * Empty context which starts out being closed.
      */
     public static final RecommenderContext EMPTY_CONTEXT;
@@ -62,7 +67,7 @@ public class RecommenderContext
     synchronized public <T> void put(Key<T> aKey, T aValue)
     {
         if (closed) {
-            throw new IllegalStateException("Adding data to a closed context is not permitted.");
+            throw new IllegalStateException(CONST_ADD_DATA);
         }
         
         store.put(aKey.name, aValue);
@@ -71,7 +76,7 @@ public class RecommenderContext
     synchronized public void info(String aFormat, Object... aValues)
     {
         if (closed) {
-            throw new IllegalStateException("Adding data to a closed context is not permitted.");
+            throw new IllegalStateException(CONST_ADD_DATA);
         }
         
         messages.add(LogMessage.info(this, aFormat, aValues));
@@ -80,7 +85,7 @@ public class RecommenderContext
     synchronized public void warn(String aFormat, Object... aValues)
     {
         if (closed) {
-            throw new IllegalStateException("Adding data to a closed context is not permitted.");
+            throw new IllegalStateException(CONST_ADD_DATA);
         }
         
         messages.add(LogMessage.warn(this, aFormat, aValues));
@@ -89,7 +94,7 @@ public class RecommenderContext
     synchronized public void error(String aFormat, Object... aValues)
     {
         if (closed) {
-            throw new IllegalStateException("Adding data to a closed context is not permitted.");
+            throw new IllegalStateException(CONST_ADD_DATA);
         }
         
         messages.add(LogMessage.error(this, aFormat, aValues));

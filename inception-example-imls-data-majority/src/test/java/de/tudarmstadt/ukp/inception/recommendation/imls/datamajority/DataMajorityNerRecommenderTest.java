@@ -60,7 +60,11 @@ import de.tudarmstadt.ukp.inception.support.test.recommendation.RecommenderTestH
 
 public class DataMajorityNerRecommenderTest
 {
-    private static File cache = DkproTestContext.getCacheFolder();
+    private static final String CONST_GERM = "germeval2014-de";
+    
+    private static final String CONST_VAL = "value";
+    
+	private static File cache = DkproTestContext.getCacheFolder();
     private static DatasetFactory loader = new DatasetFactory(cache);
 
     private RecommenderContext context;
@@ -92,7 +96,7 @@ public class DataMajorityNerRecommenderTest
         List<CAS> casList = loadDevelopmentData();
         
         CAS cas = casList.get(0);
-        addScoreFeature(cas, NamedEntity.class.getName(), "value");
+        addScoreFeature(cas, NamedEntity.class.getName(), CONST_VAL);
         
         sut.train(context, asList(cas));
 
@@ -180,10 +184,10 @@ public class DataMajorityNerRecommenderTest
 
     private CAS getTestCasNoLabelLabels() throws Exception
     {
-        Dataset ds = loader.load("germeval2014-de", CONTINUE);
+        Dataset ds = loader.load(CONST_GERM, CONTINUE);
         CAS cas = loadData(ds, ds.getDataFiles()[0]).get(0);
         Type neType = CasUtil.getAnnotationType(cas, NamedEntity.class);
-        Feature valFeature = neType.getFeatureByBaseName("value");
+        Feature valFeature = neType.getFeatureByBaseName(CONST_VAL);
         JCasUtil.select(cas.getJCas(), NamedEntity.class)
                 .forEach(ne -> ne.setFeatureValueFromString(valFeature, null));
 
@@ -228,13 +232,13 @@ public class DataMajorityNerRecommenderTest
 
     private List<CAS> loadAllData() throws IOException, UIMAException
     {
-        Dataset ds = loader.load("germeval2014-de", CONTINUE);
+        Dataset ds = loader.load(CONST_GERM, CONTINUE);
         return loadData(ds, ds.getDataFiles());
     }
 
     private List<CAS> loadDevelopmentData() throws IOException, UIMAException
     {
-        Dataset ds = loader.load("germeval2014-de", CONTINUE);
+        Dataset ds = loader.load(CONST_GERM, CONTINUE);
         return loadData(ds, ds.getDefaultSplit().getDevelopmentFiles());
     }
 
@@ -263,7 +267,7 @@ public class DataMajorityNerRecommenderTest
         layer.setName(NamedEntity.class.getName());
 
         AnnotationFeature feature = new AnnotationFeature();
-        feature.setName("value");
+        feature.setName(CONST_VAL);
 
         Recommender recommender = new Recommender();
         recommender.setLayer(layer);
@@ -275,7 +279,7 @@ public class DataMajorityNerRecommenderTest
 
     private static double getScore(AnnotationFS aAnnotationFS)
     {
-        return RecommenderTestHelper.getScore(aAnnotationFS, "value");
+        return RecommenderTestHelper.getScore(aAnnotationFS, CONST_VAL);
     }
 
 

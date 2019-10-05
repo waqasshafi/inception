@@ -83,8 +83,38 @@ import de.tudarmstadt.ukp.inception.kb.yaml.KnowledgeBaseProfile;
 @ContextConfiguration(classes =  SpringConfig.class)
 @Transactional
 @DataJpaTest
-public class KnowledgeBaseServiceImplIntegrationTest  {
+public class KnowledgeBaseServiceImplIntegrationTest 
 
+{
+	private static final String CONST_CHANGE_LANG = "Check that the language has successfully been changed.";
+	
+	private static final String CONST_DCP = "description";
+	
+	private static final String CONST_DOM = "domain";
+	
+	private static final String CONST_URL_CP = "http://www.ukp.informatik.tu-darmstadt.de/customPrefix#";
+	
+	private static final String CONST_URL_ID_TEST = "https://nonexistent.identifier.test";
+	
+	private static final String CONST_ID_NT_EMPTY_UPD = "Identifier cannot be empty on update";
+	
+	private static final String CONST_ID_EMPTY_CRT = "Identifier must be empty on create";
+
+	private static final String CONST_IDF = "identifier";
+	
+	private static final String CONST_NEW_DESC = "New description";
+
+	private static final String CONST_N_NAM = "New name";
+	
+	private static final String CONST_N_EMPT_ID = "Nonempty Identifier";
+	
+	private static final String CONST_RNG = "range";
+
+	private static final String CONST_TESTST = "Test statement";
+
+	private static final String CONST_VALE = "value";
+	
+	
     private static final String PROJECT_NAME = "Test project";
     private static final String KB_NAME = "Test knowledge base";
 
@@ -201,7 +231,7 @@ public class KnowledgeBaseServiceImplIntegrationTest  {
     public void updateKnowledgeBase_WithValidValues_ShouldUpdateKnowledgeBase() {
         sut.registerKnowledgeBase(kb, sut.getNativeConfig());
 
-        kb.setName("New name");
+        kb.setName(CONST_N_NAM);
         kb.setClassIri(OWL.CLASS);
         kb.setSubclassIri(OWL.NOTHING);
         kb.setTypeIri(OWL.THING);
@@ -223,12 +253,12 @@ public class KnowledgeBaseServiceImplIntegrationTest  {
         KnowledgeBase savedKb = testEntityManager.find(KnowledgeBase.class, kb.getRepositoryId());
         assertThat(savedKb)
             .as("Check that knowledge base was updated correctly")
-            .hasFieldOrPropertyWithValue("name", "New name")
+            .hasFieldOrPropertyWithValue("name", CONST_N_NAM)
             .hasFieldOrPropertyWithValue("classIri", OWL.CLASS)
             .hasFieldOrPropertyWithValue("subclassIri", OWL.NOTHING)
             .hasFieldOrPropertyWithValue("typeIri", OWL.THING)
             .hasFieldOrPropertyWithValue("descriptionIri", IriConstants.SCHEMA_DESCRIPTION)
-            .hasFieldOrPropertyWithValue("name", "New name")
+            .hasFieldOrPropertyWithValue("name", CONST_N_NAM)
             .hasFieldOrPropertyWithValue("readOnly", true)
             .hasFieldOrPropertyWithValue("enabled", false)
             .hasFieldOrPropertyWithValue("labelIri", RDFS.LITERAL)
@@ -346,7 +376,7 @@ public class KnowledgeBaseServiceImplIntegrationTest  {
         KBConcept savedConcept = sut.readConcept(kb, concept.getIdentifier(), true).get();
         assertThat(savedConcept)
             .as("Check that concept was saved correctly")
-            .hasFieldOrPropertyWithValue("description", concept.getDescription())
+            .hasFieldOrPropertyWithValue(CONST_DCP, concept.getDescription())
             .hasFieldOrPropertyWithValue("name", concept.getName());
     }
     
@@ -356,13 +386,13 @@ public class KnowledgeBaseServiceImplIntegrationTest  {
         KBConcept concept = buildConcept();
 
         sut.registerKnowledgeBase(kb, sut.getNativeConfig());
-        String customPrefix = "http://www.ukp.informatik.tu-darmstadt.de/customPrefix#";
+        String customPrefix = CONST_URL_CP;
         kb.setBasePrefix(customPrefix);
         sut.createConcept(kb, concept);
 
         KBConcept savedConcept = sut.readConcept(kb, concept.getIdentifier(), true).get();
         assertThat(savedConcept).as("Check that concept was saved correctly")
-                .hasFieldOrPropertyWithValue("description", concept.getDescription())
+                .hasFieldOrPropertyWithValue(CONST_DCP, concept.getDescription())
                 .hasFieldOrPropertyWithValue("name", concept.getName());
 
         String id = savedConcept.getIdentifier();
@@ -373,14 +403,14 @@ public class KnowledgeBaseServiceImplIntegrationTest  {
     @Test
     public void createConcept_WithNonemptyIdentifier_ShouldThrowIllegalArgumentException() {
         KBConcept concept = new KBConcept();
-        concept.setIdentifier("Nonempty Identifier");
+        concept.setIdentifier(CONST_N_EMPT_ID);
 
         sut.registerKnowledgeBase(kb, sut.getNativeConfig());
 
         assertThatIllegalArgumentException()
             .as("Check that creating a concept requires empty identifier")
             .isThrownBy(() -> sut.createConcept(kb, concept) )
-            .withMessage("Identifier must be empty on create");
+            .withMessage(CONST_ID_EMPTY_CRT);
     }
 
     @Test
@@ -403,7 +433,7 @@ public class KnowledgeBaseServiceImplIntegrationTest  {
 
         assertThat(savedConcept)
             .as("Check that concept was read correctly")
-            .hasFieldOrPropertyWithValue("description", concept.getDescription())
+            .hasFieldOrPropertyWithValue(CONST_DCP, concept.getDescription())
             .hasFieldOrPropertyWithValue("name", concept.getName());
     }
 
@@ -411,7 +441,7 @@ public class KnowledgeBaseServiceImplIntegrationTest  {
     public void readConcept_WithNonexistentConcept_ShouldReturnEmptyResult() {
         sut.registerKnowledgeBase(kb, sut.getNativeConfig());
 
-        Optional<KBConcept> savedConcept = sut.readConcept(kb, "https://nonexistent.identifier.test", true);
+        Optional<KBConcept> savedConcept = sut.readConcept(kb, CONST_URL_ID_TEST, true);
 
         assertThat(savedConcept.isPresent())
             .as("Check that no concept was read")
@@ -424,29 +454,29 @@ public class KnowledgeBaseServiceImplIntegrationTest  {
         KBConcept concept = buildConcept();
         sut.createConcept(kb, concept);
 
-        concept.setDescription("New description");
-        concept.setName("New name");
+        concept.setDescription(CONST_NEW_DESC);
+        concept.setName(CONST_N_NAM);
         sut.updateConcept(kb, concept);
 
         KBConcept savedConcept = sut.readConcept(kb, concept.getIdentifier(), true).get();
         assertThat(savedConcept)
             .as("Check that concept was updated correctly")
-            .hasFieldOrPropertyWithValue("description", "New description")
-            .hasFieldOrPropertyWithValue("name", "New name");
+            .hasFieldOrPropertyWithValue(CONST_DCP, CONST_NEW_DESC)
+            .hasFieldOrPropertyWithValue("name", CONST_N_NAM);
     }
 
     @Test
     // TODO: Check whether this is a feature or not
     public void updateConcept_WithNonexistentConcept_ShouldCreateConcept() {
         KBConcept concept = buildConcept();
-        concept.setIdentifier("https://nonexistent.identifier.test");
+        concept.setIdentifier(CONST_URL_ID_TEST);
         sut.registerKnowledgeBase(kb, sut.getNativeConfig());
 
         sut.updateConcept(kb, concept);
 
-        KBConcept savedConcept = sut.readConcept(kb, "https://nonexistent.identifier.test", true).get();
+        KBConcept savedConcept = sut.readConcept(kb, CONST_URL_ID_TEST, true).get();
         assertThat(savedConcept)
-            .hasFieldOrPropertyWithValue("description", concept.getDescription())
+            .hasFieldOrPropertyWithValue(CONST_DCP, concept.getDescription())
             .hasFieldOrPropertyWithValue("name", concept.getName());
     }
 
@@ -459,7 +489,7 @@ public class KnowledgeBaseServiceImplIntegrationTest  {
         assertThatIllegalArgumentException()
             .as("Check that updating a concept requires nonempty identifier")
             .isThrownBy(() -> sut.updateConcept(kb, concept))
-            .withMessage("Identifier cannot be empty on update");
+            .withMessage(CONST_ID_NT_EMPTY_UPD);
     }
 
     @Test
@@ -471,7 +501,7 @@ public class KnowledgeBaseServiceImplIntegrationTest  {
         assertThatIllegalArgumentException()
             .as("Check that updating a concept requires non-null identifier")
             .isThrownBy(() -> sut.updateConcept(kb, concept))
-            .withMessage("Identifier cannot be empty on update");
+            .withMessage(CONST_ID_NT_EMPTY_UPD);
     }
 
     @Test
@@ -481,8 +511,8 @@ public class KnowledgeBaseServiceImplIntegrationTest  {
         sut.createConcept(kb, concept);
         setReadOnly(kb);
 
-        concept.setDescription("New description");
-        concept.setName("New name");
+        concept.setDescription(CONST_NEW_DESC);
+        concept.setName(CONST_N_NAM);
 
         assertThatExceptionOfType(ReadOnlyException.class)
             .isThrownBy(() -> sut.updateConcept(kb, concept));
@@ -490,7 +520,7 @@ public class KnowledgeBaseServiceImplIntegrationTest  {
         KBConcept savedConcept = sut.readConcept(kb, concept.getIdentifier(), true).get();
         assertThat(savedConcept)
             .as("Check that concept has not been updated")
-            .hasFieldOrPropertyWithValue("description", "Concept description")
+            .hasFieldOrPropertyWithValue(CONST_DCP, "Concept description")
             .hasFieldOrPropertyWithValue("name", "Concept name");
     }
 
@@ -537,7 +567,7 @@ public class KnowledgeBaseServiceImplIntegrationTest  {
     @Test
     public void deleteConcept_WithNonexistentConcept_ShouldNoNothing() {
         KBConcept concept = buildConcept();
-        concept.setIdentifier("https://nonexistent.identifier.test");
+        concept.setIdentifier(CONST_URL_ID_TEST);
         sut.registerKnowledgeBase(kb, sut.getNativeConfig());
 
         assertThatCode(() -> sut.deleteConcept(kb, concept))
@@ -573,7 +603,7 @@ public class KnowledgeBaseServiceImplIntegrationTest  {
             .as("Check that concepts contain the one, saved item")
             .hasSize(1)
             .element(0)
-            .hasFieldOrPropertyWithValue("identifier", concept.getIdentifier())
+            .hasFieldOrPropertyWithValue(CONST_IDF, concept.getIdentifier())
             .hasFieldOrProperty("name")
             .matches(h -> h.getIdentifier().startsWith(IriConstants.INCEPTION_NAMESPACE));
     }
@@ -600,10 +630,10 @@ public class KnowledgeBaseServiceImplIntegrationTest  {
         assertThat(savedProperty)
             .as("Check that property was created correctly")
             .hasNoNullFieldsOrPropertiesExcept("language")
-            .hasFieldOrPropertyWithValue("description", property.getDescription())
-            .hasFieldOrPropertyWithValue("domain", property.getDomain())
+            .hasFieldOrPropertyWithValue(CONST_DCP, property.getDescription())
+            .hasFieldOrPropertyWithValue(CONST_DOM, property.getDomain())
             .hasFieldOrPropertyWithValue("name", property.getName())
-            .hasFieldOrPropertyWithValue("range", property.getRange());
+            .hasFieldOrPropertyWithValue(CONST_RNG, property.getRange());
     }
     
     @Test
@@ -615,13 +645,13 @@ public class KnowledgeBaseServiceImplIntegrationTest  {
         KBProperty property = buildProperty();
 
         sut.registerKnowledgeBase(kb, sut.getNativeConfig());
-        String customPrefix = "http://www.ukp.informatik.tu-darmstadt.de/customPrefix#";
+        String customPrefix = CONST_URL_CP;
         kb.setBasePrefix(customPrefix);
         sut.createProperty(kb, property);
 
         KBProperty savedProperty = sut.readProperty(kb, property.getIdentifier()).get();
         assertThat(savedProperty).as("Check that property was saved correctly")
-                .hasFieldOrPropertyWithValue("description", property.getDescription())
+                .hasFieldOrPropertyWithValue(CONST_DCP, property.getDescription())
                 .hasFieldOrPropertyWithValue("name", property.getName());
 
         String id = savedProperty.getIdentifier();
@@ -632,14 +662,14 @@ public class KnowledgeBaseServiceImplIntegrationTest  {
     @Test
     public void createProperty_WithNonemptyIdentifier_ShouldThrowIllegalArgumentException() {
         KBProperty property = buildProperty();
-        property.setIdentifier("Nonempty Identifier");
+        property.setIdentifier(CONST_N_EMPT_ID);
 
         sut.registerKnowledgeBase(kb, sut.getNativeConfig());
 
         assertThatIllegalArgumentException()
             .as("Check that creating a property requires empty identifier")
             .isThrownBy(() -> sut.createProperty(kb, property) )
-            .withMessage("Identifier must be empty on create");
+            .withMessage(CONST_ID_EMPTY_CRT);
     }
 
     @Test
@@ -663,17 +693,17 @@ public class KnowledgeBaseServiceImplIntegrationTest  {
         assertThat(savedProperty)
             .as("Check that property was saved correctly")
             .hasNoNullFieldsOrPropertiesExcept("language")
-            .hasFieldOrPropertyWithValue("description", property.getDescription())
-            .hasFieldOrPropertyWithValue("domain", property.getDomain())
+            .hasFieldOrPropertyWithValue(CONST_DCP, property.getDescription())
+            .hasFieldOrPropertyWithValue(CONST_DOM, property.getDomain())
             .hasFieldOrPropertyWithValue("name", property.getName())
-            .hasFieldOrPropertyWithValue("range", property.getRange());
+            .hasFieldOrPropertyWithValue(CONST_RNG, property.getRange());
     }
 
     @Test
     public void readProperty_WithNonexistentProperty_ShouldReturnEmptyResult() {
         sut.registerKnowledgeBase(kb, sut.getNativeConfig());
 
-        Optional<KBProperty> savedProperty = sut.readProperty(kb, "https://nonexistent.identifier.test");
+        Optional<KBProperty> savedProperty = sut.readProperty(kb, CONST_URL_ID_TEST);
 
         assertThat(savedProperty.isPresent())
             .as("Check that no property was read")
@@ -695,28 +725,28 @@ public class KnowledgeBaseServiceImplIntegrationTest  {
         KBProperty savedProperty = sut.readProperty(kb, property.getIdentifier()).get();
         assertThat(savedProperty)
             .as("Check that property was updated correctly")
-            .hasFieldOrPropertyWithValue("description", property.getDescription())
-            .hasFieldOrPropertyWithValue("domain", property.getDomain())
+            .hasFieldOrPropertyWithValue(CONST_DCP, property.getDescription())
+            .hasFieldOrPropertyWithValue(CONST_DOM, property.getDomain())
             .hasFieldOrPropertyWithValue("name", property.getName())
-            .hasFieldOrPropertyWithValue("range", property.getRange());
+            .hasFieldOrPropertyWithValue(CONST_RNG, property.getRange());
     }
 
     @Test
     // TODO: Check whether this is a feature or not
     public void updateProperty_WithNonexistentProperty_ShouldCreateProperty() {
         KBProperty property = buildProperty();
-        property.setIdentifier("https://nonexistent.identifier.test");
+        property.setIdentifier(CONST_URL_ID_TEST);
         sut.registerKnowledgeBase(kb, sut.getNativeConfig());
 
         sut.updateProperty(kb, property);
 
-        KBProperty savedProperty = sut.readProperty(kb, "https://nonexistent.identifier.test").get();
+        KBProperty savedProperty = sut.readProperty(kb, CONST_URL_ID_TEST).get();
         assertThat(savedProperty)
             .as("Check that property was updated correctly")
-            .hasFieldOrPropertyWithValue("description", property.getDescription())
-            .hasFieldOrPropertyWithValue("domain", property.getDomain())
+            .hasFieldOrPropertyWithValue(CONST_DCP, property.getDescription())
+            .hasFieldOrPropertyWithValue(CONST_DOM, property.getDomain())
             .hasFieldOrPropertyWithValue("name", property.getName())
-            .hasFieldOrPropertyWithValue("range", property.getRange());
+            .hasFieldOrPropertyWithValue(CONST_RNG, property.getRange());
     }
 
     @Test
@@ -728,7 +758,7 @@ public class KnowledgeBaseServiceImplIntegrationTest  {
         assertThatIllegalArgumentException()
             .as("Check that updating a property requires nonempty identifier")
             .isThrownBy(() -> sut.updateProperty(kb, property))
-            .withMessage("Identifier cannot be empty on update");
+            .withMessage(CONST_ID_NT_EMPTY_UPD);
     }
 
     @Test
@@ -740,7 +770,7 @@ public class KnowledgeBaseServiceImplIntegrationTest  {
         assertThatIllegalArgumentException()
             .as("Check that updating a property requires nonempty identifier")
             .isThrownBy(() -> sut.updateProperty(kb, property))
-            .withMessage("Identifier cannot be empty on update");
+            .withMessage(CONST_ID_NT_EMPTY_UPD);
     }
 
     @Test
@@ -761,10 +791,10 @@ public class KnowledgeBaseServiceImplIntegrationTest  {
         KBProperty savedProperty = sut.readProperty(kb, property.getIdentifier()).get();
         assertThat(savedProperty)
             .as("Check that property has not been updated")
-            .hasFieldOrPropertyWithValue("description", "Property description")
-            .hasFieldOrPropertyWithValue("domain", "https://test.schema.com/#domain")
+            .hasFieldOrPropertyWithValue(CONST_DCP, "Property description")
+            .hasFieldOrPropertyWithValue(CONST_DOM, "https://test.schema.com/#domain")
             .hasFieldOrPropertyWithValue("name", "Property name")
-            .hasFieldOrPropertyWithValue("range", "https://test.schema.com/#range");
+            .hasFieldOrPropertyWithValue(CONST_RNG, "https://test.schema.com/#range");
     }
 
     @Test
@@ -784,7 +814,7 @@ public class KnowledgeBaseServiceImplIntegrationTest  {
     @Test
     public void deleteProperty_WithNotExistingProperty_ShouldNoNothing() {
         KBProperty property = buildProperty();
-        property.setIdentifier("https://nonexistent.identifier.test");
+        property.setIdentifier(CONST_URL_ID_TEST);
         sut.registerKnowledgeBase(kb, sut.getNativeConfig());
 
         assertThatCode(() -> sut.deleteProperty(kb, property))
@@ -820,7 +850,7 @@ public class KnowledgeBaseServiceImplIntegrationTest  {
             .as("Check that properties contain the one, saved item")
             .hasSize(1)
             .element(0)
-            .hasFieldOrPropertyWithValue("identifier", property.getIdentifier())
+            .hasFieldOrPropertyWithValue(CONST_IDF, property.getIdentifier())
             .hasFieldOrProperty("name");
     }
 
@@ -845,7 +875,7 @@ public class KnowledgeBaseServiceImplIntegrationTest  {
         KBInstance savedInstance = sut.readInstance(kb, instance.getIdentifier()).get();
         assertThat(savedInstance)
             .as("Check that instance was saved correctly")
-            .hasFieldOrPropertyWithValue("description", instance.getDescription())
+            .hasFieldOrPropertyWithValue(CONST_DCP, instance.getDescription())
             .hasFieldOrPropertyWithValue("name", instance.getName());
     }
     
@@ -855,13 +885,13 @@ public class KnowledgeBaseServiceImplIntegrationTest  {
         KBInstance instance = buildInstance();
 
         sut.registerKnowledgeBase(kb, sut.getNativeConfig());
-        String customPrefix = "http://www.ukp.informatik.tu-darmstadt.de/customPrefix#";
+        String customPrefix = CONST_URL_CP;
         kb.setBasePrefix(customPrefix);
         sut.createInstance(kb, instance);
 
         KBInstance savedInstance = sut.readInstance(kb, instance.getIdentifier()).get();
         assertThat(savedInstance).as("Check that Instance was saved correctly")
-                .hasFieldOrPropertyWithValue("description", instance.getDescription())
+                .hasFieldOrPropertyWithValue(CONST_DCP, instance.getDescription())
                 .hasFieldOrPropertyWithValue("name", instance.getName());
 
         String id = savedInstance.getIdentifier();
@@ -872,14 +902,14 @@ public class KnowledgeBaseServiceImplIntegrationTest  {
     @Test
     public void createInstance_WithNonemptyIdentifier_ShouldThrowIllegalArgumentException() {
         KBInstance instance = new KBInstance();
-        instance.setIdentifier("Nonempty Identifier");
+        instance.setIdentifier(CONST_N_EMPT_ID);
 
         sut.registerKnowledgeBase(kb, sut.getNativeConfig());
 
         assertThatIllegalArgumentException()
             .as("Check that creating a instance requires empty identifier")
             .isThrownBy(() -> sut.createInstance(kb, instance) )
-            .withMessage("Identifier must be empty on create");
+            .withMessage(CONST_ID_EMPTY_CRT);
     }
 
     @Test
@@ -902,7 +932,7 @@ public class KnowledgeBaseServiceImplIntegrationTest  {
 
         assertThat(savedInstance)
             .as("Check that instance was read correctly")
-            .hasFieldOrPropertyWithValue("description", instance.getDescription())
+            .hasFieldOrPropertyWithValue(CONST_DCP, instance.getDescription())
             .hasFieldOrPropertyWithValue("name", instance.getName());
     }
 
@@ -910,7 +940,7 @@ public class KnowledgeBaseServiceImplIntegrationTest  {
     public void readInstance_WithNonexistentInstance_ShouldReturnEmptyResult() {
         sut.registerKnowledgeBase(kb, sut.getNativeConfig());
 
-        Optional<KBInstance> savedInstance = sut.readInstance(kb, "https://nonexistent.identifier.test");
+        Optional<KBInstance> savedInstance = sut.readInstance(kb, CONST_URL_ID_TEST);
 
         assertThat(savedInstance.isPresent())
             .as("Check that no instance was read")
@@ -923,29 +953,29 @@ public class KnowledgeBaseServiceImplIntegrationTest  {
         sut.registerKnowledgeBase(kb, sut.getNativeConfig());
         sut.createInstance(kb, instance);
 
-        instance.setDescription("New description");
-        instance.setName("New name");
+        instance.setDescription(CONST_NEW_DESC);
+        instance.setName(CONST_N_NAM);
         sut.updateInstance(kb, instance);
 
         KBInstance savedInstance = sut.readInstance(kb, instance.getIdentifier()).get();
         assertThat(savedInstance)
             .as("Check that instance was updated correctly")
-            .hasFieldOrPropertyWithValue("description", "New description")
-            .hasFieldOrPropertyWithValue("name", "New name");
+            .hasFieldOrPropertyWithValue(CONST_DCP, CONST_NEW_DESC)
+            .hasFieldOrPropertyWithValue("name", CONST_N_NAM);
     }
 
     @Test
     // TODO: Check whether this is a feature or not
     public void updateInstance_WithNonexistentInstance_ShouldCreateInstance() {
         KBInstance instance = buildInstance();
-        instance.setIdentifier("https://nonexistent.identifier.test");
+        instance.setIdentifier(CONST_URL_ID_TEST);
         sut.registerKnowledgeBase(kb, sut.getNativeConfig());
 
         sut.updateInstance(kb, instance);
 
-        KBInstance savedInstance = sut.readInstance(kb, "https://nonexistent.identifier.test").get();
+        KBInstance savedInstance = sut.readInstance(kb, CONST_URL_ID_TEST).get();
         assertThat(savedInstance)
-            .hasFieldOrPropertyWithValue("description", instance.getDescription())
+            .hasFieldOrPropertyWithValue(CONST_DCP, instance.getDescription())
             .hasFieldOrPropertyWithValue("name", instance.getName());
     }
 
@@ -958,7 +988,7 @@ public class KnowledgeBaseServiceImplIntegrationTest  {
         assertThatIllegalArgumentException()
             .as("Check that updating a instance requires nonempty identifier")
             .isThrownBy(() -> sut.updateInstance(kb, instance))
-            .withMessage("Identifier cannot be empty on update");
+            .withMessage(CONST_ID_NT_EMPTY_UPD);
     }
 
     @Test
@@ -970,7 +1000,7 @@ public class KnowledgeBaseServiceImplIntegrationTest  {
         assertThatIllegalArgumentException()
             .as("Check that updating a instance requires non-null identifier")
             .isThrownBy(() -> sut.updateInstance(kb, instance))
-            .withMessage("Identifier cannot be empty on update");
+            .withMessage(CONST_ID_NT_EMPTY_UPD);
     }
 
     @Test
@@ -980,8 +1010,8 @@ public class KnowledgeBaseServiceImplIntegrationTest  {
         sut.createInstance(kb, instance);
         setReadOnly(kb);
 
-        instance.setDescription("New description");
-        instance.setName("New name");
+        instance.setDescription(CONST_NEW_DESC);
+        instance.setName(CONST_N_NAM);
 
         assertThatExceptionOfType(ReadOnlyException.class)
             .isThrownBy(() ->  sut.updateInstance(kb, instance));
@@ -989,7 +1019,7 @@ public class KnowledgeBaseServiceImplIntegrationTest  {
         KBInstance savedInstance = sut.readInstance(kb, instance.getIdentifier()).get();
         assertThat(savedInstance)
             .as("Check that instance has not been updated")
-            .hasFieldOrPropertyWithValue("description", "Instance description")
+            .hasFieldOrPropertyWithValue(CONST_DCP, "Instance description")
             .hasFieldOrPropertyWithValue("name", "Instance name");
     }
 
@@ -1036,7 +1066,7 @@ public class KnowledgeBaseServiceImplIntegrationTest  {
     @Test
     public void deleteInstance_WithNonexistentProperty_ShouldNoNothing() {
         KBInstance instance = buildInstance();
-        instance.setIdentifier("https://nonexistent.identifier.test");
+        instance.setIdentifier(CONST_URL_ID_TEST);
         sut.registerKnowledgeBase(kb, sut.getNativeConfig());
 
         assertThatCode(() -> sut.deleteInstance(kb, instance))
@@ -1075,7 +1105,7 @@ public class KnowledgeBaseServiceImplIntegrationTest  {
             .as("Check that instances contain the one, saved item")
             .hasSize(1)
             .element(0)
-            .hasFieldOrPropertyWithValue("identifier", instance.getIdentifier())
+            .hasFieldOrPropertyWithValue(CONST_IDF, instance.getIdentifier())
             .hasFieldOrProperty("name")
             .matches(h -> h.getIdentifier().startsWith(IriConstants.INCEPTION_NAMESPACE));
     }
@@ -1087,7 +1117,7 @@ public class KnowledgeBaseServiceImplIntegrationTest  {
         KBProperty property = buildProperty();
         sut.createConcept(kb, concept);
         sut.createProperty(kb, property);
-        KBStatement statement = buildStatement(kb, concept.toKBHandle(), property, "Test statement");
+        KBStatement statement = buildStatement(kb, concept.toKBHandle(), property, CONST_TESTST);
 
         sut.upsertStatement(kb, statement);
 
@@ -1099,7 +1129,7 @@ public class KnowledgeBaseServiceImplIntegrationTest  {
             .element(0)
             .hasFieldOrProperty("instance")
             .hasFieldOrProperty("property")
-            .hasFieldOrPropertyWithValue("value", "Test statement")
+            .hasFieldOrPropertyWithValue(CONST_VALE, CONST_TESTST)
             .hasFieldOrPropertyWithValue("inferred", false);
     }
 
@@ -1111,7 +1141,7 @@ public class KnowledgeBaseServiceImplIntegrationTest  {
         sut.createConcept(kb, concept);
         sut.createProperty(kb, property);
         KBStatement statement = buildStatement(kb, concept.toKBHandle(), property,
-                "Test statement");
+                CONST_TESTST);
         sut.upsertStatement(kb, statement);
 
         statement.setValue("Altered test property");
@@ -1125,7 +1155,7 @@ public class KnowledgeBaseServiceImplIntegrationTest  {
             .element(0)
             .hasFieldOrProperty("instance")
             .hasFieldOrProperty("property")
-            .hasFieldOrPropertyWithValue("value", "Altered test property")
+            .hasFieldOrPropertyWithValue(CONST_VALE, "Altered test property")
             .hasFieldOrPropertyWithValue("inferred", false);
     }
 
@@ -1136,7 +1166,7 @@ public class KnowledgeBaseServiceImplIntegrationTest  {
         KBProperty property = buildProperty();
         sut.createConcept(kb, concept);
         sut.createProperty(kb, property);
-        KBStatement statement = buildStatement(kb, concept.toKBHandle(), property, "Test statement");
+        KBStatement statement = buildStatement(kb, concept.toKBHandle(), property, CONST_TESTST);
         setReadOnly(kb);
 
         int statementCountBeforeUpsert = sut.listStatements(kb, concept.toKBHandle(), false).size();
@@ -1156,7 +1186,7 @@ public class KnowledgeBaseServiceImplIntegrationTest  {
         KBProperty property = buildProperty();
         sut.createConcept(kb, concept);
         sut.createProperty(kb, property);
-        KBStatement statement = buildStatement(kb, concept.toKBHandle(), property, "Test statement");
+        KBStatement statement = buildStatement(kb, concept.toKBHandle(), property, CONST_TESTST);
         sut.upsertStatement(kb, statement);
 
         sut.deleteStatement(kb, statement);
@@ -1164,7 +1194,7 @@ public class KnowledgeBaseServiceImplIntegrationTest  {
         List<KBStatement> statements = sut.listStatements(kb, concept.toKBHandle(), false);
         assertThat(statements)
             .as("Check that the statement was deleted correctly")
-            .noneMatch(stmt -> "Test statement".equals(stmt.getValue()));
+            .noneMatch(stmt -> CONST_TESTST.equals(stmt.getValue()));
     }
 
     @Test
@@ -1174,7 +1204,7 @@ public class KnowledgeBaseServiceImplIntegrationTest  {
         KBProperty property = buildProperty();
         sut.createConcept(kb, concept);
         sut.createProperty(kb, property);
-        KBStatement statement = buildStatement(kb, concept.toKBHandle(), property, "Test statement");
+        KBStatement statement = buildStatement(kb, concept.toKBHandle(), property, CONST_TESTST);
 
         assertThatCode(() -> {
             sut.deleteStatement(kb, statement);
@@ -1188,7 +1218,7 @@ public class KnowledgeBaseServiceImplIntegrationTest  {
         KBProperty property = buildProperty();
         sut.createConcept(kb, concept);
         sut.createProperty(kb, property);
-        KBStatement statement = buildStatement(kb, concept.toKBHandle(), property, "Test statement");
+        KBStatement statement = buildStatement(kb, concept.toKBHandle(), property, CONST_TESTST);
         sut.upsertStatement(kb, statement);
         setReadOnly(kb);
 
@@ -1210,7 +1240,7 @@ public class KnowledgeBaseServiceImplIntegrationTest  {
         KBProperty property = buildProperty();
         sut.createConcept(kb, concept);
         sut.createProperty(kb, property);
-        KBStatement statement = buildStatement(kb, concept.toKBHandle(), property, "Test statement");
+        KBStatement statement = buildStatement(kb, concept.toKBHandle(), property, CONST_TESTST);
         sut.upsertStatement(kb, statement);
 
         List<KBStatement> statements = sut.listStatements(kb, concept.toKBHandle(), false);
@@ -1220,7 +1250,7 @@ public class KnowledgeBaseServiceImplIntegrationTest  {
             .filteredOn(this::isNotAbstractNorClosedStatement)
             .hasSize(1)
             .element(0)
-            .hasFieldOrPropertyWithValue("value", "Test statement");
+            .hasFieldOrPropertyWithValue(CONST_VALE, CONST_TESTST);
 
         assertThat(statements.get(0).getOriginalTriples())
             .as("Check that original statements are recreated")
@@ -1253,7 +1283,7 @@ public class KnowledgeBaseServiceImplIntegrationTest  {
         assertThat(rootConcepts)
             .as("Check that all root concepts have been found")
             .usingElementComparatorOnFields(
-                "identifier", "name")
+                CONST_IDF, "name")
             .containsExactlyInAnyOrder(
                 new KBHandle("http://purl.org/ontology/wo/Adaptation", "Adaptation"),
                 new KBHandle("http://purl.org/ontology/wo/AnimalIntelligence", "Animal Intelligence"),
@@ -1414,12 +1444,12 @@ public class KnowledgeBaseServiceImplIntegrationTest  {
         KBProperty property = buildProperty();
         sut.createConcept(kb, concept);
         sut.createProperty(kb, property);
-        KBStatement statement = buildStatement(kb, concept.toKBHandle(), property, "Test statement");
+        KBStatement statement = buildStatement(kb, concept.toKBHandle(), property, CONST_TESTST);
 
         sut.upsertStatement(kb, statement);
 
         KBStatement mockStatement = buildStatement(kb, concept.toKBHandle(), property,
-                "Test statement");
+                CONST_TESTST);
         assertTrue(sut.exists(kb, mockStatement));
     }
 
@@ -1436,7 +1466,7 @@ public class KnowledgeBaseServiceImplIntegrationTest  {
         sut.upsertStatement(kb, statement);
 
         KBStatement mockStatement = buildStatement(kb, concept.toKBHandle(), property,
-                "Test statement");
+                CONST_TESTST);
         assertFalse(sut.exists(kb, mockStatement));
     }
 
@@ -1478,7 +1508,7 @@ public class KnowledgeBaseServiceImplIntegrationTest  {
         
         KBInstance germanInstance = sut.readInstance(kb, englishInstance.getIdentifier()).get();
         assertThat(germanInstance.getLanguage())
-            .as("Check that the language has successfully been changed.")
+            .as(CONST_CHANGE_LANG)
             .isEqualTo("de");
     }
 
@@ -1498,7 +1528,7 @@ public class KnowledgeBaseServiceImplIntegrationTest  {
         
         KBProperty germanProperty = sut.readProperty(kb, englishProperty.getIdentifier()).get();
         assertThat(germanProperty.getLanguage())
-            .as("Check that the language has successfully been changed.")
+            .as(CONST_CHANGE_LANG)
             .isEqualTo("de");
     }
 
@@ -1518,7 +1548,7 @@ public class KnowledgeBaseServiceImplIntegrationTest  {
         
         KBConcept germanConcept = sut.readConcept(kb, englishConcept.getIdentifier(), true).get();
         assertThat(germanConcept.getLanguage())
-            .as("Check that the language has successfully been changed.")
+            .as(CONST_CHANGE_LANG)
             .isEqualTo("de");
     }
 

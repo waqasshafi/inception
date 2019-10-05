@@ -42,6 +42,15 @@ import de.tudarmstadt.ukp.inception.recommendation.api.model.LearningRecordType;
 public class LearningRecordServiceImpl
     implements LearningRecordService
 {
+	private static final String CONST_ACT = "action";
+	
+	private static final String CONST_LAYERAND = "layer = :layer AND";
+
+	private static final String CONST_LAYR = "layer";
+
+	private static final String CONST_USERAND = "user = :user AND";
+
+	
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -77,11 +86,11 @@ public class LearningRecordServiceImpl
         // irrespective of what that action is.
         String query = String.join("\n",
                 "DELETE FROM LearningRecord WHERE",
-                "user = :user AND",
+                CONST_USERAND,
                 "sourceDocument = :sourceDocument AND",
                 "offsetCharacterBegin = :offsetCharacterBegin AND",
                 "offsetCharacterEnd = :offsetCharacterEnd AND",
-                "layer = :layer AND",
+                CONST_LAYERAND,
                 "annotationFeature = :annotationFeature AND",
                 "annotation = :annotation");
         entityManager.createQuery(query)
@@ -89,7 +98,7 @@ public class LearningRecordServiceImpl
                 .setParameter("sourceDocument", aDocument)
                 .setParameter("offsetCharacterBegin", aSuggestion.getBegin())
                 .setParameter("offsetCharacterEnd", aSuggestion.getEnd())
-                .setParameter("layer", aLayer)
+                .setParameter(CONST_LAYR, aLayer)
                 .setParameter("annotationFeature", aFeature)
                 .setParameter("annotation", aAlternativeLabel)
                 .executeUpdate();
@@ -124,8 +133,8 @@ public class LearningRecordServiceImpl
                 "ORDER BY l.id desc");
         TypedQuery<LearningRecord> query = entityManager.createQuery(sql, LearningRecord.class)
                 .setParameter("user", aUsername)
-                .setParameter("layer", aLayer)
-                .setParameter("action", LearningRecordType.SHOWN); // SHOWN records NOT returned
+                .setParameter(CONST_LAYR, aLayer)
+                .setParameter(CONST_ACT, LearningRecordType.SHOWN); // SHOWN records NOT returned
         if (aLimit > 0) {
             query = query.setMaxResults(aLimit);
         }
@@ -197,13 +206,13 @@ public class LearningRecordServiceImpl
     {
         String sql = String.join("\n",
                 "SELECT COUNT(*) FROM LearningRecord WHERE",
-                "user = :user AND",
-                "layer = :layer AND",
+                CONST_USERAND,
+                CONST_LAYERAND,
                 "userAction = :action");
         long count = entityManager.createQuery(sql, Long.class)
                 .setParameter("user", aUser.getUsername())
-                .setParameter("layer", aLayer)
-                .setParameter("action", LearningRecordType.SKIPPED)
+                .setParameter(CONST_LAYR, aLayer)
+                .setParameter(CONST_ACT, LearningRecordType.SKIPPED)
                 .getSingleResult();
         return count > 0;
     }
@@ -214,13 +223,13 @@ public class LearningRecordServiceImpl
     {
         String sql = String.join("\n",
                 "DELETE FROM LearningRecord WHERE",
-                "user = :user AND",
-                "layer = :layer AND",
+                CONST_USERAND,
+                CONST_LAYERAND,
                 "userAction = :action");
         entityManager.createQuery(sql)
                 .setParameter("user", aUser.getUsername())
-                .setParameter("layer", aLayer)
-                .setParameter("action", LearningRecordType.SKIPPED)
+                .setParameter(CONST_LAYR, aLayer)
+                .setParameter(CONST_ACT, LearningRecordType.SKIPPED)
                 .executeUpdate();
     }
 }

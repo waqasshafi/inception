@@ -114,6 +114,14 @@ import de.tudarmstadt.ukp.inception.kb.model.KnowledgeBase;
 public class SPARQLQueryBuilder
     implements SPARQLQuery, SPARQLQueryPrimaryConditions, SPARQLQueryOptionalElements
 {
+	private static final String CONST_STR_Query = "[{}] Query: {}";
+	
+	private static final String CONST_QUERY_SKIP = "[{}] Query was skipped because it would not return any results anyway";
+	
+	private static final String CONST_FTS_MODE = "Unknown FTS mode: [";
+	
+	private static final String CONST_UNSPRT = "Unsupported mode: ";
+	
     private final static Logger LOG = LoggerFactory.getLogger(SPARQLQueryBuilder.class);
 
     public static final int DEFAULT_LIMIT = 0;
@@ -232,7 +240,7 @@ public class SPARQLQueryBuilder
             case PROPERTY:
                 return iri(aKb.getPropertyLabelIri());
             default:
-                throw new IllegalStateException("Unsupported mode: " + this);
+                throw new IllegalStateException(CONST_UNSPRT + this);
             }
         }
 
@@ -247,7 +255,7 @@ public class SPARQLQueryBuilder
             case PROPERTY:
                 return iri(aKb.getPropertyDescriptionIri());
             default:
-                throw new IllegalStateException("Unsupported mode: " + this);
+                throw new IllegalStateException(CONST_UNSPRT + this);
             }
         }
         
@@ -291,7 +299,7 @@ public class SPARQLQueryBuilder
             case PROPERTY:
                 return VAR_SUBJECT.has(Path.of(oneOrMore(subPropertyProperty)), aContext);
             default:
-                throw new IllegalStateException("Unsupported mode: " + this);
+                throw new IllegalStateException(CONST_UNSPRT + this);
             }            
         }
 
@@ -324,7 +332,7 @@ public class SPARQLQueryBuilder
             case PROPERTY:
                 return aContext.has(Path.of(oneOrMore(subPropertyProperty)), VAR_SUBJECT);
             default:
-                throw new IllegalStateException("Unsupported mode: " + this);
+                throw new IllegalStateException(CONST_UNSPRT + this);
             }            
         }
         
@@ -1533,13 +1541,13 @@ public class SPARQLQueryBuilder
         String queryString = selectQuery().getQueryString();
         //queryString = QueryParserUtil.parseQuery(QueryLanguage.SPARQL, queryString, null)
         //        .toString();
-        LOG.trace("[{}] Query: {}", queryId, queryString);
+        LOG.trace(CONST_STR_Query, queryId, queryString);
 
         List<KBHandle> results;
         if (returnEmptyResult) {
             results = emptyList();
             
-            LOG.debug("[{}] Query was skipped because it would not return any results anyway",
+            LOG.debug(CONST_QUERY_SKIP,
                     queryId);
         }
         else {
@@ -1577,10 +1585,10 @@ public class SPARQLQueryBuilder
         SelectQuery query = selectQuery();
         
         String queryString = query.getQueryString();
-        LOG.trace("[{}] Query: {}", queryId, queryString);
+        LOG.trace(CONST_STR_Query, queryId, queryString);
 
         if (returnEmptyResult) {
-            LOG.debug("[{}] Query was skipped because it would not return any results anyway",
+            LOG.debug(CONST_QUERY_SKIP,
                     queryId);
             
             return false;
@@ -1605,13 +1613,13 @@ public class SPARQLQueryBuilder
         limit(1);
         
         String queryString = selectQuery().getQueryString();
-        LOG.trace("[{}] Query: {}", queryId, queryString);
+        LOG.trace(CONST_STR_Query, queryId, queryString);
 
         Optional<KBHandle> result;
         if (returnEmptyResult) {
             result = Optional.empty();
             
-            LOG.debug("[{}] Query was skipped because it would not return any results anyway",
+            LOG.debug(CONST_QUERY_SKIP,
                     queryId);
         }
         else {

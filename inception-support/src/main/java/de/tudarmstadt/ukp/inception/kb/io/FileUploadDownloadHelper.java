@@ -37,6 +37,9 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 public class FileUploadDownloadHelper
 {
 
+	private static final String CONST_CRT_TEMP = "Creating temporary file for [{}] in [{}]";
+	
+	
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final IFileCleaner fileTracker;
@@ -62,7 +65,7 @@ public class FileUploadDownloadHelper
     {
         String fileName = fileUpload.getClientFileName();
         File tmpFile = File.createTempFile(INCEPTION_TMP_FILE_PREFIX, fileName);
-        log.debug("Creating temporary file for [{}] in [{}]", fileName, tmpFile.getAbsolutePath());
+        log.debug(CONST_CRT_TEMP, fileName, tmpFile.getAbsolutePath());
         fileTracker.track(tmpFile, marker);
         try (InputStream is = fileUpload.getInputStream()) {
             FileUtils.copyInputStreamToFile(is, tmpFile);
@@ -76,7 +79,7 @@ public class FileUploadDownloadHelper
         Path pathName = Paths.get(downloadUrl);
         String fileName = pathName.getFileName().toString();
         File tmpFile = File.createTempFile(INCEPTION_TMP_FILE_PREFIX, fileName);
-        log.debug("Creating temporary file for [{}] in [{}]", fileName, tmpFile.getAbsolutePath());
+        log.debug(CONST_CRT_TEMP, fileName, tmpFile.getAbsolutePath());
         fileTracker.track(tmpFile, marker);
         FileUtils.copyURLToFile(new URL(downloadUrl), tmpFile);
         return tmpFile;
@@ -90,7 +93,7 @@ public class FileUploadDownloadHelper
         File tmpFile = File
             .createTempFile(INCEPTION_TMP_FILE_PREFIX, fileName);
         fileTracker.track(tmpFile, marker);
-        log.debug("Creating temporary file for [{}] in [{}]", fileName, tmpFile.getAbsolutePath());
+        log.debug(CONST_CRT_TEMP, fileName, tmpFile.getAbsolutePath());
         try (InputStream is = resolver.getResource(aLocation).getInputStream();
             FileOutputStream os = new FileOutputStream(tmpFile)) {
             IOUtils.copy(is, os);

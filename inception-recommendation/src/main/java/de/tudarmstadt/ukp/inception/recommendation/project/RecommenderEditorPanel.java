@@ -82,6 +82,9 @@ import de.tudarmstadt.ukp.inception.recommendation.event.RecommenderDeletedEvent
 public class RecommenderEditorPanel
     extends Panel
 {
+	
+	private static final String CONST_CHNG = "change";
+	
     private static final long serialVersionUID = -5278078988218713188L;
 
     private static final String MID_CANCEL = "cancel";
@@ -144,7 +147,7 @@ public class RecommenderEditorPanel
         
         autoGenerateNameCheckBox = new CheckBox(MID_AUTO_GENERATED_NAME,
                 PropertyModel.of(this, "autoGenerateName"));
-        autoGenerateNameCheckBox.add(new LambdaAjaxFormComponentUpdatingBehavior("change", t -> {
+        autoGenerateNameCheckBox.add(new LambdaAjaxFormComponentUpdatingBehavior(CONST_CHNG, t -> {
             autoUpdateName(t, nameField, recommenderModel.getObject());
             t.add(autoGenerateNameCheckBox);
         }));
@@ -156,7 +159,7 @@ public class RecommenderEditorPanel
         layerChoice.setChoiceRenderer(new ChoiceRenderer<>("uiName"));
         layerChoice.setRequired(true);
         // The features and tools depend on the layer, so reload them when the layer is changed
-        layerChoice.add(new LambdaAjaxFormComponentUpdatingBehavior("change", t -> { 
+        layerChoice.add(new LambdaAjaxFormComponentUpdatingBehavior(CONST_CHNG, t -> { 
             toolChoice.setModelObject(null);
             featureChoice.setModelObject(null);
             autoUpdateName(t, nameField, recommenderModel.getObject());
@@ -177,7 +180,7 @@ public class RecommenderEditorPanel
             }
         }));
         // The tools depend on the feature, so reload the tools when the feature is changed
-        featureChoice.add(new LambdaAjaxFormComponentUpdatingBehavior("change", t -> {
+        featureChoice.add(new LambdaAjaxFormComponentUpdatingBehavior(CONST_CHNG, t -> {
             toolChoice.setModelObject(null);
             autoUpdateName(t, nameField, recommenderModel.getObject());
             // Need to add the autoGenerateNameCheckBox here otherwise it looses its form-updating
@@ -222,7 +225,7 @@ public class RecommenderEditorPanel
         toolChoice.setChoiceRenderer(new ChoiceRenderer<>("value"));
         toolChoice.setRequired(true);
         toolChoice.setOutputMarkupId(true);
-        toolChoice.add(new LambdaAjaxFormComponentUpdatingBehavior("change", t -> {
+        toolChoice.add(new LambdaAjaxFormComponentUpdatingBehavior(CONST_CHNG, t -> {
             autoUpdateName(t, nameField, recommenderModel.getObject());
             // Need to add the autoGenerateNameCheckBox here otherwise it looses its form-updating
             // behavior - no idea why
@@ -239,7 +242,7 @@ public class RecommenderEditorPanel
 
         activationContainer.add(new CheckBox(MID_ALWAYS_SELECTED)
                 .setOutputMarkupPlaceholderTag(true)
-                .add(new LambdaAjaxFormSubmittingBehavior("change", t ->
+                .add(new LambdaAjaxFormSubmittingBehavior(CONST_CHNG, t ->
                     t.add(activationContainer.get(MID_THRESHOLD))
                 )));
 

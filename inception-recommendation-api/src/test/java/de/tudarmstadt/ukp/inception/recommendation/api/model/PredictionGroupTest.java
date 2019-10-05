@@ -28,16 +28,21 @@ import de.tudarmstadt.ukp.inception.recommendation.api.model.SuggestionGroup.Del
 
 public class PredictionGroupTest
 {
+	private static final String CONST_SORT_CONSCORE = "Sorted by confidence score (decreasing) but retain insertion order on tie";
+	
+	private static final String CONST_VAL = "value";
+
+	
     @Test
     public void thatAddingElementsToGroupWorks()
     {
-        AnnotationSuggestion rec1Sug1 = new AnnotationSuggestion(1, 1, "rec1", 1, "value", "doc1",
+        AnnotationSuggestion rec1Sug1 = new AnnotationSuggestion(1, 1, "rec1", 1, CONST_VAL, "doc1",
                 0, 1, "a", "A", "#A", 0.1, "E1");
-        AnnotationSuggestion rec1Sug2 = new AnnotationSuggestion(2, 1, "rec1", 1, "value", "doc1",
+        AnnotationSuggestion rec1Sug2 = new AnnotationSuggestion(2, 1, "rec1", 1, CONST_VAL, "doc1",
                 0, 1, "b", "B", "#B", 0.2, "E2");
-        AnnotationSuggestion rec2Sug1 = new AnnotationSuggestion(3, 2, "rec2", 1, "value", "doc1",
+        AnnotationSuggestion rec2Sug1 = new AnnotationSuggestion(3, 2, "rec2", 1, CONST_VAL, "doc1",
                 0, 1, "c", "C", "#C", 0.1, "E1");
-        AnnotationSuggestion rec2Sug2 = new AnnotationSuggestion(4, 2, "rec2", 1, "value", "doc1",
+        AnnotationSuggestion rec2Sug2 = new AnnotationSuggestion(4, 2, "rec2", 1, CONST_VAL, "doc1",
                 0, 1, "d", "D", "#D", 0.3, "E3");
 
         // Ensure that group grows and that all elements are added properly
@@ -59,40 +64,40 @@ public class PredictionGroupTest
     @Test
     public void thatSortingWorks()
     {
-        AnnotationSuggestion rec1Sug1 = new AnnotationSuggestion(1, 1, "rec1", 1, "value", "doc1",
+        AnnotationSuggestion rec1Sug1 = new AnnotationSuggestion(1, 1, "rec1", 1, CONST_VAL, "doc1",
                 0, 1, "a", "A", "#A", 0.1, "E1");
-        AnnotationSuggestion rec1Sug2 = new AnnotationSuggestion(2, 1, "rec1", 1, "value", "doc1",
+        AnnotationSuggestion rec1Sug2 = new AnnotationSuggestion(2, 1, "rec1", 1, CONST_VAL, "doc1",
                 0, 1, "b", "B", "#B", 0.2, "E2");
-        AnnotationSuggestion rec2Sug1 = new AnnotationSuggestion(3, 2, "rec2", 1, "value", "doc1",
+        AnnotationSuggestion rec2Sug1 = new AnnotationSuggestion(3, 2, "rec2", 1, CONST_VAL, "doc1",
                 0, 1, "c", "C", "#C", 0.1, "E1");
-        AnnotationSuggestion rec2Sug2 = new AnnotationSuggestion(4, 2, "rec2", 1, "value", "doc1",
+        AnnotationSuggestion rec2Sug2 = new AnnotationSuggestion(4, 2, "rec2", 1, CONST_VAL, "doc1",
                 0, 1, "d", "D", "#D", 0.3, "E3");
 
         SuggestionGroup sut = new SuggestionGroup(rec1Sug1, rec1Sug2, rec2Sug1, rec2Sug2);
         
         assertThat(sut)
-                .as("Sorted by confidence score (decreasing) but retain insertion order on tie")
+                .as(CONST_SORT_CONSCORE)
                 .containsExactly(rec2Sug2, rec1Sug2, rec1Sug1, rec2Sug1);
         
         assertThat(sut.stream())
-                .as("Sorted by confidence score (decreasing) but retain insertion order on tie")
+                .as(CONST_SORT_CONSCORE)
                 .containsExactly(rec2Sug2, rec1Sug2, rec1Sug1, rec2Sug1);
         
         assertThat(sut.iterator()).toIterable()
-                .as("Sorted by confidence score (decreasing) but retain insertion order on tie")
+                .as(CONST_SORT_CONSCORE)
                 .containsExactly(rec2Sug2, rec1Sug2, rec1Sug1, rec2Sug1);
     }
     
     @Test
     public void thatTopDeltasAreCorrect()
     {
-        AnnotationSuggestion rec1Sug1 = new AnnotationSuggestion(1, 1, "rec1", 1, "value", "doc1",
+        AnnotationSuggestion rec1Sug1 = new AnnotationSuggestion(1, 1, "rec1", 1, CONST_VAL, "doc1",
                 0, 1, "a", "A", "#A", 0.1, "E1");
-        AnnotationSuggestion rec1Sug2 = new AnnotationSuggestion(2, 1, "rec1", 1, "value", "doc1",
+        AnnotationSuggestion rec1Sug2 = new AnnotationSuggestion(2, 1, "rec1", 1, CONST_VAL, "doc1",
                 0, 1, "b", "B", "#B", 0.2, "E2");
-        AnnotationSuggestion rec2Sug1 = new AnnotationSuggestion(3, 2, "rec2", 1, "value", "doc1",
+        AnnotationSuggestion rec2Sug1 = new AnnotationSuggestion(3, 2, "rec2", 1, CONST_VAL, "doc1",
                 0, 1, "c", "C", "#C", 0.1, "E1");
-        AnnotationSuggestion rec2Sug2 = new AnnotationSuggestion(4, 2, "rec2", 1, "value", "doc1",
+        AnnotationSuggestion rec2Sug2 = new AnnotationSuggestion(4, 2, "rec2", 1, CONST_VAL, "doc1",
                 0, 1, "d", "D", "#D", 0.3, "E3");
 
         SuggestionGroup sut = new SuggestionGroup(rec1Sug1, rec1Sug2, rec2Sug1, rec2Sug2);

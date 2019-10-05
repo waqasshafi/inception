@@ -121,7 +121,19 @@ import de.tudarmstadt.ukp.inception.search.scheduling.IndexScheduler;
 @Transactional(propagation = Propagation.NEVER)
 public class MtasDocumentIndexTest
 {
-    private @Autowired UserDao userRepository;
+   private static final String CONST_CAP = "capital";
+   
+   private static final String CONST_GALIC = "Galicia";
+
+   private static final String CONST_RAWTXT_DOC1 = "Raw text document 1";
+
+   private static final String CONST_RAWTXT_DOC = "Raw text document";
+
+   private static final String CONST_CAP_GALICIA = "The capital of Galicia is Santiago de Compostela.";
+
+	
+	
+	private @Autowired UserDao userRepository;
     private @Autowired ProjectService projectService;
     private @Autowired DocumentService documentService;
     private @Autowired SearchService searchService;
@@ -184,13 +196,13 @@ public class MtasDocumentIndexTest
 
         builder.add("The", Token.class);
         builder.add(" ");
-        builder.add("capital", Token.class);
+        builder.add(CONST_CAP, Token.class);
         builder.add(" ");
         builder.add("of", Token.class);
         builder.add(" ");
         
         int begin = builder.getPosition();
-        builder.add("Galicia", Token.class);
+        builder.add(CONST_GALIC, Token.class);
         
         NamedEntity ne = new NamedEntity(jCas, begin, builder.getPosition());
         ne.setValue("LOC");
@@ -232,17 +244,17 @@ public class MtasDocumentIndexTest
 
         SourceDocument sourceDocument = new SourceDocument();
 
-        sourceDocument.setName("Raw text document");
+        sourceDocument.setName(CONST_RAWTXT_DOC);
         sourceDocument.setProject(project);
         sourceDocument.setFormat("text");
 
-        String fileContent = "The capital of Galicia is Santiago de Compostela.";
+        String fileContent = CONST_CAP_GALICIA;
 
         uploadDocument(Pair.of(sourceDocument, fileContent));
 
         User user = userRepository.get("admin");
 
-        String query = "Galicia";
+        String query = CONST_GALIC;
 
         // Execute query
         List<SearchResult> results = searchService.query(user, project, query);
@@ -250,9 +262,9 @@ public class MtasDocumentIndexTest
         // Test results
         SearchResult expectedResult = new SearchResult();
         expectedResult.setDocumentId(sourceDocument.getId());
-        expectedResult.setDocumentTitle("Raw text document");
+        expectedResult.setDocumentTitle(CONST_RAWTXT_DOC);
         expectedResult.setLeftContext("The capital of ");
-        expectedResult.setText("Galicia");
+        expectedResult.setText(CONST_GALIC);
         expectedResult.setRightContext(" is Santiago de");
         expectedResult.setOffsetStart(15);
         expectedResult.setOffsetEnd(22);
@@ -275,11 +287,11 @@ public class MtasDocumentIndexTest
 
         SourceDocument sourceDocument = new SourceDocument();
 
-        sourceDocument.setName("Raw text document");
+        sourceDocument.setName(CONST_RAWTXT_DOC);
         sourceDocument.setProject(project);
         sourceDocument.setFormat("text");
 
-        String fileContent = "The capital of Galicia is Santiago de Compostela.";
+        String fileContent = CONST_CAP_GALICIA;
 
         uploadDocument(Pair.of(sourceDocument, fileContent));
 
@@ -293,7 +305,7 @@ public class MtasDocumentIndexTest
         // Test results
         SearchResult expectedResult = new SearchResult();
         expectedResult.setDocumentId(sourceDocument.getId());
-        expectedResult.setDocumentTitle("Raw text document");
+        expectedResult.setDocumentTitle(CONST_RAWTXT_DOC);
         expectedResult.setLeftContext("Santiago de Compostela");
         expectedResult.setText(".");
         expectedResult.setRightContext("");
@@ -316,10 +328,10 @@ public class MtasDocumentIndexTest
         createProject(project);
 
         SourceDocument sourceDocument1 = new SourceDocument();
-        sourceDocument1.setName("Raw text document 1");
+        sourceDocument1.setName(CONST_RAWTXT_DOC1);
         sourceDocument1.setProject(project);
         sourceDocument1.setFormat("text");
-        String fileContent1 = "The capital of Galicia is Santiago de Compostela.";
+        String fileContent1 = CONST_CAP_GALICIA;
 
         SourceDocument sourceDocument2 = new SourceDocument();
         sourceDocument2.setName("Raw text document 2");
@@ -333,11 +345,11 @@ public class MtasDocumentIndexTest
 
         User user = userRepository.get("admin");
 
-        String query = "capital";
+        String query = CONST_CAP;
 
         // Execute query
         SourceDocument sourceDocument = documentService.getSourceDocument(project,
-                "Raw text document 1");
+                CONST_RAWTXT_DOC1);
         List<SearchResult> resultsNotLimited = searchService.query(user, project, query);
         List<SearchResult> resultsLimited = searchService.query(user, project, query,
                 sourceDocument);
@@ -345,8 +357,8 @@ public class MtasDocumentIndexTest
         // Test results
         SearchResult expectedResult1 = new SearchResult();
         expectedResult1.setDocumentId(sourceDocument1.getId());
-        expectedResult1.setDocumentTitle("Raw text document 1");
-        expectedResult1.setText("capital");
+        expectedResult1.setDocumentTitle(CONST_RAWTXT_DOC1);
+        expectedResult1.setText(CONST_CAP);
         expectedResult1.setLeftContext("The ");
         expectedResult1.setRightContext(" of Galicia is");
         expectedResult1.setOffsetStart(4);
@@ -357,7 +369,7 @@ public class MtasDocumentIndexTest
         SearchResult expectedResult2 = new SearchResult();
         expectedResult2.setDocumentId(sourceDocument2.getId());
         expectedResult2.setDocumentTitle("Raw text document 2");
-        expectedResult2.setText("capital");
+        expectedResult2.setText(CONST_CAP);
         expectedResult2.setLeftContext("The ");
         expectedResult2.setRightContext(" of Portugal is");
         expectedResult2.setOffsetStart(4);
@@ -385,11 +397,11 @@ public class MtasDocumentIndexTest
 
         SourceDocument sourceDocument = new SourceDocument();
 
-        sourceDocument.setName("Raw text document");
+        sourceDocument.setName(CONST_RAWTXT_DOC);
         sourceDocument.setProject(project);
         sourceDocument.setFormat("text");
 
-        String fileContent = "The capital of Galicia is Santiago de Compostela.";
+        String fileContent = CONST_CAP_GALICIA;
 
         uploadDocument(Pair.of(sourceDocument, fileContent));
 
@@ -403,8 +415,8 @@ public class MtasDocumentIndexTest
         // Test results
         SearchResult expectedResult = new SearchResult();
         expectedResult.setDocumentId(sourceDocument.getId());
-        expectedResult.setDocumentTitle("Raw text document");
-        expectedResult.setText("Galicia");
+        expectedResult.setDocumentTitle(CONST_RAWTXT_DOC);
+        expectedResult.setText(CONST_GALIC);
         expectedResult.setLeftContext("The capital of ");
         expectedResult.setRightContext(" is Santiago de");
         expectedResult.setOffsetStart(15);
@@ -434,7 +446,7 @@ public class MtasDocumentIndexTest
         sourceDocument.setProject(project);
         sourceDocument.setFormat("text");
 
-        String fileContent = "The capital of Galicia is Santiago de Compostela.";
+        String fileContent = CONST_CAP_GALICIA;
 
         uploadDocument(Pair.of(sourceDocument, fileContent));
         annotateDocument(project, user, sourceDocument);

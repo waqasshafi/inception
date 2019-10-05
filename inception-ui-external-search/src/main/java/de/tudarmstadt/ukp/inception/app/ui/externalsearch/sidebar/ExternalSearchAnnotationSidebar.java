@@ -88,6 +88,11 @@ import de.tudarmstadt.ukp.inception.support.annotation.OffsetSpan;
 public class ExternalSearchAnnotationSidebar
     extends AnnotationSidebar_ImplBase
 {
+	private static final String CONST_UNABLE_LODCOMMENT = "Unable to load document ";
+	
+	private static final String CONST_UNABLE_LOAD_DOC = "Unable to load document {}: {}";
+
+	
     private static final long serialVersionUID = -3358207848681467994L;
 
     private static final Logger LOG = LoggerFactory
@@ -251,9 +256,9 @@ public class ExternalSearchAnnotationSidebar
             }
         }
         catch (IOException e) {
-            LOG.error("Unable to load document {}: {}",
+            LOG.error(CONST_UNABLE_LOAD_DOC,
                     searchState.getSelectedResult().getDocumentId(), e.getMessage(), e);
-            error("Unable to load document " + searchState.getSelectedResult().getDocumentId() + ": "
+            error(CONST_UNABLE_LODCOMMENT + searchState.getSelectedResult().getDocumentId() + ": "
                     + ExceptionUtils.getRootCauseMessage(e));
         }
     }
@@ -278,8 +283,8 @@ public class ExternalSearchAnnotationSidebar
                     documentService.getSourceDocument(project, aResult.getDocumentId()));
         }
         catch (Exception e) {
-            LOG.error("Unable to load document {}: {}", aResult.getDocumentId(), e.getMessage(), e);
-            error("Unable to load document " + aResult.getDocumentId() + ": "
+            LOG.error(CONST_UNABLE_LOAD_DOC, aResult.getDocumentId(), e.getMessage(), e);
+            error(CONST_UNABLE_LODCOMMENT + aResult.getDocumentId() + ": "
                     + ExceptionUtils.getRootCauseMessage(e));
         }
     }
@@ -292,8 +297,8 @@ public class ExternalSearchAnnotationSidebar
                     documentService.getSourceDocument(project, aResult.getDocumentId()));
         }
         catch (Exception e) {
-            LOG.error("Unable to load document {}: {}", aResult.getDocumentId(), e.getMessage(), e);
-            error("Unable to load document " + aResult.getDocumentId() + ": "
+            LOG.error(CONST_UNABLE_LOAD_DOC, aResult.getDocumentId(), e.getMessage(), e);
+            error(CONST_UNABLE_LODCOMMENT + aResult.getDocumentId() + ": "
                     + ExceptionUtils.getRootCauseMessage(e));
             aTarget.addChildren(getPage(), IFeedback.class);
         }

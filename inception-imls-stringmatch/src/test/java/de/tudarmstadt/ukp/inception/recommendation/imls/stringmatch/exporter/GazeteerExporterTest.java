@@ -58,6 +58,9 @@ import de.tudarmstadt.ukp.inception.recommendation.imls.stringmatch.model.Gazete
 
 public class GazeteerExporterTest
 {
+	private static final String CONST_VAL = "value";
+	
+	
     private @Mock GazeteerService gazeteerService;
     private @Mock RecommendationService recommendationService;
 
@@ -87,7 +90,7 @@ public class GazeteerExporterTest
 
         sourceLayer = new AnnotationLayer("span", "span", SPAN_TYPE, sourceProject, false, TOKENS,
                 NO_OVERLAP);
-        sourceFeature = new AnnotationFeature(sourceProject, sourceLayer, "value", "value",
+        sourceFeature = new AnnotationFeature(sourceProject, sourceLayer, CONST_VAL, CONST_VAL,
                 CAS.TYPE_NAME_STRING);
         sourceRecommender = new Recommender("rec1", sourceLayer);
         sourceRecommender.setFeature(sourceFeature);
@@ -99,7 +102,7 @@ public class GazeteerExporterTest
 
         targetLayer = new AnnotationLayer("span", "span", SPAN_TYPE, sourceProject, false, TOKENS,
                 NO_OVERLAP);
-        targetFeature = new AnnotationFeature(sourceProject, targetLayer, "value", "value",
+        targetFeature = new AnnotationFeature(sourceProject, targetLayer, CONST_VAL, CONST_VAL,
                 CAS.TYPE_NAME_STRING);
         targetRecommender = new Recommender("rec1", targetLayer);
         targetRecommender.setFeature(targetFeature);

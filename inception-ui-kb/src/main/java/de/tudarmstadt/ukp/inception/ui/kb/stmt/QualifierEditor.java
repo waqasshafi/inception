@@ -53,6 +53,9 @@ import de.tudarmstadt.ukp.inception.ui.kb.event.AjaxQualifierChangedEvent;
 public class QualifierEditor
     extends Panel
 {
+	
+	private static final String CONST_LANG = "language";
+	
     private static final long serialVersionUID = -4152363403483032196L;
 
     private static final String CONTENT_MARKUP_ID = "content";
@@ -126,7 +129,7 @@ public class QualifierEditor
             form.add(type);
             initialFocusComponent = type;
 
-            form.add(new TextField<>("language"));
+            form.add(new TextField<>(CONST_LANG));
 
             Component valueTextArea = new TextArea<String>("value");
             form.add(valueTextArea);
@@ -164,7 +167,7 @@ public class QualifierEditor
             CompoundPropertyModel<KBQualifier> compoundModel = new CompoundPropertyModel<>(
                 aQualifier);
             add(new Label("property", aQualifier.getObject().getProperty().getUiLabel()));
-            add(new Label("language", compoundModel.bind("language")).add(
+            add(new Label(CONST_LANG, compoundModel.bind(CONST_LANG)).add(
                     LambdaBehavior.onConfigure(_this -> 
                             _this.setVisible(isNotEmpty(aQualifier.getObject().getLanguage())))));
             add(new Label("value",

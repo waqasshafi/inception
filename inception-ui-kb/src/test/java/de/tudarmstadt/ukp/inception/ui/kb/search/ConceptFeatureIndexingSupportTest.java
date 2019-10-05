@@ -61,6 +61,15 @@ import mtas.analysis.token.MtasTokenCollection;
 
 public class ConceptFeatureIndexingSupportTest
 {
+	
+	private static final String CONST_DCONCEPT = "Dummy concept";
+	
+	private static final String CONST_NAME_ENT = "Named_Entity";
+
+	private static final String CONST_DUMY_CNCPT = "urn:dummy-concept";
+
+	
+	
     private Project project;
     private KnowledgeBase kb;
     private @Mock AnnotationSchemaService annotationSchemaService;
@@ -113,7 +122,7 @@ public class ConceptFeatureIndexingSupportTest
         builder.add(" ");
         builder.add("Smith", Token.class);
         NamedEntity ne = new NamedEntity(jcas, begin, builder.getPosition());
-        ne.setIdentifier("urn:dummy-concept");
+        ne.setIdentifier(CONST_DUMY_CNCPT);
         ne.addToIndexes();
         builder.add(" ");
         builder.add(".", Token.class);
@@ -129,10 +138,10 @@ public class ConceptFeatureIndexingSupportTest
                         new AnnotationFeature(2l, layer, "identifier", "kb:<ANY>")));
         
         when(kbService.readInstance(any(Project.class), any(String.class))).thenReturn(
-                Optional.of(new KBInstance("urn:dummy-concept", "Dummy concept")));
+                Optional.of(new KBInstance(CONST_DUMY_CNCPT, CONST_DCONCEPT)));
         
         
-        KBInstance kbInstance = new KBInstance("urn:dummy-concept", "Dummy concept");
+        KBInstance kbInstance = new KBInstance(CONST_DUMY_CNCPT, CONST_DCONCEPT);
         kbInstance.setKB(kb);
         
         when(kbService.readItem(any(Project.class), any(String.class)))
@@ -153,13 +162,13 @@ public class ConceptFeatureIndexingSupportTest
         tc.iterator().forEachRemaining(tokens::add);
                 
         assertThat(tokens)
-            .filteredOn(t -> t.getPrefix().startsWith("Named_Entity"))
+            .filteredOn(t -> t.getPrefix().startsWith(CONST_NAME_ENT))
             .extracting(MtasToken::getPrefix)
-            .contains("Named_Entity", "Named_Entity.identifier", "Named_Entity.identifier-exact");
+            .contains(CONST_NAME_ENT, "Named_Entity.identifier", "Named_Entity.identifier-exact");
     
         assertThat(tokens)
-            .filteredOn(t -> t.getPrefix().startsWith("Named_Entity"))
+            .filteredOn(t -> t.getPrefix().startsWith(CONST_NAME_ENT))
             .extracting(MtasToken::getPostfix)
-            .contains("", "urn:dummy-concept", "Dummy concept");
+            .contains("", CONST_DUMY_CNCPT, CONST_DCONCEPT);
     }
 }

@@ -62,6 +62,12 @@ import de.tudarmstadt.ukp.inception.support.test.recommendation.RecommenderTestH
 
 public class StringMatchingRecommenderTest
 {
+	private static final String CONST_VAL = "value";
+	
+	
+	private static final String CONST_GERM = "germeval2014-de";
+	
+	
     private static File cache = DkproTestContext.getCacheFolder();
     private static DatasetFactory loader = new DatasetFactory(cache);
 
@@ -96,7 +102,7 @@ public class StringMatchingRecommenderTest
         List<CAS> casList = loadDevelopmentData();
         
         CAS cas = casList.get(0);
-        RecommenderTestHelper.addScoreFeature(cas, NamedEntity.class, "value");
+        RecommenderTestHelper.addScoreFeature(cas, NamedEntity.class, CONST_VAL);
         
         sut.train(context, asList(cas));
 
@@ -123,7 +129,7 @@ public class StringMatchingRecommenderTest
     {
         StringMatchingRecommender sut = new StringMatchingRecommender(recommender, traits);
         CAS cas = getTestCasNoLabelLabels();
-        RecommenderTestHelper.addScoreFeature(cas, NamedEntity.class, "value");
+        RecommenderTestHelper.addScoreFeature(cas, NamedEntity.class, CONST_VAL);
 
         sut.train(context, asList(cas));
 
@@ -137,10 +143,10 @@ public class StringMatchingRecommenderTest
 
     private CAS getTestCasNoLabelLabels() throws Exception
     {
-        Dataset ds = loader.load("germeval2014-de", CONTINUE);
+        Dataset ds = loader.load(CONST_GERM, CONTINUE);
         CAS cas = loadData(ds, ds.getDataFiles()[0]).get(0);
         Type neType = CasUtil.getAnnotationType(cas, NamedEntity.class);
-        Feature valFeature = neType.getFeatureByBaseName("value");
+        Feature valFeature = neType.getFeatureByBaseName(CONST_VAL);
         JCasUtil.select(cas.getJCas(), NamedEntity.class)
                 .forEach(ne -> ne.setFeatureValueFromString(valFeature, null));
 
@@ -154,7 +160,7 @@ public class StringMatchingRecommenderTest
         List<CAS> casList = loadDevelopmentData();
 
         CAS cas = casList.get(0);
-        RecommenderTestHelper.addScoreFeature(cas, NamedEntity.class, "value");
+        RecommenderTestHelper.addScoreFeature(cas, NamedEntity.class, CONST_VAL);
 
         List<GazeteerEntry> gazeteer = new ArrayList<>();
         gazeteer.add(new GazeteerEntry("Toyota", "ORG"));
@@ -302,13 +308,13 @@ public class StringMatchingRecommenderTest
 
     private List<CAS> loadAllData() throws IOException, UIMAException
     {
-        Dataset ds = loader.load("germeval2014-de", CONTINUE);
+        Dataset ds = loader.load(CONST_GERM, CONTINUE);
         return loadData(ds, ds.getDataFiles());
     }
 
     private List<CAS> loadDevelopmentData() throws IOException, UIMAException
     {
-        Dataset ds = loader.load("germeval2014-de", CONTINUE);
+        Dataset ds = loader.load(CONST_GERM, CONTINUE);
         return loadData(ds, ds.getDefaultSplit().getDevelopmentFiles());
     }
 
@@ -337,7 +343,7 @@ public class StringMatchingRecommenderTest
         layer.setName(NamedEntity.class.getName());
 
         AnnotationFeature feature = new AnnotationFeature();
-        feature.setName("value");
+        feature.setName(CONST_VAL);
 
         Recommender recommender = new Recommender();
         recommender.setLayer(layer);
@@ -349,11 +355,11 @@ public class StringMatchingRecommenderTest
 
     private static Double getScore(AnnotationFS fs)
     {
-        return RecommenderTestHelper.getScore(fs, "value");
+        return RecommenderTestHelper.getScore(fs, CONST_VAL);
     }
     
     private static String getScoreExplanation(AnnotationFS fs)
     {
-        return RecommenderTestHelper.getScoreExplanation(fs, "value");
+        return RecommenderTestHelper.getScoreExplanation(fs, CONST_VAL);
     }
 }

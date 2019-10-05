@@ -121,6 +121,13 @@ import de.tudarmstadt.ukp.inception.kb.yaml.KnowledgeBaseProfile;
 public class KnowledgeBaseServiceImpl
     implements KnowledgeBaseService, DisposableBean
 {
+	private static final String CONST_IDNTIFIER_UPDATE = "Identifier cannot be empty on update";
+	
+	private static final String CONST_IDNTIFIER_CREATE = "Identifier must be empty on create";
+	
+	private static final String CONST_PROJECT = "project";
+	
+	
     private static final String KNOWLEDGEBASE_PROFILES_YAML = "knowledgebase-profiles.yaml";
 
     private final Logger log = LoggerFactory.getLogger(getClass());
@@ -266,7 +273,7 @@ public class KnowledgeBaseServiceImpl
     public boolean knowledgeBaseExists(Project project, String kbName)
     {
         Query query = entityManager.createNamedQuery("KnowledgeBase.getByName");
-        query.setParameter("project", project);
+        query.setParameter(CONST_PROJECT, project);
         query.setParameter("name", kbName);
         return !query.getResultList().isEmpty();
     }
@@ -303,7 +310,7 @@ public class KnowledgeBaseServiceImpl
     public List<KnowledgeBase> getKnowledgeBases(Project aProject)
     {
         Query query = entityManager.createNamedQuery("KnowledgeBase.getByProject");
-        query.setParameter("project", aProject);
+        query.setParameter(CONST_PROJECT, aProject);
         return (List<KnowledgeBase>) query.getResultList();
     }
 
@@ -324,7 +331,7 @@ public class KnowledgeBaseServiceImpl
     public List<KnowledgeBase> getEnabledKnowledgeBases(Project aProject)
     {
         Query query = entityManager.createNamedQuery("KnowledgeBase.getByProjectWhereEnabledTrue");
-        query.setParameter("project", aProject);
+        query.setParameter(CONST_PROJECT, aProject);
         return (List<KnowledgeBase>) query.getResultList();
     }
 
@@ -440,7 +447,7 @@ public class KnowledgeBaseServiceImpl
     public void createConcept(KnowledgeBase kb, KBConcept aConcept)
     {
         if (StringUtils.isNotEmpty(aConcept.getIdentifier())) {
-            throw new IllegalArgumentException("Identifier must be empty on create");
+            throw new IllegalArgumentException(CONST_IDNTIFIER_CREATE);
         }
 
         update(kb, (conn) -> {
@@ -483,7 +490,7 @@ public class KnowledgeBaseServiceImpl
     public void updateConcept(KnowledgeBase kb, KBConcept aConcept)
     {
         if (StringUtils.isEmpty(aConcept.getIdentifier())) {
-            throw new IllegalArgumentException("Identifier cannot be empty on update");
+            throw new IllegalArgumentException(CONST_IDNTIFIER_UPDATE);
         }
 
         update(kb, (conn) -> {
@@ -517,7 +524,7 @@ public class KnowledgeBaseServiceImpl
     public void createProperty(KnowledgeBase kb, KBProperty aProperty)
     {
         if (StringUtils.isNotEmpty(aProperty.getIdentifier())) {
-            throw new IllegalArgumentException("Identifier must be empty on create");
+            throw new IllegalArgumentException(CONST_IDNTIFIER_CREATE);
         }
 
         update(kb, (conn) -> {
@@ -547,7 +554,7 @@ public class KnowledgeBaseServiceImpl
     public void updateProperty(KnowledgeBase kb, KBProperty aProperty)
     {
         if (StringUtils.isEmpty(aProperty.getIdentifier())) {
-            throw new IllegalArgumentException("Identifier cannot be empty on update");
+            throw new IllegalArgumentException(CONST_IDNTIFIER_UPDATE);
         }
 
         update(kb, (conn) -> {
@@ -591,7 +598,7 @@ public class KnowledgeBaseServiceImpl
     public void createInstance(KnowledgeBase kb, KBInstance aInstance)
     {
         if (StringUtils.isNotEmpty(aInstance.getIdentifier())) {
-            throw new IllegalArgumentException("Identifier must be empty on create");
+            throw new IllegalArgumentException(CONST_IDNTIFIER_CREATE);
         }
 
         update(kb, (conn) -> {
@@ -634,7 +641,7 @@ public class KnowledgeBaseServiceImpl
     public void updateInstance(KnowledgeBase kb, KBInstance aInstance)
     {
         if (StringUtils.isEmpty(aInstance.getIdentifier())) {
-            throw new IllegalArgumentException("Identifier cannot be empty on update");
+            throw new IllegalArgumentException(CONST_IDNTIFIER_UPDATE);
         }
 
         update(kb, (conn) -> {

@@ -59,6 +59,8 @@ import de.tudarmstadt.ukp.inception.recommendation.api.recommender.RecommenderCo
 
 public class DL4JSequenceRecommenderTest
 {
+	private static final String CONST_VAR = "a b b";
+	
     private static File cache = DkproTestContext.getCacheFolder();
     private static DatasetFactory loader = new DatasetFactory(cache);
 
@@ -174,7 +176,7 @@ public class DL4JSequenceRecommenderTest
     public void testExtractLabelsWithBadBoundaries() throws Exception
     {
         JCas jcas = JCasFactory.createJCas();
-        jcas.setDocumentText("a b b");
+        jcas.setDocumentText(CONST_VAR);
         
         new Token(jcas,  0,  1).addToIndexes(); // a
         new Token(jcas,  2,  3).addToIndexes(); // b
@@ -202,7 +204,7 @@ public class DL4JSequenceRecommenderTest
     public void testExtractOverlappingLabelsFails1() throws Exception
     {
         JCas jcas = JCasFactory.createJCas();
-        jcas.setDocumentText("a b b");
+        jcas.setDocumentText(CONST_VAR);
         
         new Token(jcas,  0,  1).addToIndexes(); // a
         new Token(jcas,  2,  3).addToIndexes(); // b
@@ -230,7 +232,7 @@ public class DL4JSequenceRecommenderTest
     public void testExtractOverlappingLabelsFails2() throws Exception
     {
         JCas jcas = JCasFactory.createJCas();
-        jcas.setDocumentText("a b b");
+        jcas.setDocumentText(CONST_VAR);
         
         new Token(jcas,  0,  1).addToIndexes(); // a
         new Token(jcas,  2,  3).addToIndexes(); // b

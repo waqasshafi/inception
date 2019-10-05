@@ -54,6 +54,8 @@ import de.tudarmstadt.ukp.inception.externalsearch.model.DocumentRepository;
 public class ElasticSearchProvider
     implements ExternalSearchProvider<ElasticSearchProviderTraits>
 {
+	private final String CONST_HTTP = "https?://";
+	
     private final Logger log = LoggerFactory.getLogger(getClass());
     
     private static final String ELASTIC_HIT_METADATA_KEY = "metadata";
@@ -73,7 +75,7 @@ public class ElasticSearchProvider
         List<ExternalSearchResult> results = new ArrayList<>();
 
         String indexName = aTraits.getIndexName();
-        String hostUrl = aTraits.getRemoteUrl().replaceFirst("https?://", "")
+        String hostUrl = aTraits.getRemoteUrl().replaceFirst(CONST_HTTP, "")
                 .replaceFirst("www.", "")
                 .split(":")[0];
         
@@ -175,7 +177,7 @@ public class ElasticSearchProvider
         GetRequest getRequest = new GetRequest(aTraits.getIndexName(), aTraits.getObjectType(),
                 aDocumentId);
         
-        String hostUrl = aTraits.getRemoteUrl().replaceFirst("https?://", "")
+        String hostUrl = aTraits.getRemoteUrl().replaceFirst(CONST_HTTP, "")
                 .replaceFirst("www.", "")
                 .split(":")[0];
         
@@ -205,7 +207,7 @@ public class ElasticSearchProvider
         GetRequest getRequest = new GetRequest(aTraits.getIndexName(), aTraits.getObjectType(),
                 aDocumentId);
         
-        String hostUrl = aTraits.getRemoteUrl().replaceFirst("https?://", "")
+        String hostUrl = aTraits.getRemoteUrl().replaceFirst(CONST_HTTP, "")
                 .replaceFirst("www.", "")
                 .split(":")[0];
         

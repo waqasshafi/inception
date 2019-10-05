@@ -67,6 +67,8 @@ import de.tudarmstadt.ukp.inception.support.test.recommendation.RecommenderTestH
 
 public class NamedEntityLinkerTest
 {
+	private static final String CONST_OBM = "Obama";
+	
     private static File cache = DkproTestContext.getCacheFolder();
     private static DatasetFactory loader = new DatasetFactory(cache);
 
@@ -100,11 +102,11 @@ public class NamedEntityLinkerTest
         List<KBHandle> mockResult = asList(
             new KBHandle("https://www.wikidata.org/wiki/Q76", "Barack Obama",
                 "44th President of the United States of America"),
-            new KBHandle("https://www.wikidata.org/wiki/Q26446735", "Obama",
+            new KBHandle("https://www.wikidata.org/wiki/Q26446735", CONST_OBM,
                 "Japanese Family Name"),
-            new KBHandle("https://www.wikidata.org/wiki/Q18355807", "Obama",
+            new KBHandle("https://www.wikidata.org/wiki/Q18355807", CONST_OBM,
                 "genus of worms"),
-            new KBHandle("https://www.wikidata.org/wiki/Q41773", "Obama",
+            new KBHandle("https://www.wikidata.org/wiki/Q41773", CONST_OBM,
                 "city in Fukui prefecture, Japan"));
 
         KnowledgeBaseService kbService = mock(KnowledgeBaseService.class);

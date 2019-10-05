@@ -30,6 +30,9 @@ import de.tudarmstadt.ukp.inception.recommendation.api.evaluation.LabelPair;
 
 public class ConfusionMatrixTest
 {
+	
+	private static final String CONST_NTRL = "neutral";
+	
     private List<LabelPair> instances;
     
     @Before
@@ -37,9 +40,9 @@ public class ConfusionMatrixTest
     {
         instances = new ArrayList<>();
         String[][] instanceLabels = new String[][] { { "pos", "neg" }, { "pos", "neg" },
-                { "neg", "neg" }, { "pos", "pos" }, { "neutral", "pos" }, { "neutral", "neutral" },
-                { "neutral", "neutral" }, { "neg", "neutral" }, { "neg", "pos" }, { "pos", "pos" },
-                { "pos", "pos" }, { "neutral", "pos" }, { "neg", "pos" }, { "pos", "pos" },};
+                { "neg", "neg" }, { "pos", "pos" }, { CONST_NTRL, "pos" }, { CONST_NTRL, CONST_NTRL },
+                { CONST_NTRL, CONST_NTRL }, { "neg", CONST_NTRL }, { "neg", "pos" }, { "pos", "pos" },
+                { "pos", "pos" }, { CONST_NTRL, "pos" }, { "neg", "pos" }, { "pos", "pos" },};
         for (String[] labels : instanceLabels) {
             instances.add(new LabelPair(labels[0], labels[1]));
         }
@@ -48,9 +51,9 @@ public class ConfusionMatrixTest
     @Test
     public void testIncrementCounts()
     {
-        String[][] expectedKeys = { { "pos", "pos" }, { "pos", "neg" }, { "pos", "neutral" },
-                { "neg", "pos" }, { "neg", "neg" }, { "neg", "neutral" }, { "neutral", "pos" },
-                { "neutral", "neg" }, { "neutral", "neutral" } };
+        String[][] expectedKeys = { { "pos", "pos" }, { "pos", "neg" }, { "pos", CONST_NTRL },
+                { "neg", "pos" }, { "neg", "neg" }, { "neg", CONST_NTRL }, { CONST_NTRL, "pos" },
+                { CONST_NTRL, "neg" }, { CONST_NTRL, CONST_NTRL } };
         int[] expectedCounts = { 4, 2, 0, 2, 1, 1, 2, 0, 2 };
 
         ConfusionMatrix matrix = new ConfusionMatrix();
@@ -72,19 +75,19 @@ public class ConfusionMatrixTest
 
         assertThat(matrix.containsEntry("pos", "pos")).as("has entry (gold: pos , pred.: pos)")
                 .isTrue();
-        assertThat(matrix.containsEntry("neutral", "pos"))
+        assertThat(matrix.containsEntry(CONST_NTRL, "pos"))
                 .as("has entry (gold: pos , pred.: neutral)").isFalse();
     }
     
     @Test
     public void testAddMatrix()
     {
-        String[][] expectedKeys = { { "pos", "pos" }, { "pos", "neg" }, { "pos", "neutral" },
-                { "neg", "pos" }, { "neg", "neg" }, { "neg", "neutral" }, { "neutral", "pos" },
-                { "neutral", "neg" }, { "neutral", "neutral" } };
+        String[][] expectedKeys = { { "pos", "pos" }, { "pos", "neg" }, { "pos", CONST_NTRL },
+                { "neg", "pos" }, { "neg", "neg" }, { "neg", CONST_NTRL }, { CONST_NTRL, "pos" },
+                { CONST_NTRL, "neg" }, { CONST_NTRL, CONST_NTRL } };
         int[] expectedCounts = { 4, 2, 0, 2, 1, 2, 3, 1, 3 };
-        ConfusionMatrix matrix1 = getExampleMatrix(new String[][] { { "neg", "neutral" },
-            { "neutral", "pos" }, { "neutral", "neg" }, { "neutral", "neutral" } });
+        ConfusionMatrix matrix1 = getExampleMatrix(new String[][] { { "neg", CONST_NTRL },
+            { CONST_NTRL, "pos" }, { CONST_NTRL, "neg" }, { CONST_NTRL, CONST_NTRL } });
         ConfusionMatrix matrix2 = new ConfusionMatrix();
         instances.stream().forEach(
             pair -> matrix2.incrementCounts(pair.getPredictedLabel(), pair.getGoldLabel()));

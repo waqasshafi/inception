@@ -57,7 +57,19 @@ import de.tudarmstadt.ukp.inception.kb.util.TestFixtures;
 @ContextConfiguration(classes =  SpringConfig.class)
 @Transactional
 @DataJpaTest
-public class KnowledgeBaseServiceImplQualifierIntegrationTest {
+public class KnowledgeBaseServiceImplQualifierIntegrationTest
+
+{
+	
+	private static final String CONST_Cng_Qual = "changed Qualifier";
+	
+	private static final String CONST_PROP = "property";
+	
+	private static final String CONST_TST_QUAL = "Test qualifier";
+
+	private static final String CONST_VAL = "value";
+
+	
 
     private static final String PROJECT_NAME = "Test project";
     private static final String KB_NAME = "Test knowledge base";
@@ -123,7 +135,7 @@ public class KnowledgeBaseServiceImplQualifierIntegrationTest {
     @Test
     public void addQualifier_WithUnsavedQualifier_shouldCreateQualifier()
     {
-        sut.addQualifier(kb, testFixtures.buildQualifier(statement, property, "Test qualifier"));
+        sut.addQualifier(kb, testFixtures.buildQualifier(statement, property, CONST_TST_QUAL));
 
         List<KBStatement> statements = sut.listStatements(kb, conceptHandle, false);
 
@@ -132,8 +144,8 @@ public class KnowledgeBaseServiceImplQualifierIntegrationTest {
         assertThat(statements.get(0).getQualifiers())
             .hasSize(1)
             .element(0)
-            .hasFieldOrProperty("property")
-            .hasFieldOrPropertyWithValue("value", "Test qualifier");
+            .hasFieldOrProperty(CONST_PROP)
+            .hasFieldOrPropertyWithValue(CONST_VAL, CONST_TST_QUAL);
     }
 
     @Test
@@ -147,7 +159,7 @@ public class KnowledgeBaseServiceImplQualifierIntegrationTest {
         
         assertThatExceptionOfType(ReadOnlyException.class)
             .isThrownBy(() -> sut.addQualifier(kb,
-                testFixtures.buildQualifier(statement, property, "Test qualifier")));
+                testFixtures.buildQualifier(statement, property, CONST_TST_QUAL)));
 
         int qualifierCountAfterDeletion = sut.listQualifiers(kb, statement).size();
         
@@ -159,7 +171,7 @@ public class KnowledgeBaseServiceImplQualifierIntegrationTest {
     @Test
     public void upsertQualifier_withUnsavedQualifier_shouldCreateQualifier()
     {
-        KBQualifier qualifier = testFixtures.buildQualifier(statement, property, "Test qualifier");
+        KBQualifier qualifier = testFixtures.buildQualifier(statement, property, CONST_TST_QUAL);
         
         sut.upsertQualifier(kb, qualifier);
 
@@ -176,25 +188,25 @@ public class KnowledgeBaseServiceImplQualifierIntegrationTest {
             .as("Check that KBStatement has updated correctly")
             .hasSize(1)
             .element(0)
-            .hasFieldOrProperty("property")
-            .hasFieldOrPropertyWithValue("value", "Test qualifier");
+            .hasFieldOrProperty(CONST_PROP)
+            .hasFieldOrPropertyWithValue(CONST_VAL, CONST_TST_QUAL);
         
         assertThat(statements.get(0).getQualifiers())
             .as("Check that Knowledge Base has updated correctly")
             .hasSize(1)
             .element(0)
-            .hasFieldOrProperty("property")
-            .hasFieldOrPropertyWithValue("value", "Test qualifier");
+            .hasFieldOrProperty(CONST_PROP)
+            .hasFieldOrPropertyWithValue(CONST_VAL, CONST_TST_QUAL);
     }
 
     @Test
     public void upsertQualifier_withExistingQualifier_shouldUpdateQualifier()
     {
-        KBQualifier qualifier = testFixtures.buildQualifier(statement, property, "Test qualifier");
+        KBQualifier qualifier = testFixtures.buildQualifier(statement, property, CONST_TST_QUAL);
         
         sut.upsertQualifier(kb, qualifier);
     
-        qualifier.setValue("changed Qualifier");
+        qualifier.setValue(CONST_Cng_Qual);
         
         sut.upsertQualifier(kb, qualifier);
         
@@ -202,8 +214,8 @@ public class KnowledgeBaseServiceImplQualifierIntegrationTest {
             .as("Check that KBStatement has updated correctly")
             .hasSize(1)
             .element(0)
-            .hasFieldOrProperty("property")
-            .hasFieldOrPropertyWithValue("value", "changed Qualifier");
+            .hasFieldOrProperty(CONST_PROP)
+            .hasFieldOrPropertyWithValue(CONST_VAL, CONST_Cng_Qual);
     
         List<KBStatement> statements = sut.listStatements(kb, conceptHandle, false);
         
@@ -211,8 +223,8 @@ public class KnowledgeBaseServiceImplQualifierIntegrationTest {
             .as("Check that Knowledge Base has updated correctly")
             .hasSize(1)
             .element(0)
-            .hasFieldOrProperty("property")
-            .hasFieldOrPropertyWithValue("value", "changed Qualifier");
+            .hasFieldOrProperty(CONST_PROP)
+            .hasFieldOrPropertyWithValue(CONST_VAL, CONST_Cng_Qual);
     }
 
     @Test
@@ -224,7 +236,7 @@ public class KnowledgeBaseServiceImplQualifierIntegrationTest {
     
         int qualifierCountBeforeDeletion = sut.listQualifiers(kb, statement).size();
         
-        KBQualifier qualifier = testFixtures.buildQualifier(statement, property, "Test qualifier");
+        KBQualifier qualifier = testFixtures.buildQualifier(statement, property, CONST_TST_QUAL);
         
         assertThatExceptionOfType(ReadOnlyException.class)
             .isThrownBy(() -> sut.upsertQualifier(kb, qualifier));
@@ -238,7 +250,7 @@ public class KnowledgeBaseServiceImplQualifierIntegrationTest {
     @Test
     public void deleteQualifier_WithExistingQualifier_ShouldDeleteQualifier()
     {
-        KBQualifier qualifier = testFixtures.buildQualifier(statement, property, "Test qualifier");
+        KBQualifier qualifier = testFixtures.buildQualifier(statement, property, CONST_TST_QUAL);
         
         sut.addQualifier(kb, qualifier);
         
@@ -252,7 +264,7 @@ public class KnowledgeBaseServiceImplQualifierIntegrationTest {
 
         assertThat(qualifiers)
             .as("Check that the qualifier was deleted correctly")
-            .noneMatch(qua -> "Test qualifier".equals(qua.getValue()));
+            .noneMatch(qua -> CONST_TST_QUAL.equals(qua.getValue()));
     }
 
     @Test
@@ -260,14 +272,14 @@ public class KnowledgeBaseServiceImplQualifierIntegrationTest {
     {
         assertThatCode(() -> {
             sut.deleteQualifier(kb,
-                    testFixtures.buildQualifier(statement, property, "Test qualifier"));
+                    testFixtures.buildQualifier(statement, property, CONST_TST_QUAL));
         }).doesNotThrowAnyException();
     }
 
     @Test
     public void deleteQualifier__WithReadOnlyKnowledgeBase_ShouldDoNothing()
     {
-        KBQualifier qualifier = testFixtures.buildQualifier(statement, property, "Test qualifier");
+        KBQualifier qualifier = testFixtures.buildQualifier(statement, property, CONST_TST_QUAL);
         
         sut.addQualifier(kb, qualifier);
         kb.setReadOnly(true);
@@ -286,7 +298,7 @@ public class KnowledgeBaseServiceImplQualifierIntegrationTest {
     @Test
     public void deleteStatement_WithExistingStatementAndQualifier_ShouldDeleteAll()
     {
-        sut.addQualifier(kb, testFixtures.buildQualifier(statement, property, "Test qualifier"));
+        sut.addQualifier(kb, testFixtures.buildQualifier(statement, property, CONST_TST_QUAL));
 
         sut.deleteStatement(kb, statement);
 
@@ -303,14 +315,14 @@ public class KnowledgeBaseServiceImplQualifierIntegrationTest {
     @Test
     public void listQualifiers_WithExistentQualifier_ShouldReturnOnlyThisQualifier()
     {
-        sut.addQualifier(kb, testFixtures.buildQualifier(statement, property, "Test qualifier"));
+        sut.addQualifier(kb, testFixtures.buildQualifier(statement, property, CONST_TST_QUAL));
 
         List<KBQualifier> qualifiers = sut.listQualifiers(kb, statement);
 
         assertThat(qualifiers).as("Check that saved qualifier is found")
             .hasSize(1)
             .element(0)
-            .hasFieldOrPropertyWithValue("value", "Test qualifier");
+            .hasFieldOrPropertyWithValue(CONST_VAL, CONST_TST_QUAL);
     }
 
     @Test

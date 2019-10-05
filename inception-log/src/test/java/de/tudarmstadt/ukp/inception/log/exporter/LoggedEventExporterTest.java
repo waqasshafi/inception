@@ -55,6 +55,9 @@ import de.tudarmstadt.ukp.inception.log.model.LoggedEvent;
 
 public class LoggedEventExporterTest
 {
+	public static final String CONST_ANNO = "annotator";
+	
+	
     public @Rule TemporaryFolder tempFolder = new TemporaryFolder();
     
     private @Mock DocumentService documentService;
@@ -147,7 +150,7 @@ public class LoggedEventExporterTest
         event1.setDocument(1l);
         event1.setEvent("SomeEvent1");
         event1.setProject(project.getId());
-        event1.setAnnotator("annotator");
+        event1.setAnnotator(CONST_ANNO);
         event1.setDetails("{\"value\":1}");
 
         LoggedEvent event2 = new LoggedEvent(2l);
@@ -156,7 +159,7 @@ public class LoggedEventExporterTest
         event2.setDocument(2l);
         event2.setEvent("SomeEvent2");
         event2.setProject(project.getId());
-        event2.setAnnotator("annotator");
+        event2.setAnnotator(CONST_ANNO);
         event2.setDetails("{\"value\":1}");
 
         LoggedEvent event3 = new LoggedEvent(3l);
@@ -165,7 +168,7 @@ public class LoggedEventExporterTest
         event3.setDocument(1l);
         event3.setEvent("SomeEvent3");
         event3.setProject(project.getId());
-        event3.setAnnotator("annotator");
+        event3.setAnnotator(CONST_ANNO);
         event3.setDetails("{\"value\":2}");
 
         LoggedEvent event4 = new LoggedEvent(3l);
@@ -175,7 +178,7 @@ public class LoggedEventExporterTest
         event4.setDocument(-1l);
         event4.setEvent("SomeEvent3");
         event4.setProject(project.getId());
-        event4.setAnnotator("annotator");
+        event4.setAnnotator(CONST_ANNO);
         event4.setDetails("{\"value\":2}");
 
         return asList(event1, event2, event3, event4);

@@ -78,6 +78,9 @@ import de.tudarmstadt.ukp.clarin.webanno.ui.annotation.AnnotationPage;
 
 public class DocumentMetadataAnnotationDetailPanel extends Panel
 {
+	private static final String CONST_EROR = "Error: ";
+	
+	
     private static final long serialVersionUID = 2713520228348549734L;
 
     private static final Logger LOG = LoggerFactory
@@ -390,16 +393,16 @@ public class DocumentMetadataAnnotationDetailPanel extends Panel
             throw aException;
         }
         catch (AnnotationException e) {
-            aComponent.error("Error: " + e.getMessage());
-            LOG.error("Error: " + ExceptionUtils.getRootCauseMessage(e), e);
+            aComponent.error(CONST_EROR + e.getMessage());
+            LOG.error(CONST_EROR + ExceptionUtils.getRootCauseMessage(e), e);
         }
         catch (UIMAException e) {
-            aComponent.error("Error: " + ExceptionUtils.getRootCauseMessage(e));
-            LOG.error("Error: " + ExceptionUtils.getRootCauseMessage(e), e);
+            aComponent.error(CONST_EROR + ExceptionUtils.getRootCauseMessage(e));
+            LOG.error(CONST_EROR + ExceptionUtils.getRootCauseMessage(e), e);
         }
         catch (Exception e) {
-            aComponent.error("Error: " + e.getMessage());
-            LOG.error("Error: " + e.getMessage(), e);
+            aComponent.error(CONST_EROR + e.getMessage());
+            LOG.error(CONST_EROR + e.getMessage(), e);
         }
     }
     

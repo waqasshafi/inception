@@ -65,6 +65,12 @@ import de.tudarmstadt.ukp.inception.ui.kb.stmt.model.StatementGroupBean;
  *            (properties, concepts, instances, ...)
  */
 public abstract class AbstractInfoPanel<T extends KBObject> extends Panel {
+	
+	private static final String CONST_CRT_SBCLS = "createSubclass";
+	
+	private static final String CONST_LABL = "label";
+
+	
 
     private static final long serialVersionUID = -1413622323011843523L;
 
@@ -92,7 +98,7 @@ public abstract class AbstractInfoPanel<T extends KBObject> extends Panel {
         // when creating a new KBObject, activate the form and obtain the AjaxRequestTarget to set
         // the focus to the name field
         Component content;
-        modal = new SubclassCreationDialog("createSubclass", kbModel, handleModel);
+        modal = new SubclassCreationDialog(CONST_CRT_SBCLS, kbModel, handleModel);
         add(modal);
 
         boolean isNew = kbObjectModel.getObject() != null
@@ -138,11 +144,11 @@ public abstract class AbstractInfoPanel<T extends KBObject> extends Panel {
             LambdaAjaxLink cancelButton = new LambdaAjaxLink("cancel",
                     AbstractInfoPanel.this::actionCancel)
                             .onConfigure((_this) -> _this.setVisible(false));
-            cancelButton.add(new Label("label", new ResourceModel(getCancelButtonResourceKey())));
+            cancelButton.add(new Label(CONST_LABL, new ResourceModel(getCancelButtonResourceKey())));
 
             LambdaAjaxButton<T> createButton = new LambdaAjaxButton<>("create",
                     AbstractInfoPanel.this::actionCreate);
-            createButton.add(new Label("label", new ResourceModel(getCreateButtonResourceKey())));
+            createButton.add(new Label(CONST_LABL, new ResourceModel(getCreateButtonResourceKey())));
 
             Form<T> form = new Form<T>("form", compoundModel);
             form.add(name);
@@ -183,12 +189,12 @@ public abstract class AbstractInfoPanel<T extends KBObject> extends Panel {
                         _this.setVisible(kbObjectModel.getObject() != null
                                 && isNotEmpty(kbObjectModel.getObject().getIdentifier()));
                     });
-            deleteButton.add(new Label("label", new ResourceModel(getDeleteButtonResourceKey())));
+            deleteButton.add(new Label(CONST_LABL, new ResourceModel(getDeleteButtonResourceKey())));
             deleteButton.add(new WriteProtectionBehavior(kbModel));
             add(deleteButton);
             
             // button for creating a new subclass that is only visible for concepts  
-            LambdaAjaxLink createSubclassButton = new LambdaAjaxLink("createSubclass",
+            LambdaAjaxLink createSubclassButton = new LambdaAjaxLink(CONST_CRT_SBCLS,
                     AbstractInfoPanel.this::actionCreateSubclass).onConfigure((_this) -> {
                         _this.setVisible(kbObjectModel.getObject() != null
                                 && isNotEmpty(kbObjectModel.getObject().getIdentifier())
@@ -217,7 +223,7 @@ public abstract class AbstractInfoPanel<T extends KBObject> extends Panel {
     
     public String getCreateSubclassButtonResourceKey()
     {
-        return "createSubclass";
+        return CONST_CRT_SBCLS;
     }
 
     protected String getCreateButtonResourceKey() {

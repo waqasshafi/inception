@@ -66,6 +66,9 @@ import okhttp3.mockwebserver.RecordedRequest;
 
 public class ExternalRecommenderIntegrationTest
 {
+	
+	private static final String CONST_VAL = "value";
+	
     private static String TYPE = "de.tudarmstadt.ukp.dkpro.core.api.ner.type.NamedEntity";
     private static File cache = DkproTestContext.getCacheFolder();
     private static DatasetFactory loader = new DatasetFactory(cache);
@@ -125,7 +128,7 @@ public class ExternalRecommenderIntegrationTest
         sut.train(context, casses);
 
         CAS cas = casses.get(0);
-        RecommenderTestHelper.addScoreFeature(cas, NamedEntity.class, "value");
+        RecommenderTestHelper.addScoreFeature(cas, NamedEntity.class, CONST_VAL);
         sut.predict(context, cas);
 
         List<NamedEntity> predictions = getPredictions(cas, NamedEntity.class);
@@ -169,7 +172,7 @@ public class ExternalRecommenderIntegrationTest
         List<CAS> casses = loadDevelopmentData();
         sut.train(context, casses);
         CAS cas = casses.get(0);
-        RecommenderTestHelper.addScoreFeature(cas, NamedEntity.class, "value");
+        RecommenderTestHelper.addScoreFeature(cas, NamedEntity.class, CONST_VAL);
         sut.predict(context, cas);
 
         PredictionRequest request = fromJsonString(PredictionRequest.class, requestBodies.get(1));
@@ -228,7 +231,7 @@ public class ExternalRecommenderIntegrationTest
         layer.setAnchoringMode(ANCHORING_MODE);
 
         AnnotationFeature feature = new AnnotationFeature();
-        feature.setName("value");
+        feature.setName(CONST_VAL);
         
         Recommender recommender = new Recommender();
         recommender.setLayer(layer);
@@ -267,7 +270,7 @@ public class ExternalRecommenderIntegrationTest
     private void createNamedEntity(CAS aCas, String aValue)
     {
         Type neType = getType(aCas, "de.tudarmstadt.ukp.dkpro.core.api.ner.type.NamedEntity");
-        Feature valueFeature = neType.getFeatureByBaseName("value");
+        Feature valueFeature = neType.getFeatureByBaseName(CONST_VAL);
         AnnotationFS ne = aCas.createAnnotation(neType, 0, 42);
         ne.setStringValue(valueFeature, aValue);
         aCas.addFsToIndexes(ne);

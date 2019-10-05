@@ -71,7 +71,8 @@ import de.tudarmstadt.ukp.inception.ui.kb.value.editor.ValueEditor;
 
 public class StatementEditor extends Panel
 {
-
+	private static final String CONST_VAL = "value";
+	
     private static final long serialVersionUID = 7643837763550205L;
     private static final Logger LOG = LoggerFactory.getLogger(StatementEditor.class);
 
@@ -228,12 +229,12 @@ public class StatementEditor extends Panel
             try {
                 presenter = valueTypeRegistry
                     .getValueSupport(aStatement.getObject(), property.getObject())
-                    .createPresenter("value", model, property, kbModel);
+                    .createPresenter(CONST_VAL, model, property, kbModel);
             }
             catch (IllegalArgumentException e) {
                 LOG.warn("Unable to find an editor that supports the value type. "
                         + "String Editor is used as default: {}", e.getLocalizedMessage());
-                presenter = new StringLiteralValuePresenter("value", model);
+                presenter = new StringLiteralValuePresenter(CONST_VAL, model);
             }
             add(presenter);
             LambdaAjaxLink editLink = new LambdaAjaxLink("edit", StatementEditor.this::actionEdit)
@@ -371,7 +372,7 @@ public class StatementEditor extends Panel
             valueType.add(new LambdaAjaxFormComponentUpdatingBehavior("change", t -> {
                 ValueEditor newEditor = valueTypeRegistry
                         .getValueSupport(valueType.getModelObject())
-                        .createEditor("value", model, property, kbModel);
+                        .createEditor(CONST_VAL, model, property, kbModel);
                 editor.setOutputMarkupId(true);
                 editor = (ValueEditor) editor.replaceWith(newEditor);
                 t.add(editor);
@@ -381,12 +382,12 @@ public class StatementEditor extends Panel
             try {
                 editor = valueTypeRegistry
                     .getValueSupport(aStatement.getObject(), property.getObject())
-                   .createEditor("value", model, property, kbModel);
+                   .createEditor(CONST_VAL, model, property, kbModel);
             }
             catch (IllegalArgumentException e) {
                 LOG.warn("Unable to find an editor that supports the value type. "
                         + "String Editor is used as default: {}", e.getLocalizedMessage());
-                editor = new StringLiteralValueEditor("value", model);
+                editor = new StringLiteralValueEditor(CONST_VAL, model);
             }
             editor.setOutputMarkupId(true);
             form.add(editor);

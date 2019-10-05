@@ -80,6 +80,9 @@ import de.tudarmstadt.ukp.inception.kb.graph.KBHandle;
 public class SubjectObjectFeatureEditor
     extends FeatureEditor
 {
+	private static final String CONST_EROR = "Error: ";
+	
+	
     private static final long serialVersionUID = 4230722501745589589L;
 
     private static final Logger LOG = LoggerFactory.getLogger(SubjectObjectFeatureEditor.class);
@@ -308,8 +311,8 @@ public class SubjectObjectFeatureEditor
                     value != null ? value.getIdentifier() : value);
             }
             catch (Exception e) {
-                error("Error: " + e.getMessage());
-                LOG.error("Error: " + e.getMessage(), e);
+                error(CONST_EROR + e.getMessage());
+                LOG.error(CONST_EROR + e.getMessage(), e);
             }
         }
     }
@@ -415,17 +418,17 @@ public class SubjectObjectFeatureEditor
                 aTarget.prependJavaScript("alert('Error: " + e.getMessage() + "')");
             }
             else {
-                aComponent.error("Error: " + e.getMessage());
+                aComponent.error(CONST_EROR + e.getMessage());
             }
-            LOG.error("Error: " + ExceptionUtils.getRootCauseMessage(e), e);
+            LOG.error(CONST_EROR + ExceptionUtils.getRootCauseMessage(e), e);
         }
         catch (UIMAException e) {
-            aComponent.error("Error: " + ExceptionUtils.getRootCauseMessage(e));
-            LOG.error("Error: " + ExceptionUtils.getRootCauseMessage(e), e);
+            aComponent.error(CONST_EROR + ExceptionUtils.getRootCauseMessage(e));
+            LOG.error(CONST_EROR + ExceptionUtils.getRootCauseMessage(e), e);
         }
         catch (Exception e) {
-            aComponent.error("Error: " + e.getMessage());
-            LOG.error("Error: " + e.getMessage(), e);
+            aComponent.error(CONST_EROR + e.getMessage());
+            LOG.error(CONST_EROR + e.getMessage(), e);
         }
     }
 

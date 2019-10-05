@@ -61,6 +61,9 @@ import mtas.analysis.token.MtasTokenCollection;
 
 public class MtasUimaParserTest
 {
+	private static final String CONST_NAM_ENT = "Named_Entity";
+	
+	
     private Project project;
     private @Mock AnnotationSchemaService annotationSchemaService;
     private FeatureSupportRegistryImpl featureSupportRegistry;
@@ -163,12 +166,12 @@ public class MtasUimaParserTest
         tc.iterator().forEachRemaining(tokens::add);
 
         assertThat(tokens)
-            .filteredOn(t -> t.getPrefix().startsWith("Named_Entity"))
+            .filteredOn(t -> t.getPrefix().startsWith(CONST_NAM_ENT))
             .extracting(MtasToken::getPrefix)
-            .containsExactly("Named_Entity", "Named_Entity.value");
+            .containsExactly(CONST_NAM_ENT, "Named_Entity.value");
 
         assertThat(tokens)
-            .filteredOn(t -> t.getPrefix().startsWith("Named_Entity"))
+            .filteredOn(t -> t.getPrefix().startsWith(CONST_NAM_ENT))
             .extracting(MtasToken::getPostfix)
             .containsExactly("", "PER");
     }
@@ -203,7 +206,7 @@ public class MtasUimaParserTest
         tc.iterator().forEachRemaining(tokens::add);
 
         assertThat(tokens)
-            .filteredOn(t -> t.getPrefix().startsWith("Named_Entity"))
+            .filteredOn(t -> t.getPrefix().startsWith(CONST_NAM_ENT))
             .extracting(MtasToken::getPrefix)
             .isEmpty();
     }

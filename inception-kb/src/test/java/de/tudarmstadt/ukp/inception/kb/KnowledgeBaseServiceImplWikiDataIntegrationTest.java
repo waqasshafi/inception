@@ -65,6 +65,17 @@ import de.tudarmstadt.ukp.inception.kb.yaml.KnowledgeBaseProfile;
 @Transactional
 @DataJpaTest
 public class KnowledgeBaseServiceImplWikiDataIntegrationTest  {
+	
+	
+	private static final String CONST_CHK_PROP = "Check that properties have been found";
+	
+	private static final String CONST_URL_PROP = "http://www.wikidata.org/prop/P31";
+	
+	private static final String CONST_WIK_DT = "wikidata";
+
+
+	
+	
 
     private static final String PROJECT_NAME = "Test project";
     private static final String KB_NAME = "Wikidata (official/direct mapping)";
@@ -117,7 +128,7 @@ public class KnowledgeBaseServiceImplWikiDataIntegrationTest  {
         sut = new KnowledgeBaseServiceImpl(repoProps, entityManager);
         project = createProject(PROJECT_NAME);
         kb = buildKnowledgeBase(project, KB_NAME);
-        String wikidataAccessUrl = PROFILES.get("wikidata").getAccess().getAccessUrl();
+        String wikidataAccessUrl = PROFILES.get(CONST_WIK_DT).getAccess().getAccessUrl();
         testFixtures.assumeEndpointIsAvailable(wikidataAccessUrl);
         sut.registerKnowledgeBase(kb, sut.getRemoteConfig(wikidataAccessUrl));
 
@@ -178,7 +189,7 @@ public class KnowledgeBaseServiceImplWikiDataIntegrationTest  {
             .map(KBObject::getIdentifier);
         
         assertThat(properties)
-            .as("Check that properties have been found")
+            .as(CONST_CHK_PROP)
             .hasSize(kb.getMaxResults());
     }
     
@@ -220,18 +231,18 @@ public class KnowledgeBaseServiceImplWikiDataIntegrationTest  {
                     "http://www.wikidata.org/prop/P2894",
                     "http://www.wikidata.org/prop/direct/P2894",
                     "http://www.wikidata.org/prop/direct/P31", 
-                    "http://www.wikidata.org/prop/P31" };
-            assertThat(properties).as("Check that properties have been found")
+                    CONST_URL_PROP };
+            assertThat(properties).as(CONST_CHK_PROP)
                     .contains(expectedInstances);
         }
         else {
             String[] expectedInstances = { 
                     "http://www.wikidata.org/prop/P585",
-                    "http://www.wikidata.org/prop/P31",
+                    CONST_URL_PROP,
                     "http://www.wikidata.org/prop/P361", 
                     "http://www.wikidata.org/prop/P2894",
-                    "http://www.wikidata.org/prop/P31" };
-            assertThat(properties).as("Check that properties have been found")
+                    CONST_URL_PROP };
+            assertThat(properties).as(CONST_CHK_PROP)
                     .contains(expectedInstances);
         }
     }
@@ -250,9 +261,9 @@ public class KnowledgeBaseServiceImplWikiDataIntegrationTest  {
         KnowledgeBase kb_wikidata_direct = new KnowledgeBase();
         kb_wikidata_direct.setProject(project);
         kb_wikidata_direct.setName("Wikidata (official/direct mapping)");
-        kb_wikidata_direct.setType(PROFILES.get("wikidata").getType());
-        kb_wikidata_direct.applyMapping(PROFILES.get("wikidata").getMapping());
-        kb_wikidata_direct.applyRootConcepts(PROFILES.get("wikidata"));
+        kb_wikidata_direct.setType(PROFILES.get(CONST_WIK_DT).getType());
+        kb_wikidata_direct.applyMapping(PROFILES.get(CONST_WIK_DT).getMapping());
+        kb_wikidata_direct.applyRootConcepts(PROFILES.get(CONST_WIK_DT));
         kb_wikidata_direct.setReification(reification);
         kb_wikidata_direct.setDefaultLanguage("en");
         kb_wikidata_direct.setMaxResults(1000);

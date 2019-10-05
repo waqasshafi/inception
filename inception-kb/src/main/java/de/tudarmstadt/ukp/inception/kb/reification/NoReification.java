@@ -65,6 +65,8 @@ import de.tudarmstadt.ukp.inception.kb.querybuilder.ValuesPattern;
 public class NoReification
     implements ReificationStrategy
 {
+	private static final String CONST_QUAL_NOT_SPRT = "Qualifiers are not supported.";
+	
     private final Logger log = LoggerFactory.getLogger(getClass());
     
     public static final String VAR_SUBJECT_NAME = "subj";
@@ -206,21 +208,21 @@ public class NoReification
     public void deleteQualifier(RepositoryConnection aConnection, KnowledgeBase kb,
             KBQualifier oldQualifier)
     {
-        throw new NotImplementedException("Qualifiers are not supported.");
+        throw new NotImplementedException(CONST_QUAL_NOT_SPRT);
     }
 
     @Override
     public void upsertQualifier(RepositoryConnection aConnection, KnowledgeBase kb,
             KBQualifier aQualifier)
     {
-        throw new NotImplementedException("Qualifiers are not supported.");
+        throw new NotImplementedException(CONST_QUAL_NOT_SPRT);
     }
 
     @Override
     public List<KBQualifier> listQualifiers(RepositoryConnection aConnection, KnowledgeBase kb,
             KBStatement aStatement)
     {
-        throw new NotImplementedException("Qualifiers are not supported.");
+        throw new NotImplementedException(CONST_QUAL_NOT_SPRT);
     }
 
     @Override

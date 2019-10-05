@@ -66,6 +66,12 @@ import de.tudarmstadt.ukp.inception.kb.yaml.KnowledgeBaseProfile;
 @DataJpaTest
 public class KnowledgeBaseServiceRemoteTest
 {
+	
+	private static final String CONST_STR = "   %s%n";
+	
+	private static final String CONST_URL_OWL = "http://www.w3.org/2002/07/owl#Thing";
+
+	
     private final String PROJECT_NAME = "Test project";
 
     private static Map<String, KnowledgeBaseProfile> PROFILES;
@@ -259,9 +265,9 @@ public class KnowledgeBaseServiceRemoteTest
             kb_dbpedia.setMaxResults(maxResults);
             kb_dbpedia.setDefaultDatasetIri(profile.getDefaultDataset());
             rootConcepts = new HashSet<String>();
-            rootConcepts.add("http://www.w3.org/2002/07/owl#Thing");
+            rootConcepts.add(CONST_URL_OWL);
             parentChildConcepts = new HashMap<String, String>();
-            parentChildConcepts.put("http://www.w3.org/2002/07/owl#Thing",
+            parentChildConcepts.put(CONST_URL_OWL,
                     "http://dbpedia.org/ontology/Biomolecule");
             kbList.add(new TestConfiguration(profile.getAccess().getAccessUrl(), kb_dbpedia,
                     "http://dbpedia.org/ontology/Organisation", rootConcepts, parentChildConcepts));
@@ -279,9 +285,9 @@ public class KnowledgeBaseServiceRemoteTest
             kb_yago.setDefaultLanguage(profile.getDefaultLanguage());
             kb_yago.setMaxResults(maxResults);
             rootConcepts = new HashSet<String>();
-            rootConcepts.add("http://www.w3.org/2002/07/owl#Thing");
+            rootConcepts.add(CONST_URL_OWL);
             parentChildConcepts = new HashMap<String, String>();
-            parentChildConcepts.put("http://www.w3.org/2002/07/owl#Thing",
+            parentChildConcepts.put(CONST_URL_OWL,
                     "http://yago-knowledge.org/resource/wikicat_Alleged_UFO-related_entities");
             kbList.add(new TestConfiguration(profile.getAccess().getAccessUrl(), kb_yago,
                     "http://yago-knowledge.org/resource/wikicat_Alkaloids",
@@ -339,7 +345,7 @@ public class KnowledgeBaseServiceRemoteTest
 
         System.out.printf("Root concepts retrieved : %d%n", rootConceptKBHandle.size());
         System.out.printf("Time required           : %d ms%n", duration);
-        rootConceptKBHandle.stream().limit(10).forEach(h -> System.out.printf("   %s%n", h));
+        rootConceptKBHandle.stream().limit(10).forEach(h -> System.out.printf(CONST_STR, h));
 
         assertThat(rootConceptKBHandle).as("Check that root concept list is not empty")
                 .isNotEmpty();
@@ -360,7 +366,7 @@ public class KnowledgeBaseServiceRemoteTest
 
         System.out.printf("Properties retrieved : %d%n", propertiesKBHandle.size());
         System.out.printf("Time required        : %d ms%n", duration);
-        propertiesKBHandle.stream().limit(10).forEach(h -> System.out.printf("   %s%n", h));
+        propertiesKBHandle.stream().limit(10).forEach(h -> System.out.printf(CONST_STR, h));
 
         assertThat(propertiesKBHandle).as("Check that property list is not empty").isNotEmpty();
     }
@@ -378,7 +384,7 @@ public class KnowledgeBaseServiceRemoteTest
         System.out.printf("Parents for          : %s%n", sutConfig.getTestIdentifier());
         System.out.printf("Parents retrieved    : %d%n", parentList.size());
         System.out.printf("Time required        : %d ms%n", duration);
-        parentList.stream().limit(10).forEach(h -> System.out.printf("   %s%n", h));
+        parentList.stream().limit(10).forEach(h -> System.out.printf(CONST_STR, h));
 
         assertThat(parentList).as("Check that parent list is not empty").isNotEmpty();
     }

@@ -71,6 +71,9 @@ import de.tudarmstadt.ukp.inception.pdfeditor.pdfextract.PDFExtractor;
 public class PdfAnnotationEditor
     extends AnnotationEditorBase
 {
+	private static final String CONST_UNABL_LOD_DATA = "Unable to load data";
+	
+	
     private static final long serialVersionUID = -3358207848681467993L;
     private static final Logger LOG = LoggerFactory.getLogger(PdfAnnotationEditor.class);
     
@@ -170,7 +173,7 @@ public class PdfAnnotationEditor
             }
             catch (IOException e)
             {
-                handleError("Unable to load data", e, aTarget);
+                handleError(CONST_UNABL_LOD_DATA, e, aTarget);
             }
         }
     }
@@ -400,7 +403,7 @@ public class PdfAnnotationEditor
         }
         catch (IOException e)
         {
-            handleError("Unable to load data", e, aTarget);
+            handleError(CONST_UNABL_LOD_DATA, e, aTarget);
         }
     }
 
@@ -447,7 +450,7 @@ public class PdfAnnotationEditor
         try {
             documentModel = new DocumentModel(getCasProvider().get().getDocumentText());
         } catch (IOException e) {
-            handleError("Unable to load data", e, aTarget);
+            handleError(CONST_UNABL_LOD_DATA, e, aTarget);
         }
 
         File pdfFile = documentService.getSourceDocumentFile(getModel().getObject().getDocument());

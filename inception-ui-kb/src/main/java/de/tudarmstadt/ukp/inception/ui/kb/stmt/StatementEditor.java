@@ -63,6 +63,11 @@ import de.tudarmstadt.ukp.inception.ui.kb.event.AjaxStatementChangedEvent;
 
 public class StatementEditor extends Panel
 {
+	
+	private static final String CONST_VAL = "value";
+	
+	private static final String CONST_LANG = "language";
+
 
     private static final long serialVersionUID = 7643837763550205L;
     private static final Logger LOG = LoggerFactory.getLogger(StatementEditor.class);
@@ -204,8 +209,8 @@ public class StatementEditor extends Panel
             CompoundPropertyModel<KBStatement> compoundModel = new CompoundPropertyModel<>(
                     aStatement);
 
-            add(new Label("value", compoundModel.bind("value")));
-            add(new Label("language", compoundModel.bind("language")) {
+            add(new Label(CONST_VAL, compoundModel.bind(CONST_VAL)));
+            add(new Label(CONST_LANG, compoundModel.bind(CONST_LANG)) {
                 private static final long serialVersionUID = 3436068825093393740L;
 
                 @Override
@@ -317,7 +322,7 @@ public class StatementEditor extends Panel
             Form<KBStatement> form = new Form<>("form", CompoundPropertyModel.of(aStatement));
 
             // text area for the statement value should receive focus
-            Component valueTextArea = new TextArea<String>("value");
+            Component valueTextArea = new TextArea<String>(CONST_VAL);
             valueTextArea.setOutputMarkupId(true);
             initialFocusComponent = valueTextArea;
             form.add(valueTextArea);
@@ -325,7 +330,7 @@ public class StatementEditor extends Panel
             // FIXME This field should only be visible if the selected datatype is
             // langString
 
-            TextField<String> textField = new TextField<>("language");
+            TextField<String> textField = new TextField<>(CONST_LANG);
             textField.setOutputMarkupId(true);
             form.add(textField);
 

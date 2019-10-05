@@ -125,6 +125,18 @@ import de.tudarmstadt.ukp.inception.scheduling.Task;
 public class RecommendationServiceImpl
     implements RecommendationService
 {
+	private static final String CONST_ENBLD = "enabled = :enabled";
+	
+	private static final String CONST_ENABL = "enabled";
+	
+	private static final String CONST_RECM_WHER = "FROM Recommender WHERE ";
+
+	private static final String CONST_ORDERNAM_ASC = "ORDER BY name ASC";
+
+	private static final String CONST_PROJ = "project";
+	
+	
+	
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private static final int TRAININGS_PER_SELECTION = 5;
@@ -287,7 +299,7 @@ public class RecommendationServiceImpl
         List<Recommender> settings = entityManager
                 .createQuery("FROM Recommender WHERE project = :project ORDER BY name ASC",
                         Recommender.class)
-                .setParameter("project", aProject).getResultList();
+                .setParameter(CONST_PROJ, aProject).getResultList();
         return settings;
     }
     
@@ -301,7 +313,7 @@ public class RecommendationServiceImpl
                 "ORDER BY r.layer.name ASC";
 
         return entityManager.createQuery(query, AnnotationLayer.class)
-                .setParameter("project", aProject).setParameter("enabled", true).getResultList();
+                .setParameter(CONST_PROJ, aProject).setParameter(CONST_ENABL, true).getResultList();
     }
 
     @Override
@@ -324,7 +336,7 @@ public class RecommendationServiceImpl
         long count = entityManager
                 .createQuery(query, Long.class)
                 .setParameter("name", aName)
-                .setParameter("project", aProject)
+                .setParameter(CONST_PROJ, aProject)
                 .getSingleResult();
         
         return count > 0;
@@ -342,7 +354,7 @@ public class RecommendationServiceImpl
         return entityManager
                 .createQuery(query, Recommender.class)
                 .setParameter("name", aName)
-                .setParameter("project", aProject)
+                .setParameter(CONST_PROJ, aProject)
                 .getResultStream()
                 .findFirst();
     }
@@ -352,13 +364,13 @@ public class RecommendationServiceImpl
     public Optional<Recommender> getEnabledRecommender(long aRecommenderId)
     {
         String query = String.join("\n",
-                "FROM Recommender WHERE ",
+                CONST_RECM_WHER,
                 "id = :id AND ",
-                "enabled = :enabled" );
+                CONST_ENBLD );
 
         return entityManager.createQuery(query, Recommender.class)
                 .setParameter("id", aRecommenderId)
-                .setParameter("enabled", true)
+                .setParameter(CONST_ENABL, true)
                 .getResultStream()
                 .findFirst();
     }
@@ -368,16 +380,16 @@ public class RecommendationServiceImpl
     public List<Recommender> listEnabledRecommenders(AnnotationLayer aLayer)
     {
         String query = String.join("\n",
-                "FROM Recommender WHERE ",
+                CONST_RECM_WHER,
                 "project = :project AND",
                 "layer = :layer AND",
-                "enabled = :enabled",
-                "ORDER BY name ASC" );
+                CONST_ENBLD,
+                CONST_ORDERNAM_ASC );
 
         return entityManager.createQuery(query, Recommender.class)
-                .setParameter("project", aLayer.getProject())
+                .setParameter(CONST_PROJ, aLayer.getProject())
                 .setParameter("layer", aLayer)
-                .setParameter("enabled", true)
+                .setParameter(CONST_ENABL, true)
                 .getResultList();
     }
     
@@ -388,12 +400,12 @@ public class RecommendationServiceImpl
         String query = String.join("\n",
                 "FROM Recommender WHERE",
                 "project = :project AND",
-                "enabled = :enabled",
-                "ORDER BY name ASC" );
+                CONST_ENBLD,
+                CONST_ORDERNAM_ASC );
 
         return entityManager.createQuery(query, Recommender.class)
-                .setParameter("project", aProject)
-                .setParameter("enabled", true)
+                .setParameter(CONST_PROJ, aProject)
+                .setParameter(CONST_ENABL, true)
                 .getResultList();
     }
 
@@ -402,9 +414,9 @@ public class RecommendationServiceImpl
     public List<Recommender> listRecommenders(AnnotationLayer aLayer)
     {
         String query = String.join("\n",
-                "FROM Recommender WHERE ",
+                CONST_RECM_WHER,
                 "layer = :layer",
-                "ORDER BY name ASC" );
+                CONST_ORDERNAM_ASC );
         
         return entityManager.createQuery(query, Recommender.class)
                 .setParameter("layer", aLayer)

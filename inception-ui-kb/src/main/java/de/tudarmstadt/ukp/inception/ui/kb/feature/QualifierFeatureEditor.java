@@ -84,6 +84,9 @@ import de.tudarmstadt.ukp.inception.kb.graph.KBProperty;
 public class QualifierFeatureEditor
     extends FeatureEditor
 {
+	private static final String CONST_EROR = "Error: ";
+	
+	
     private static final long serialVersionUID = 7469241620229001983L;
     
     private static final Logger LOG = LoggerFactory.getLogger(QualifierFeatureEditor.class);
@@ -335,8 +338,8 @@ public class QualifierFeatureEditor
                 selectedKBHandleItem = factService.getKBHandleFromCasByAddr(cas, targetAddr,
                     project, traits);
             } catch (Exception e) {
-                LOG.error("Error: " + e.getMessage(), e);
-                error("Error: " + e.getMessage());
+                LOG.error(CONST_EROR + e.getMessage(), e);
+                error(CONST_EROR + e.getMessage());
             }
         }
         return selectedKBHandleItem;
@@ -364,8 +367,8 @@ public class QualifierFeatureEditor
                         RequestCycle.get().find(AjaxRequestTarget.class).get(), cas);
             }
             catch (Exception e) {
-                LOG.error("Error: " + e.getMessage(), e);
-                error("Error: " + e.getMessage());
+                LOG.error(CONST_EROR + e.getMessage(), e);
+                error(CONST_EROR + e.getMessage());
             }
         }
     }
@@ -559,17 +562,17 @@ public class QualifierFeatureEditor
                 aTarget.prependJavaScript("alert('Error: " + e.getMessage() + "')");
             }
             else {
-                aComponent.error("Error: " + e.getMessage());
+                aComponent.error(CONST_EROR + e.getMessage());
             }
-            LOG.error("Error: " + ExceptionUtils.getRootCauseMessage(e), e);
+            LOG.error(CONST_EROR + ExceptionUtils.getRootCauseMessage(e), e);
         }
         catch (UIMAException e) {
-            aComponent.error("Error: " + ExceptionUtils.getRootCauseMessage(e));
-            LOG.error("Error: " + ExceptionUtils.getRootCauseMessage(e), e);
+            aComponent.error(CONST_EROR + ExceptionUtils.getRootCauseMessage(e));
+            LOG.error(CONST_EROR + ExceptionUtils.getRootCauseMessage(e), e);
         }
         catch (Exception e) {
-            aComponent.error("Error: " + e.getMessage());
-            LOG.error("Error: " + e.getMessage(), e);
+            aComponent.error(CONST_EROR + e.getMessage());
+            LOG.error(CONST_EROR + e.getMessage(), e);
         }
     }
 

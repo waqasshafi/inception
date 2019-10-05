@@ -35,7 +35,8 @@ import org.asciidoctor.SafeMode;
 
 public class GenerateDocumentation
 {
-    private static Path asciiDocPath = Paths.get("src", "main", "resources", "META-INF", "asciidoc");
+	private static final String CONST_ASC  = "asciidoc";
+    private static Path asciiDocPath = Paths.get("src", "main", "resources", "META-INF", CONST_ASC);
 
 
     private static List<Path> getAsciiDocs(Path dir) throws Exception
@@ -52,9 +53,9 @@ public class GenerateDocumentation
     {
         Attributes attributes = AttributesBuilder.attributes()
                 .attribute("source-dir", getInceptionDir() + "/")
-                .attribute("include-dir", outputDir.resolve("asciidoc").resolve(type)
+                .attribute("include-dir", outputDir.resolve(CONST_ASC).resolve(type)
                         .toString() + "/")
-                .attribute("imagesdir", outputDir.resolve("asciidoc").resolve(type)
+                .attribute("imagesdir", outputDir.resolve(CONST_ASC).resolve(type)
                         .resolve("images").toString() + "/")
                 .attribute("doctype", "book")
                 .attribute("toclevels", "8")
@@ -74,7 +75,7 @@ public class GenerateDocumentation
                 .attributes(attributes);
         Asciidoctor asciidoctor = Asciidoctor.Factory.create();
         asciidoctor.requireLibrary("asciidoctor-diagram");
-        File f = new File(outputDir.resolve("asciidoc").resolve(type).toString() + ".adoc");
+        File f = new File(outputDir.resolve(CONST_ASC).resolve(type).toString() + ".adoc");
         asciidoctor.convertFile(f , options);
     }
 
@@ -103,7 +104,7 @@ public class GenerateDocumentation
                 Path p = f.toPath();
                 Path targetPath = f.toPath().subpath(module.toAbsolutePath().getNameCount()
                         , p.toAbsolutePath().getNameCount());
-                FileUtils.copyFile(f, outputDir.resolve("asciidoc").resolve(targetPath).toFile());
+                FileUtils.copyFile(f, outputDir.resolve(CONST_ASC).resolve(targetPath).toFile());
             }
         }
 

@@ -47,6 +47,9 @@ import de.tudarmstadt.ukp.inception.log.model.LoggedEvent;
 @Transactional
 @DataJpaTest
 public class EventRepositoryImplIntegrationTest  {
+	
+	private static final String CONST_CHK_NOLOG = "Check that no logged event is found";
+	
     private static final String PROJECT_NAME = "Test project";
     private static final String USERNAME = "Test user";
     private static final int RECOMMENDER_ID = 7;
@@ -87,7 +90,7 @@ public class EventRepositoryImplIntegrationTest  {
         List<LoggedEvent> loggedEvents = sut.listUniqueLoggedEventsForDoc(project,
                 user.getUsername(), new String[] {EVENT_TYPE_AFTER_ANNO_EVENT}, 10);
 
-        assertThat(loggedEvents).as("Check that no logged event is found").isEmpty();
+        assertThat(loggedEvents).as(CONST_CHK_NOLOG).isEmpty();
     }
 
     @Test
@@ -141,7 +144,7 @@ public class EventRepositoryImplIntegrationTest  {
         List<LoggedEvent> loggedEvents = sut.listLoggedEventsForRecommender(project,
                 user.getUsername(), EVENT_TYPE_RECOMMENDER_EVALUATION_EVENT, 5, RECOMMENDER_ID);
 
-        assertThat(loggedEvents).as("Check that no logged event is found").isEmpty();
+        assertThat(loggedEvents).as(CONST_CHK_NOLOG).isEmpty();
     }
 
     @Test
@@ -156,7 +159,7 @@ public class EventRepositoryImplIntegrationTest  {
                 user.getUsername(),
                 EVENT_TYPE_RECOMMENDER_EVALUATION_EVENT, 5, RECOMMENDER_ID);
 
-        assertThat(loggedEvents).as("Check that no logged event is found").isEmpty();
+        assertThat(loggedEvents).as(CONST_CHK_NOLOG).isEmpty();
     }
     
     @Test
@@ -171,7 +174,7 @@ public class EventRepositoryImplIntegrationTest  {
         List<LoggedEvent> loggedEvents = sut.listLoggedEventsForRecommender(project,
                 user.getUsername(), EVENT_TYPE_RECOMMENDER_EVALUATION_EVENT, 5, RECOMMENDER_ID);
 
-        assertThat(loggedEvents).as("Check that no logged event is found").isEmpty();
+        assertThat(loggedEvents).as(CONST_CHK_NOLOG).isEmpty();
     }
     
     @Test
@@ -186,7 +189,7 @@ public class EventRepositoryImplIntegrationTest  {
         List<LoggedEvent> loggedEvents = sut.listLoggedEventsForRecommender(project,
                 user.getUsername(), EVENT_TYPE_RECOMMENDER_EVALUATION_EVENT, 5, RECOMMENDER_ID);
 
-        assertThat(loggedEvents).as("Check that no logged event is found").isEmpty();
+        assertThat(loggedEvents).as(CONST_CHK_NOLOG).isEmpty();
     }
     
     @Test
@@ -246,7 +249,7 @@ public class EventRepositoryImplIntegrationTest  {
         List<LoggedEvent> loggedEvents = sut.listLoggedEventsForRecommender(project,
                 user.getUsername(), EVENT_TYPE_RECOMMENDER_EVALUATION_EVENT, 5, otherRecommenderId);
 
-        assertThat(loggedEvents).as("Check that no logged event is found").isEmpty();
+        assertThat(loggedEvents).as(CONST_CHK_NOLOG).isEmpty();
     }
     
     // Helper

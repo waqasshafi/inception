@@ -116,6 +116,12 @@ import mtas.search.spans.util.MtasSpanQuery;
 public class MtasDocumentIndex
     implements PhysicalIndex
 {
+	
+	private static final String CONST_STR = "%d/%d";
+	
+	private static final String CONST_ANNOID = "annotationId: {}, user: {}";
+
+	
     private static final String MTAS_PARSER = 
             "de.tudarmstadt.ukp.inception.search.index.mtas.MtasUimaParser";
     private static final String MTAS_TOKENIZER = "mtas";
@@ -661,18 +667,18 @@ public class MtasDocumentIndex
         if (indexWriter != null) {
             log.debug(
                     "Removing document from index in project [{}]({}). sourceId: {}, "
-                            + "annotationId: {}, user: {}",
+                            + CONST_ANNOID,
                     project.getName(), project.getId(), aSourceDocumentId, aAnnotationDocumentId,
                     aUser);
 
             indexWriter.deleteDocuments(new Term(FIELD_ID,
-                    String.format("%d/%d", aSourceDocumentId, aAnnotationDocumentId)));
+                    String.format(CONST_STR, aSourceDocumentId, aAnnotationDocumentId)));
 
             indexWriter.commit();
 
             log.debug(
                     "Removed document from index in project [{}]({}). sourceId: {}, "
-                            + "annotationId: {}, user: {}",
+                            + CONST_ANNOID,
                     project.getName(), project.getId(), aSourceDocumentId, aAnnotationDocumentId,
                     aUser);
         }
@@ -711,7 +717,7 @@ public class MtasDocumentIndex
             // Prepare boolean query with the two obligatory terms (id and timestamp)
             BooleanQuery.Builder booleanQuery = new BooleanQuery.Builder()
                     .add(new TermQuery(new Term(FIELD_ID,
-                            String.format("%d/%d", aSourceDocumentId, aAnnotationDocumentId))),
+                            String.format(CONST_STR, aSourceDocumentId, aAnnotationDocumentId))),
                             BooleanClause.Occur.MUST)
                     .add(new TermQuery(new Term(FIELD_TIMESTAMP, aTimestamp)),
                             BooleanClause.Occur.MUST);
@@ -723,7 +729,7 @@ public class MtasDocumentIndex
 
             log.debug(
                     "Removed document from index in project [{}]({}). sourceId: {}, "
-                            + "annotationId: {}, user: {}",
+                            + CONST_ANNOID,
                     project.getName(), project.getId(), aSourceDocumentId, aAnnotationDocumentId,
                     aUser);
         }
@@ -1012,7 +1018,7 @@ public class MtasDocumentIndex
 
         // Prepare query for the annotation document for this annotation document
         Term term = new Term(FIELD_ID,
-                String.format("%d/%d", aDocument.getDocument().getId(), aDocument.getId()));
+                String.format(CONST_STR, aDocument.getDocument().getId(), aDocument.getId()));
         
         TermQuery query = new TermQuery(term);
 

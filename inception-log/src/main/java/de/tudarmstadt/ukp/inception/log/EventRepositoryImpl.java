@@ -38,6 +38,9 @@ import de.tudarmstadt.ukp.inception.log.model.LoggedEvent;
 public class EventRepositoryImpl
     implements EventRepository
 {
+	private static final String CONST_PROJ = "project";
+	
+	
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     @PersistenceContext
@@ -90,7 +93,7 @@ public class EventRepositoryImpl
 
         return entityManager.createQuery(query, LoggedEvent.class)
                 .setParameter("user", aUsername)
-                .setParameter("project", aProject.getId())
+                .setParameter(CONST_PROJ, aProject.getId())
                 .setParameter("event", aEventType)
                 .setParameter("details", aDetail)
                 .setMaxResults(aMaxSize).getResultList();
@@ -123,7 +126,7 @@ public class EventRepositoryImpl
 
         TypedQuery<LoggedEvent> typedQuery = entityManager.createQuery(query, LoggedEvent.class)
                 .setParameter("user", aUsername)
-                .setParameter("project", aProject.getId())
+                .setParameter(CONST_PROJ, aProject.getId())
                 .setParameter("eventTypes", Arrays.asList(aEventTypes));
         return typedQuery.setMaxResults(aMaxSize).getResultList();
     }
@@ -138,7 +141,7 @@ public class EventRepositoryImpl
                 "project = :project ",
                 "ORDER BY id");
         TypedQuery<LoggedEvent> typedQuery = entityManager.createQuery(query, LoggedEvent.class)
-                .setParameter("project", aProject.getId());
+                .setParameter(CONST_PROJ, aProject.getId());
 
         try (Stream<LoggedEvent> eventStream = typedQuery.getResultStream()) {
             eventStream.forEach(aConsumer);

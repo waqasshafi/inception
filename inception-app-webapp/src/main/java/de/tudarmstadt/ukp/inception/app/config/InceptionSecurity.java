@@ -70,6 +70,10 @@ import de.tudarmstadt.ukp.clarin.webanno.security.preauth.ShibbolethRequestHeade
 public class InceptionSecurity
     extends GlobalAuthenticationConfigurerAdapter
 {
+	
+	private static final String CONST_ANYROLE =  "hasAnyRole('ROLE_REMOTE')";
+	
+	
     private @Value("${auth.preauth.header.principal:remote_user}") String preAuthPrincipalHeader;
     
     private final DataSource dataSource;
@@ -113,7 +117,7 @@ public class InceptionSecurity
                 .antMatcher("/api/**")
                 .csrf().disable()
                 .authorizeRequests()
-                    .anyRequest().access("hasAnyRole('ROLE_REMOTE')")
+                    .anyRequest().access(CONST_ANYROLE)
                 .and()
                 .httpBasic()
                 .and()
@@ -155,7 +159,7 @@ public class InceptionSecurity
                     .antMatchers("/images/**").permitAll()
                     .antMatchers("/resources/**").permitAll()
                     .antMatchers("/wicket/resource/**").permitAll()
-                    .antMatchers("/swagger-ui.html").access("hasAnyRole('ROLE_REMOTE')")
+                    .antMatchers("/swagger-ui.html").access(CONST_ANYROLE)
                     .antMatchers("/admin/**").access("hasAnyRole('ROLE_ADMIN')")
                     .antMatchers("/doc/**").access("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
                     .antMatchers("/**").access("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
@@ -203,7 +207,7 @@ public class InceptionSecurity
                     .antMatchers("/images/**").permitAll()
                     .antMatchers("/resources/**").permitAll()
                     .antMatchers("/wicket/resource/**").permitAll()
-                    .antMatchers("/swagger-ui.html").access("hasAnyRole('ROLE_REMOTE')")
+                    .antMatchers("/swagger-ui.html").access(CONST_ANYROLE)
                     .antMatchers("/admin/**").access("hasAnyRole('ROLE_ADMIN')")
                     .antMatchers("/doc/**").access("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
                     .antMatchers("/**").access("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")

@@ -38,7 +38,10 @@ import de.tudarmstadt.ukp.inception.kb.graph.KBInstance;
 
 public class ConceptFeatureSupportTest
 {
-    private @Mock KnowledgeBaseService kbService;
+    private static final String CONST_CONCEPT = "someConcept";
+    
+	
+	private @Mock KnowledgeBaseService kbService;
     
     @Before
     public void setUp()
@@ -52,9 +55,9 @@ public class ConceptFeatureSupportTest
         ConceptFeatureSupport sut = new ConceptFeatureSupport(kbService);
         
         AnnotationFeature feat1 = new AnnotationFeature("Dummy feature",
-                ConceptFeatureSupport.PREFIX + "someConcept");
+                ConceptFeatureSupport.PREFIX + CONST_CONCEPT);
         
-        AnnotationFeature feat2 = new AnnotationFeature("Dummy feature", "someConcept");
+        AnnotationFeature feat2 = new AnnotationFeature("Dummy feature", CONST_CONCEPT);
         
         assertThat(sut.accepts(feat1)).isTrue();
         assertThat(sut.accepts(feat2)).isFalse();
@@ -66,7 +69,7 @@ public class ConceptFeatureSupportTest
         ConceptFeatureSupport sut = new ConceptFeatureSupport(kbService);
         
         AnnotationFeature feat1 = new AnnotationFeature("Dummy feature",
-                ConceptFeatureSupport.PREFIX + "someConcept");
+                ConceptFeatureSupport.PREFIX + CONST_CONCEPT);
         
         KBHandle referenceHandle = new KBHandle("id", "name");
         

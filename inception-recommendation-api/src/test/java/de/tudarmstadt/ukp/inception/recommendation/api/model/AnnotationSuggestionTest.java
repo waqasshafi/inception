@@ -26,16 +26,19 @@ import org.junit.Test;
 
 public class AnnotationSuggestionTest
 {
+	
+	private static final String CONST_VAL = "value";
+	
     @Test
     public void thatEqualsAndHashCodeAndCompareToWorkCorrectly()
     {
-        AnnotationSuggestion rec1Sug1 = new AnnotationSuggestion(1, 1, "rec1", 1, "value", "doc1",
+        AnnotationSuggestion rec1Sug1 = new AnnotationSuggestion(1, 1, "rec1", 1, CONST_VAL, "doc1",
                 0, 1, "a", "A", "#A", 0.1, "E1");
-        AnnotationSuggestion rec1Sug2 = new AnnotationSuggestion(2, 1, "rec1", 1, "value", "doc1",
+        AnnotationSuggestion rec1Sug2 = new AnnotationSuggestion(2, 1, "rec1", 1, CONST_VAL, "doc1",
                 0, 1, "b", "B", "#B", 0.2, "E2");
-        AnnotationSuggestion rec2Sug1 = new AnnotationSuggestion(3, 2, "rec2", 1, "value", "doc1",
+        AnnotationSuggestion rec2Sug1 = new AnnotationSuggestion(3, 2, "rec2", 1, CONST_VAL, "doc1",
                 0, 1, "c", "C", "#C", 0.1, "E1");
-        AnnotationSuggestion rec2Sug2 = new AnnotationSuggestion(4, 2, "rec2", 1, "value", "doc1",
+        AnnotationSuggestion rec2Sug2 = new AnnotationSuggestion(4, 2, "rec2", 1, CONST_VAL, "doc1",
                 0, 1, "d", "D", "#D", 0.3, "E3");
 
         List<AnnotationSuggestion> all = asList(rec1Sug1, rec1Sug2, rec2Sug1, rec2Sug2);

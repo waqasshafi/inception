@@ -68,6 +68,52 @@ import de.tudarmstadt.ukp.inception.kb.model.KnowledgeBase;
 
 public class SPARQLQueryBuilderTest
 {
+	
+	private static final String CONST_RDF_PROP = "    rdf:type rdf:Property ;";
+	
+	private static final String CONST_GREN_GB = "<#green-goblin>";
+	
+	private static final String CONST_ACHL = "Achilles";
+
+	private static final String CONST_BRAK = "Barack";
+
+	private static final String CONST_DESCP = "description";
+
+	private static final String CONST_GB_GR = "Green Goblin";
+
+	private static final String CONST_GRN = "Green";
+	
+	private static final String CONST_URL_EXPL_ROOT = "http://example.org/#explicitRoot";
+
+	private static final String CONST_URL_GRN_GB = "http://example.org/#green-goblin";
+
+	private static final String CONST_IMPL_ROOT = "http://example.org/#implicitRoot";
+
+	private static final String CONST_PROP_1 = "http://example.org/#property-1";
+
+	private static final String CONST_RED_GB = "http://example.org/#red-goblin";
+	
+	private static final String CONST_SUBCLS = "http://example.org/#subclass1-1-1";
+
+	private static final String CONST_SUBCLS_1 = "http://example.org/#subclass1-1";
+	
+	private static final String CONST_SUBCLAS_1 = "http://example.org/#subclass1";
+
+	private static final String CONST_SUB_PROP_1 = "http://example.org/#subproperty-1-1";
+
+	private static final String CONST_IDFR = "identifier";
+
+	private static final String CONST_IMP_ROOT = "implicitRoot";
+
+	private static final String CONST_LABR = "Labour";
+
+	private static final String CONST_LANG = "language";
+
+	private static final String CONST_SOK = "Socke";
+
+	
+	
+	
     private static final String TURTLE_PREFIX = String.join("\n",
             "@base <http://example.org/> .",
             "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .",
@@ -76,7 +122,7 @@ public class SPARQLQueryBuilderTest
             "@prefix skos: <http://www.w3.org/2004/02/skos/core#> .");
     
     private static final String DATA_LABELS_AND_DESCRIPTIONS_WITH_LANGUAGE = String.join("\n",
-            "<#green-goblin>",
+            CONST_GREN_GB,
             "    rdfs:label 'Green Goblin' ;",
             "    rdfs:label 'Green Goblin'@en ;",
             "    rdfs:label 'Grüner Goblin'@de ;",
@@ -96,7 +142,7 @@ public class SPARQLQueryBuilderTest
             "    rdfs:comment 'Little red monster' .");
 
     private static final String DATA_LABELS_WITHOUT_LANGUAGE = String.join("\n",
-            "<#green-goblin>",
+            CONST_GREN_GB,
             "    rdfs:label 'Green Goblin' .",
             "",
             "<#lucky-green>",
@@ -109,7 +155,7 @@ public class SPARQLQueryBuilderTest
             "<#sublabel>",
             "    rdfs:subPropertyOf rdfs:label .",
             "",
-            "<#green-goblin>",
+            CONST_GREN_GB,
             "    <#sublabel> 'Green Goblin' .");
 
     /**
@@ -154,19 +200,19 @@ public class SPARQLQueryBuilderTest
             "<#explicitRoot>",
             "    rdf:type rdfs:Class .",
             "<#property-1>",
-            "    rdf:type rdf:Property ;",
+            CONST_RDF_PROP,
             "    skos:prefLabel 'Property 1' ;",
             "    so:description 'Property One' ;",
             "    rdfs:domain <#explicitRoot> ;",
             "    rdfs:range xsd:string .",
             "<#property-2>",
-            "    rdf:type rdf:Property ;",
+            CONST_RDF_PROP,
             "    skos:prefLabel 'Property 2' ;",
             "    so:description 'Property Two' ;",
             "    rdfs:domain <#subclass1> ;",
             "    rdfs:range xsd:Integer .",
             "<#property-3>",
-            "    rdf:type rdf:Property ;",
+            CONST_RDF_PROP,
             "    skos:prefLabel 'Property 3' ;",
             "    so:description 'Property Three' .",
             "<#subproperty-1-1>",
@@ -279,16 +325,16 @@ public class SPARQLQueryBuilderTest
         
         List<KBHandle> results = asHandles(rdf4jLocalRepo, SPARQLQueryBuilder
                 .forItems(kb)
-                .withIdentifier("http://example.org/#green-goblin")
+                .withIdentifier(CONST_URL_GRN_GB)
                 .retrieveLabel()
                 .retrieveDescription());
         
         assertThat(results).isNotEmpty();
         assertThat(results)
                 .usingElementComparatorOnFields(
-                        "identifier", "name", "description", "language")
+                        CONST_IDFR, "name", CONST_DESCP, CONST_LANG)
                 .containsExactlyInAnyOrder(
-                        new KBHandle("http://example.org/#green-goblin", "Green Goblin",
+                        new KBHandle(CONST_URL_GRN_GB, CONST_GB_GR,
                                 "Little green monster"));
     }
     
@@ -309,16 +355,16 @@ public class SPARQLQueryBuilderTest
         
         List<KBHandle> results = asHandles(rdf4jLocalRepo, SPARQLQueryBuilder
                 .forItems(kb)
-                .withIdentifier("http://example.org/#green-goblin")
+                .withIdentifier(CONST_URL_GRN_GB)
                 .retrieveLabel()
                 .retrieveDescription());
         
         assertThat(results).isNotEmpty();
         assertThat(results)
                 .usingElementComparatorOnFields(
-                        "identifier", "name", "description", "language")
+                        CONST_IDFR, "name", CONST_DESCP, CONST_LANG)
                 .containsExactlyInAnyOrder(
-                        new KBHandle("http://example.org/#green-goblin", "Goblin vert",
+                        new KBHandle(CONST_URL_GRN_GB, "Goblin vert",
                                 "Little green monster", "fr"));
     }
     
@@ -334,7 +380,7 @@ public class SPARQLQueryBuilderTest
 
         boolean result = exists(rdf4jLocalRepo, SPARQLQueryBuilder
                 .forClasses(kb)
-                .parentsOf("http://example.org/#explicitRoot"));
+                .parentsOf(CONST_URL_EXPL_ROOT));
         
         assertThat(result).isFalse();
     }
@@ -349,7 +395,7 @@ public class SPARQLQueryBuilderTest
 
         boolean result = exists(rdf4jLocalRepo, SPARQLQueryBuilder
                 .forClasses(kb)
-                .withIdentifier("http://example.org/#explicitRoot"));
+                .withIdentifier(CONST_URL_EXPL_ROOT));
         
         assertThat(result).isTrue();
     }
@@ -364,7 +410,7 @@ public class SPARQLQueryBuilderTest
 
         boolean result = exists(rdf4jLocalRepo, SPARQLQueryBuilder
                 .forClasses(kb)
-                .withIdentifier("http://example.org/#implicitRoot"));
+                .withIdentifier(CONST_IMPL_ROOT));
         
         assertThat(result).isTrue();
     }
@@ -396,16 +442,16 @@ public class SPARQLQueryBuilderTest
 
         List<KBHandle> results = asHandles(rdf4jLocalRepo, SPARQLQueryBuilder
                 .forItems(kb)
-                .withIdentifier("http://example.org/#red-goblin")
+                .withIdentifier(CONST_RED_GB)
                 .retrieveLabel()
                 .retrieveDescription());
         
         assertThat(results).isNotEmpty();
         assertThat(results)
                 .usingElementComparatorOnFields(
-                        "identifier", "name", "description", "language")
+                        CONST_IDFR, "name", CONST_DESCP, CONST_LANG)
                 .containsExactlyInAnyOrder(
-                        new KBHandle("http://example.org/#red-goblin", "Red Goblin",
+                        new KBHandle(CONST_RED_GB, "Red Goblin",
                                 "Little red monster"));
     }
     
@@ -423,17 +469,17 @@ public class SPARQLQueryBuilderTest
         assertThat(results).isNotEmpty();
         assertThat(results)
                 .usingElementComparatorOnFields(
-                        "identifier", "name", "description", "range", "domain")
+                        CONST_IDFR, "name", CONST_DESCP, "range", "domain")
                 .containsExactlyInAnyOrder(
-                        new KBHandle("http://example.org/#property-1", "Property 1",
-                                "Property One", null, "http://example.org/#explicitRoot", 
+                        new KBHandle(CONST_PROP_1, "Property 1",
+                                "Property One", null, CONST_URL_EXPL_ROOT, 
                                 "http://www.w3.org/2001/XMLSchema#string"),
                         new KBHandle("http://example.org/#property-2", "Property 2",
-                                "Property Two", null, "http://example.org/#subclass1", 
+                                "Property Two", null, CONST_SUBCLAS_1, 
                                 "http://www.w3.org/2001/XMLSchema#Integer"),
                         new KBHandle("http://example.org/#property-3", "Property 3",
                                 "Property Three"),
-                        new KBHandle("http://example.org/#subproperty-1-1", "Subproperty 1-1",
+                        new KBHandle(CONST_SUB_PROP_1, "Subproperty 1-1",
                                 "Property One-One"),
                         new KBHandle("http://example.org/#subproperty-1-1-1", "Subproperty 1-1-1",
                                 "Property One-One-One"));
@@ -447,12 +493,12 @@ public class SPARQLQueryBuilderTest
         
         List<KBHandle> results = asHandles(rdf4jLocalRepo, SPARQLQueryBuilder
                 .forProperties(kb)
-                .descendantsOf("http://example.org/#property-1"));
+                .descendantsOf(CONST_PROP_1));
         
         assertThat(results).isNotEmpty();
         assertThat(results)
                 .extracting(KBHandle::getIdentifier)
-                .containsExactlyInAnyOrder("http://example.org/#subproperty-1-1",
+                .containsExactlyInAnyOrder(CONST_SUB_PROP_1,
                         "http://example.org/#subproperty-1-1-1");
     }
 
@@ -464,12 +510,12 @@ public class SPARQLQueryBuilderTest
         
         List<KBHandle> results = asHandles(rdf4jLocalRepo, SPARQLQueryBuilder
                 .forProperties(kb)
-                .childrenOf("http://example.org/#property-1"));
+                .childrenOf(CONST_PROP_1));
         
         assertThat(results).isNotEmpty();
         assertThat(results)
                 .extracting(KBHandle::getIdentifier)
-                .containsExactlyInAnyOrder("http://example.org/#subproperty-1-1");
+                .containsExactlyInAnyOrder(CONST_SUB_PROP_1);
     }
 
     @Test
@@ -480,14 +526,14 @@ public class SPARQLQueryBuilderTest
         
         List<KBHandle> results = asHandles(rdf4jLocalRepo, SPARQLQueryBuilder
                 .forProperties(kb)
-                .matchingDomain("http://example.org/#subclass1"));
+                .matchingDomain(CONST_SUBCLAS_1));
         
         assertThat(results).isNotEmpty();
         assertThat(results)
                 .extracting(KBHandle::getIdentifier)
                 .containsExactlyInAnyOrder(
                         // property-1 is inherited by #subclass1 from #explicitRoot
-                        "http://example.org/#property-1",
+                        CONST_PROP_1,
                         // property-2 is declared on #subclass1
                         "http://example.org/#property-2",
                         // property-3 defines no domain
@@ -507,7 +553,7 @@ public class SPARQLQueryBuilderTest
         assertThat(results).isNotEmpty();
         assertThat(results)
                 .extracting(KBHandle::getUiLabel)
-                .containsExactlyInAnyOrder("explicitRoot", "implicitRoot");
+                .containsExactlyInAnyOrder("explicitRoot", CONST_IMP_ROOT);
     }
     
     @Test
@@ -516,7 +562,7 @@ public class SPARQLQueryBuilderTest
         importDataFromString(RDFFormat.TURTLE, TURTLE_PREFIX, DATA_CLASS_RDFS_HIERARCHY);
 
         ValueFactory vf = SimpleValueFactory.getInstance();
-        kb.setRootConcepts(asList(vf.createIRI("http://example.org/#implicitRoot")));
+        kb.setRootConcepts(asList(vf.createIRI(CONST_IMPL_ROOT)));
         
         List<KBHandle> results = asHandles(rdf4jLocalRepo, SPARQLQueryBuilder
                 .forClasses(kb)
@@ -525,7 +571,7 @@ public class SPARQLQueryBuilderTest
         assertThat(results).isNotEmpty();
         assertThat(results)
                 .extracting(KBHandle::getUiLabel)
-                .containsExactlyInAnyOrder("implicitRoot");
+                .containsExactlyInAnyOrder(CONST_IMP_ROOT);
     }
     
     @Test
@@ -535,7 +581,7 @@ public class SPARQLQueryBuilderTest
 
         ValueFactory vf = SimpleValueFactory.getInstance();
         kb.setRootConcepts(asList(
-                vf.createIRI("http://example.org/#implicitRoot"),
+                vf.createIRI(CONST_IMPL_ROOT),
                 vf.createIRI("http://example.org/#subclass2")));
         
         List<KBHandle> results = asHandles(rdf4jLocalRepo, SPARQLQueryBuilder
@@ -545,7 +591,7 @@ public class SPARQLQueryBuilderTest
         assertThat(results).isNotEmpty();
         assertThat(results)
                 .extracting(KBHandle::getUiLabel)
-                .containsExactlyInAnyOrder("implicitRoot", "subclass2");
+                .containsExactlyInAnyOrder(CONST_IMP_ROOT, "subclass2");
     }
     @Test
     public void thatQueryLimitedToClassesDoesNotReturnInstances() throws Exception
@@ -580,13 +626,13 @@ public class SPARQLQueryBuilderTest
     
         List<KBHandle> results = asHandles(rdf4jLocalRepo, SPARQLQueryBuilder
                 .forClasses(kb)
-                .ancestorsOf("http://example.org/#subclass1-1-1"));
+                .ancestorsOf(CONST_SUBCLS));
         
         assertThat(results).isNotEmpty();
         assertThat(results)
                 .extracting(KBHandle::getIdentifier)
-                .containsExactlyInAnyOrder("http://example.org/#explicitRoot", 
-                        "http://example.org/#subclass1", "http://example.org/#subclass1-1");
+                .containsExactlyInAnyOrder(CONST_URL_EXPL_ROOT, 
+                        CONST_SUBCLAS_1, CONST_SUBCLS_1);
     }
     
     @Test
@@ -596,12 +642,12 @@ public class SPARQLQueryBuilderTest
     
         List<KBHandle> results = asHandles(rdf4jLocalRepo, SPARQLQueryBuilder
                 .forClasses(kb)
-                .parentsOf("http://example.org/#subclass1-1"));
+                .parentsOf(CONST_SUBCLS_1));
         
         assertThat(results).isNotEmpty();
         assertThat(results)
                 .extracting(KBHandle::getIdentifier)
-                .containsExactlyInAnyOrder("http://example.org/#subclass1");
+                .containsExactlyInAnyOrder(CONST_SUBCLAS_1);
     }
 
     @Test
@@ -611,12 +657,12 @@ public class SPARQLQueryBuilderTest
     
         List<KBHandle> results = asHandles(rdf4jLocalRepo, SPARQLQueryBuilder
                 .forClasses(kb)
-                .childrenOf("http://example.org/#subclass1"));
+                .childrenOf(CONST_SUBCLAS_1));
         
         assertThat(results).isNotEmpty();
         assertThat(results)
                 .extracting(KBHandle::getIdentifier)
-                .containsExactlyInAnyOrder("http://example.org/#subclass1-1");
+                .containsExactlyInAnyOrder(CONST_SUBCLS_1);
     }
 
     /**
@@ -655,13 +701,13 @@ public class SPARQLQueryBuilderTest
     
         List<KBHandle> results = asHandles(rdf4jLocalRepo, SPARQLQueryBuilder
                 .forClasses(kb)
-                .descendantsOf("http://example.org/#subclass1"));
+                .descendantsOf(CONST_SUBCLAS_1));
         
         assertThat(results).isNotEmpty();
         assertThat(results)
                 .extracting(KBHandle::getIdentifier)
-                .containsExactlyInAnyOrder("http://example.org/#subclass1-1", 
-                        "http://example.org/#subclass1-1-1");
+                .containsExactlyInAnyOrder(CONST_SUBCLS_1, 
+                        CONST_SUBCLS);
     }
 
     @Test
@@ -676,7 +722,7 @@ public class SPARQLQueryBuilderTest
         assertThat(results).isNotEmpty();
         assertThat(results)
                 .extracting(KBHandle::getIdentifier)
-                .containsExactlyInAnyOrder("http://example.org/#subclass1-1-1");
+                .containsExactlyInAnyOrder(CONST_SUBCLS);
     }
 
     @Test
@@ -691,9 +737,9 @@ public class SPARQLQueryBuilderTest
         assertThat(results).isNotEmpty();
         assertThat(results)
                 .extracting(KBHandle::getIdentifier)
-                .containsExactlyInAnyOrder("http://example.org/#explicitRoot", 
-                        "http://example.org/#subclass1", "http://example.org/#subclass1-1",
-                        "http://example.org/#subclass1-1-1");
+                .containsExactlyInAnyOrder(CONST_URL_EXPL_ROOT, 
+                        CONST_SUBCLAS_1, CONST_SUBCLS_1,
+                        CONST_SUBCLS);
     }
 
     @Test
@@ -703,7 +749,7 @@ public class SPARQLQueryBuilderTest
     
         List<KBHandle> results = asHandles(rdf4jLocalRepo, SPARQLQueryBuilder
                 .forInstances(kb)
-                .childrenOf("http://example.org/#subclass1"));
+                .childrenOf(CONST_SUBCLAS_1));
         
         assertThat(results).isNotEmpty();
         assertThat(results)
@@ -719,7 +765,7 @@ public class SPARQLQueryBuilderTest
 
         List<KBHandle> results = asHandles(rdf4jLocalRepo, SPARQLQueryBuilder
                 .forInstances(kb)
-                .descendantsOf("http://example.org/#subclass1"));
+                .descendantsOf(CONST_SUBCLAS_1));
         
         assertThat(results).isNotEmpty();
         assertThat(results)
@@ -734,13 +780,13 @@ public class SPARQLQueryBuilderTest
     
         List<KBHandle> results = asHandles(rdf4jLocalRepo, SPARQLQueryBuilder
                 .forItems(kb)
-                .childrenOf("http://example.org/#subclass1"));
+                .childrenOf(CONST_SUBCLAS_1));
         
         assertThat(results).isNotEmpty();
         assertThat(results)
                 .extracting(KBHandle::getIdentifier)
                 .containsExactlyInAnyOrder("http://example.org/#1-instance-1", 
-                        "http://example.org/#subclass1-1");
+                        CONST_SUBCLS_1);
     }
 
     @Test
@@ -750,7 +796,7 @@ public class SPARQLQueryBuilderTest
 
         List<KBHandle> results = asHandles(rdf4jLocalRepo, SPARQLQueryBuilder
                 .forItems(kb)
-                .descendantsOf("http://example.org/#subclass1"));
+                .descendantsOf(CONST_SUBCLAS_1));
         
         assertThat(results).isNotEmpty();
         assertThat(results)
@@ -789,10 +835,10 @@ public class SPARQLQueryBuilderTest
         assertThat(results).extracting(KBHandle::getIdentifier).doesNotHaveDuplicates();
         assertThat(results)
                 .usingElementComparatorOnFields(
-                        "identifier", "name", "language")
+                        CONST_IDFR, "name", CONST_LANG)
                 .containsExactlyInAnyOrder(
-                        new KBHandle("http://example.org/#red-goblin", "Red Goblin"),
-                        new KBHandle("http://example.org/#green-goblin", "Green Goblin",
+                        new KBHandle(CONST_RED_GB, "Red Goblin"),
+                        new KBHandle(CONST_URL_GRN_GB, CONST_GB_GR,
                                 null, "en"));
     }
     
@@ -896,16 +942,16 @@ public class SPARQLQueryBuilderTest
 
         List<KBHandle> results = asHandles(aRepository, SPARQLQueryBuilder
                 .forItems(kb)
-                .withLabelMatchingExactlyAnyOf("Green Goblin"));
+                .withLabelMatchingExactlyAnyOf(CONST_GB_GR));
         
         assertThat(results).extracting(KBHandle::getUiLabel)
-                .allMatch(label -> label.equals("Green Goblin"));
+                .allMatch(label -> label.equals(CONST_GB_GR));
         assertThat(results).extracting(KBHandle::getIdentifier).doesNotHaveDuplicates();
         assertThat(results)
                 .usingElementComparatorOnFields(
-                        "identifier", "name", "language")
+                        CONST_IDFR, "name", CONST_LANG)
                 .containsExactlyInAnyOrder(
-                        new KBHandle("http://example.org/#green-goblin", "Green Goblin",
+                        new KBHandle(CONST_URL_GRN_GB, CONST_GB_GR,
                                 null, "en"));
     }
     
@@ -934,19 +980,19 @@ public class SPARQLQueryBuilderTest
     {
         importDataFromString(RDFFormat.TURTLE, TURTLE_PREFIX, LABEL_SUBPROPERTY);
         
-        // The label "Green Goblin" is not assigned directly via rdfs:label but rather via a
+        // The label CONST_GB_GR is not assigned directly via rdfs:label but rather via a
         // subproperty of it. Thus, this test also checks if the label sub-property support works.
         List<KBHandle> results = asHandles(aRepository, SPARQLQueryBuilder.forItems(kb)
-                    .withLabelMatchingExactlyAnyOf("Green Goblin"));
+                    .withLabelMatchingExactlyAnyOf(CONST_GB_GR));
         
         assertThat(results).extracting(KBHandle::getUiLabel)
-                .allMatch(label -> label.equals("Green Goblin"));
+                .allMatch(label -> label.equals(CONST_GB_GR));
         assertThat(results).extracting(KBHandle::getIdentifier).doesNotHaveDuplicates();
         assertThat(results)
                 .usingElementComparatorOnFields(
-                        "identifier", "name", "language")
+                        CONST_IDFR, "name", CONST_LANG)
                 .containsExactlyInAnyOrder(
-                        new KBHandle("http://example.org/#green-goblin", "Green Goblin"));
+                        new KBHandle(CONST_URL_GRN_GB, CONST_GB_GR));
     }    
         
     @Test
@@ -971,16 +1017,16 @@ public class SPARQLQueryBuilderTest
     
         List<KBHandle> results = asHandles(rdf4jLocalRepo, SPARQLQueryBuilder
                 .forItems(kb)
-                .withLabelStartingWith("Green"));
+                .withLabelStartingWith(CONST_GRN));
         
         assertThat(results).extracting(KBHandle::getUiLabel)
-                .allMatch(label -> label.startsWith("Green"));
+                .allMatch(label -> label.startsWith(CONST_GRN));
         assertThat(results).extracting(KBHandle::getIdentifier).doesNotHaveDuplicates();
         assertThat(results)
                 .usingElementComparatorOnFields(
-                        "identifier", "name", "language")
+                        CONST_IDFR, "name", CONST_LANG)
                 .containsExactlyInAnyOrder(
-                        new KBHandle("http://example.org/#green-goblin", "Green Goblin"));
+                        new KBHandle(CONST_URL_GRN_GB, CONST_GB_GR));
     }
 
     @Test
@@ -992,16 +1038,16 @@ public class SPARQLQueryBuilderTest
         
         List<KBHandle> results = asHandles(rdf4jLocalRepo, SPARQLQueryBuilder
                 .forItems(kb)
-                .withLabelStartingWith("Green Goblin"));
+                .withLabelStartingWith(CONST_GB_GR));
         
         assertThat(results).extracting(KBHandle::getUiLabel)
-                .allMatch(label -> label.startsWith("Green"));
+                .allMatch(label -> label.startsWith(CONST_GRN));
         assertThat(results).extracting(KBHandle::getIdentifier).doesNotHaveDuplicates();
         assertThat(results)
                 .usingElementComparatorOnFields(
-                        "identifier", "name", "language")
+                        CONST_IDFR, "name", CONST_LANG)
                 .containsExactlyInAnyOrder(
-                        new KBHandle("http://example.org/#green-goblin", "Green Goblin",
+                        new KBHandle(CONST_URL_GRN_GB, CONST_GB_GR,
                                 null, "en"));
     }
 
@@ -1012,20 +1058,20 @@ public class SPARQLQueryBuilderTest
 
         kb.setFullTextSearchIri(IriConstants.FTS_LUCENE);
         
-        // Single word - actually, we add a wildcard here so anything that starts with "Green"
+        // Single word - actually, we add a wildcard here so anything that starts with CONST_GRN
         // would also be matched
         List<KBHandle> results = asHandles(rdf4jLocalRepo, SPARQLQueryBuilder
                 .forItems(kb)
-                .withLabelStartingWith("Green"));
+                .withLabelStartingWith(CONST_GRN));
         
         assertThat(results).extracting(KBHandle::getUiLabel)
-                .allMatch(label -> label.startsWith("Green"));
+                .allMatch(label -> label.startsWith(CONST_GRN));
         assertThat(results).extracting(KBHandle::getIdentifier).doesNotHaveDuplicates();
         assertThat(results)
                 .usingElementComparatorOnFields(
-                        "identifier", "name", "language")
+                        CONST_IDFR, "name", CONST_LANG)
                 .containsExactlyInAnyOrder(
-                        new KBHandle("http://example.org/#green-goblin", "Green Goblin", null,
+                        new KBHandle(CONST_URL_GRN_GB, CONST_GB_GR, null,
                                 "en"));
     }
     
@@ -1047,9 +1093,9 @@ public class SPARQLQueryBuilderTest
         assertThat(results).extracting(KBHandle::getIdentifier).doesNotHaveDuplicates();
         assertThat(results)
                 .usingElementComparatorOnFields(
-                        "identifier", "name", "description", "language")
+                        CONST_IDFR, "name", CONST_DESCP, CONST_LANG)
                 .containsExactlyInAnyOrder(
-                        new KBHandle("http://example.org/#green-goblin", "Green Goblin",
+                        new KBHandle(CONST_URL_GRN_GB, CONST_GB_GR,
                                 null, "en"));
     }
     
@@ -1079,16 +1125,16 @@ public class SPARQLQueryBuilderTest
         kb.setType(REMOTE);
         kb.setFullTextSearchIri(IriConstants.FTS_VIRTUOSO);
     
-        // Single word - actually, we add a wildcard here so anything that starts with "Barack"
+        // Single word - actually, we add a wildcard here so anything that starts with CONST_BRAK
         // would also be matched
         List<KBHandle> results = asHandles(ukpVirtuosoRepo, SPARQLQueryBuilder
                 .forItems(kb)
-                .withLabelStartingWith("Barack"));
+                .withLabelStartingWith(CONST_BRAK));
         
         assertThat(results).extracting(KBHandle::getIdentifier).doesNotHaveDuplicates();
         assertThat(results).isNotEmpty();
         assertThat(results).extracting(KBHandle::getUiLabel)
-                .allMatch(label -> label.startsWith("Barack"));
+                .allMatch(label -> label.startsWith(CONST_BRAK));
     }
 
     @Test
@@ -1109,7 +1155,7 @@ public class SPARQLQueryBuilderTest
         assertThat(results).extracting(KBHandle::getIdentifier).doesNotHaveDuplicates();
         assertThat(results).isNotEmpty();
         assertThat(results).extracting(KBHandle::getUiLabel)
-                .allMatch(label -> label.startsWith("Barack"));
+                .allMatch(label -> label.startsWith(CONST_BRAK));
     }
 
     @Test
@@ -1130,7 +1176,7 @@ public class SPARQLQueryBuilderTest
         assertThat(results).extracting(KBHandle::getIdentifier).doesNotHaveDuplicates();
         assertThat(results).isEmpty();
         assertThat(results).extracting(KBHandle::getUiLabel)
-                .allMatch(label -> label.startsWith("Barack"));
+                .allMatch(label -> label.startsWith(CONST_BRAK));
     }
 
     @Test
@@ -1164,12 +1210,12 @@ public class SPARQLQueryBuilderTest
         
         List<KBHandle> results = asHandles(wikidata, SPARQLQueryBuilder
                 .forItems(kb)
-                .withLabelStartingWith("Barack"));
+                .withLabelStartingWith(CONST_BRAK));
         
         assertThat(results).extracting(KBHandle::getIdentifier).doesNotHaveDuplicates();
         assertThat(results).isNotEmpty();
         assertThat(results).extracting(KBHandle::getUiLabel)
-                .allMatch(label -> label.toLowerCase().startsWith("barack"));
+                .allMatch(label -> label.toLowerCase().startsWith(CONST_BRAK));
     }
 
     @Test
@@ -1202,12 +1248,12 @@ public class SPARQLQueryBuilderTest
         
         List<KBHandle> results = asHandles(zbwStw, SPARQLQueryBuilder
                 .forItems(kb)
-                .withLabelMatchingExactlyAnyOf("Labour"));
+                .withLabelMatchingExactlyAnyOf(CONST_LABR));
         
         assertThat(results).extracting(KBHandle::getIdentifier).doesNotHaveDuplicates();
         assertThat(results).isNotEmpty();
         assertThat(results).extracting(KBHandle::getUiLabel)
-                .allMatch(label -> "Labour".equals(label));
+                .allMatch(label -> CONST_LABR.equals(label));
     }
 
     @Test
@@ -1243,12 +1289,12 @@ public class SPARQLQueryBuilderTest
         
         List<KBHandle> results = asHandles(wikidata, SPARQLQueryBuilder
                 .forItems(kb)
-                .withLabelMatchingExactlyAnyOf("Labour"));
+                .withLabelMatchingExactlyAnyOf(CONST_LABR));
         
         assertThat(results).extracting(KBHandle::getIdentifier).doesNotHaveDuplicates();
         assertThat(results).isNotEmpty();
         assertThat(results).extracting(KBHandle::getUiLabel)
-                .allMatch(label -> "Labour".equals(label));
+                .allMatch(label -> CONST_LABR.equals(label));
     }
 
     @Test
@@ -1262,12 +1308,12 @@ public class SPARQLQueryBuilderTest
         
         List<KBHandle> results = asHandles(wikidata, SPARQLQueryBuilder
                 .forItems(kb)
-                .withLabelMatchingExactlyAnyOf("Labour"));
+                .withLabelMatchingExactlyAnyOf(CONST_LABR));
         
         assertThat(results).extracting(KBHandle::getIdentifier).doesNotHaveDuplicates();
         assertThat(results).isNotEmpty();
         assertThat(results).extracting(KBHandle::getUiLabel)
-                .allMatch(label -> label.equalsIgnoreCase("Labour"));
+                .allMatch(label -> label.equalsIgnoreCase(CONST_LABR));
     }
 
     @Test
@@ -1281,12 +1327,12 @@ public class SPARQLQueryBuilderTest
         
         List<KBHandle> results = asHandles(wikidata, SPARQLQueryBuilder
                 .forInstances(kb)
-                .withLabelMatchingExactlyAnyOf("Labour", "Tory"));
+                .withLabelMatchingExactlyAnyOf(CONST_LABR, "Tory"));
         
         assertThat(results).extracting(KBHandle::getIdentifier).doesNotHaveDuplicates();
         assertThat(results).isNotEmpty();
         assertThat(results).extracting(KBHandle::getUiLabel)
-                .allMatch(label -> "Labour".equals(label) || "Tory".equals(label));
+                .allMatch(label -> CONST_LABR.equals(label) || "Tory".equals(label));
     }
 
     @Test
@@ -1299,12 +1345,12 @@ public class SPARQLQueryBuilderTest
         
         List<KBHandle> results = asHandles(ukpVirtuosoRepo, SPARQLQueryBuilder
                 .forItems(kb)
-                .withLabelMatchingExactlyAnyOf("Green Goblin"));
+                .withLabelMatchingExactlyAnyOf(CONST_GB_GR));
         
         assertThat(results).extracting(KBHandle::getIdentifier).doesNotHaveDuplicates();
         assertThat(results).isNotEmpty();
         assertThat(results).extracting(KBHandle::getUiLabel)
-                .allMatch(label -> "Green Goblin".equals(label));
+                .allMatch(label -> CONST_GB_GR.equals(label));
     }
 
     @Test
@@ -1317,12 +1363,12 @@ public class SPARQLQueryBuilderTest
         
         List<KBHandle> results = asHandles(hucit, SPARQLQueryBuilder
                 .forItems(kb)
-                .withLabelStartingWith("Achilles"));
+                .withLabelStartingWith(CONST_ACHL));
         
         assertThat(results).extracting(KBHandle::getIdentifier).doesNotHaveDuplicates();
         assertThat(results).isNotEmpty();
         assertThat(results).extracting(KBHandle::getUiLabel)
-                .allMatch(label -> label.startsWith("Achilles"));
+                .allMatch(label -> label.startsWith(CONST_ACHL));
     }
 
     @Test
@@ -1336,12 +1382,12 @@ public class SPARQLQueryBuilderTest
         List<KBHandle> results = asHandles(hucit, SPARQLQueryBuilder
                 .forInstances(kb)
                 .descendantsOf("http://erlangen-crm.org/efrbroo/F1_Work")
-                .withLabelStartingWith("Achilles"));
+                .withLabelStartingWith(CONST_ACHL));
         
         assertThat(results).extracting(KBHandle::getIdentifier).doesNotHaveDuplicates();
         assertThat(results).isNotEmpty();
         assertThat(results).extracting(KBHandle::getUiLabel)
-                .allMatch(label -> label.startsWith("Achilles"));
+                .allMatch(label -> label.startsWith(CONST_ACHL));
     }
 
     @Test
@@ -1479,16 +1525,16 @@ public class SPARQLQueryBuilderTest
 
         List<KBHandle> results = asHandles(rdf4jLocalRepo, SPARQLQueryBuilder
                 .forItems(kb)
-                .withLabelContainingAnyOf("Socke"));
+                .withLabelContainingAnyOf(CONST_SOK));
         
         assertThat(results).extracting(KBHandle::getUiLabel)
-                .allMatch(label -> label.contains("Socke"));
+                .allMatch(label -> label.contains(CONST_SOK));
         assertThat(results).extracting(KBHandle::getIdentifier).doesNotHaveDuplicates();
         assertThat(results)
                 .usingElementComparatorOnFields(
-                        "identifier", "name", "language")
+                        CONST_IDFR, "name", CONST_LANG)
                 .containsExactlyInAnyOrder(
-                        new KBHandle("http://mbugert.de/pets#socke", "Socke"));
+                        new KBHandle("http://mbugert.de/pets#socke", CONST_SOK));
     }
     
     @Test
@@ -1515,7 +1561,7 @@ public class SPARQLQueryBuilderTest
     public void thatLineBreaksAreSanitized() throws Exception
     {
         assertThat(sanitizeQueryStringForFTS("Green\n\rGoblin"))
-                .isEqualTo("Green Goblin");
+                .isEqualTo(CONST_GB_GR);
     }
 
     private void importDataFromFile(String aFilename) throws IOException

@@ -64,6 +64,9 @@ import de.tudarmstadt.ukp.inception.image.feature.ImageFeatureSupport;
 public class ImageSidebar
     extends AnnotationSidebar_ImplBase
 {
+	private static final String CONST_STR = "    }";
+	
+	
     private static final long serialVersionUID = -6367010242201414871L;
 
     private static final Logger LOG = LoggerFactory.getLogger(ImageSidebar.class);
@@ -136,7 +139,7 @@ public class ImageSidebar
                 "      var hsp = Math.sqrt(0.299*r*r + 0.587*g*g + 0.114*b*b);",
                 "      color = hsp > 127 ? 'black' : 'white';",
                 "      getColorCache()[img.src] = color;",
-                "    }",
+                CONST_STR,
                 "    $(img).css('background-color', color);",
                 "  }",
                 "  catch (err) {",
@@ -170,10 +173,10 @@ public class ImageSidebar
                 //   Check if the image has been properly loaded and if not try without CORS
                 "    if (typeof img.naturalWidth != 'undefined' && img.naturalWidth == 0) {",
                 "      fallbackToNonCors(img);",
-                "    }",
+                CONST_STR,
                 "    else {",
                 "      updateImageBackground(img);",
-                "    }",
+                CONST_STR,
                 "  }",
                 "  else {",
                 "    img.addEventListener('load', () => updateImageBackground(img));",
