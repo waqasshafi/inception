@@ -199,13 +199,13 @@ public class OpenNlpDoccatRecommender
         DocumentCategorizerME doccat = new DocumentCategorizerME(model);
 
         // Evaluate
-        EvaluationResult result = testSet.stream()
+        return testSet.stream()
                 .map(sample -> new LabelPair(sample.getCategory(),
                         doccat.getBestCategory(doccat.categorize(sample.getText()))))
                 .collect(EvaluationResult.collector(trainingSetSize, testSetSize, trainRatio,
                         NO_CATEGORY));
 
-        return result;
+
     }
 
     private List<DocumentSample> extractSamples(List<CAS> aCasses)

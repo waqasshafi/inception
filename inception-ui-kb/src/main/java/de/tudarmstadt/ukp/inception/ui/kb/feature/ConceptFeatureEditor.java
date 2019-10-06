@@ -149,8 +149,8 @@ public class ConceptFeatureEditor
     {
         FeatureSupport<ConceptFeatureTraits> fs = featureSupportRegistry
                 .getFeatureSupport(aAnnotationFeature);
-        ConceptFeatureTraits traits = fs.readTraits(aAnnotationFeature);
-        return traits;
+        return fs.readTraits(aAnnotationFeature);
+
     }
 
     @Override

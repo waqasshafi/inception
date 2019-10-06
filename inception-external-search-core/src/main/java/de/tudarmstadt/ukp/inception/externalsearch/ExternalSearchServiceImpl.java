@@ -80,20 +80,20 @@ public class ExternalSearchServiceImpl
 
         Object traits = factory.readTraits(aRepository);
 
-        List<ExternalSearchResult> results = provider.executeQuery(aRepository, traits, aQuery);
+        return provider.executeQuery(aRepository, traits, aQuery);
 
-        return results;
+
     }
 
     @Override
     @Transactional
     public List<DocumentRepository> listDocumentRepositories(Project aProject)
     {
-        List<DocumentRepository> settings = entityManager
+        return entityManager
                 .createQuery("FROM DocumentRepository WHERE project = :project ORDER BY name ASC",
                         DocumentRepository.class)
                 .setParameter("project", aProject).getResultList();
-        return settings;
+
     }
 
     @Override

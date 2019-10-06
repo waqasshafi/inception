@@ -279,7 +279,7 @@ public class SearchAnnotationSidebar
     private AjaxCheckBox createGroupLevelSelectionCheckBox(String aId, IModel<Boolean> aModel,
         String aGroupKey)
     {
-        AjaxCheckBox selectAllCheckBox = new AjaxCheckBox(aId, aModel)
+        return new AjaxCheckBox(aId, aModel)
         {
             private static final long serialVersionUID = 2431702654443882657L;
 
@@ -297,7 +297,7 @@ public class SearchAnnotationSidebar
                 target.add(resultsGroupContainer);
             }
         };
-        return selectAllCheckBox;
+
     }
 
     private void actionSearch(AjaxRequestTarget aTarget, Form<Void> aForm)

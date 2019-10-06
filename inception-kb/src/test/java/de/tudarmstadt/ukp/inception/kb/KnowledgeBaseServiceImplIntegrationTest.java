@@ -1616,8 +1616,8 @@ public class KnowledgeBaseServiceImplIntegrationTest  {
     private KBStatement buildStatement(KnowledgeBase knowledgeBase, KBHandle conceptHandle,
             KBProperty aProperty, String value)
     {
-        KBStatement stmt = testFixtures.buildStatement(conceptHandle, aProperty, value);
-        return stmt;
+        return testFixtures.buildStatement(conceptHandle, aProperty, value);
+
     }
 
     private boolean isNotAbstractNorClosedStatement(KBStatement statement) {

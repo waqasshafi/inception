@@ -220,11 +220,11 @@ public class DataMajorityNerRecommender
         DataMajorityModel model = trainModel(trainingData);
 
         // evaluation: collect predicted and gold labels for evaluation
-        EvaluationResult result = testData.stream()
+        return testData.stream()
                 .map(anno -> new LabelPair(anno.label, model.majorityLabel))
                 .collect(EvaluationResult.collector(trainingSetSize, testSetSize, trainRatio));
         
-        return result;
+
     }
 // end::evaluate[]
 

@@ -306,14 +306,14 @@ public class KnowledgeBaseCreationWizard extends BootstrapWizard {
     {
         // add Bootstrap-compatible button bar which closes the parent dialog via the cancel and
         // finish buttons
-        Component buttonBar = new BootstrapWizardButtonBar(id, this) {
+        return new BootstrapWizardButtonBar(id, this) {
 
             private static final long serialVersionUID = 5657260438232087635L;
 
             @Override
             protected FinishButton newFinishButton(String aId, IWizard aWizard)
             {
-                FinishButton button = new FinishButton(aId, aWizard)
+                return new FinishButton(aId, aWizard)
                 {
                     private static final long serialVersionUID = -7070739469409737740L;
 
@@ -333,7 +333,6 @@ public class KnowledgeBaseCreationWizard extends BootstrapWizard {
                         }
                     }
                 };
-                return button;
             }
 
             @Override
@@ -352,6 +351,6 @@ public class KnowledgeBaseCreationWizard extends BootstrapWizard {
                 return button;
             }
         };
-        return buttonBar;
+
     }
 }

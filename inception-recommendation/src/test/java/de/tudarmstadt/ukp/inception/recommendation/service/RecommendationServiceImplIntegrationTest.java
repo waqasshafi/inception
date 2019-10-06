@@ -214,9 +214,9 @@ public class RecommendationServiceImplIntegrationTest
 
     private User createUser()
     {
-        User user = new User();
+        return new User();
 
-        return user;
+
     }
 
     private Recommender buildRecommender(Project aProject, AnnotationFeature aFeature)

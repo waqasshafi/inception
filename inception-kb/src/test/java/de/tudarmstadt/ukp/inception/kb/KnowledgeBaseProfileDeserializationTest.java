@@ -103,17 +103,16 @@ public class KnowledgeBaseProfileDeserializationTest
         String descriptionIri = "http://www.w3.org/2000/01/rdf-schema#comment";
         String propertyLabelIri = "http://www.w3.org/2000/01/rdf-schema#label";
         String propertyDescriptionIri = "http://www.w3.org/2000/01/rdf-schema#comment";
-        KnowledgeBaseMapping referenceMapping = new KnowledgeBaseMapping(classIri, subclassIri,
+        return new KnowledgeBaseMapping(classIri, subclassIri,
                 typeIri, subPropertyIri, descriptionIri, label, propertyTypeIri, propertyLabelIri,
                 propertyDescriptionIri);
-        return referenceMapping;
     }
 
     private KnowledgeBaseAccess createReferenceAccess()
     {
         String url = "http://someurl/sparql";
         String fullTextSearchIri = "http://www.openrdf.org/contrib/lucenesail#matches";
-        KnowledgeBaseAccess referenceAccess = new KnowledgeBaseAccess(url, fullTextSearchIri);
-        return referenceAccess;
+       return new KnowledgeBaseAccess(url, fullTextSearchIri);
+
     }
 }

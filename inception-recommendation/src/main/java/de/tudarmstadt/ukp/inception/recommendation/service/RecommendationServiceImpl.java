@@ -284,11 +284,10 @@ public class RecommendationServiceImpl
     @Transactional
     public List<Recommender> listRecommenders(Project aProject)
     {
-        List<Recommender> settings = entityManager
+        return entityManager
                 .createQuery("FROM Recommender WHERE project = :project ORDER BY name ASC",
                         Recommender.class)
                 .setParameter("project", aProject).getResultList();
-        return settings;
     }
     
     @Override

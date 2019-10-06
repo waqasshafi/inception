@@ -140,8 +140,8 @@ public class FactLinkingServiceImpl implements FactLinkingService
             .getFeature(FactLinkingConstants.LINKED_LAYER_FEATURE, linkedLayer);
         FeatureSupport<ConceptFeatureTraits> fs = featureSupportRegistry
             .getFeatureSupport(linkedFeature);
-        ConceptFeatureTraits traits = fs.readTraits(linkedFeature);
-        return traits;
+        return fs.readTraits(linkedFeature);
+
     }
 
 }

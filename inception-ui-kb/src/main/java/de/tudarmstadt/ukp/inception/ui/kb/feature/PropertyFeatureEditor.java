@@ -102,7 +102,7 @@ public class PropertyFeatureEditor
 
     private AutoCompleteTextField<KBProperty> createAutoCompleteTextField()
     {
-        AutoCompleteTextField<KBProperty> field = new AutoCompleteTextField<KBProperty>("value",
+        return new AutoCompleteTextField<KBProperty>("value",
             new TextRenderer<KBProperty>("uiLabel"))
         {
 
@@ -132,7 +132,6 @@ public class PropertyFeatureEditor
             }
         };
 
-        return field;
     }
 
     private Label createStatementIndicatorLabel()

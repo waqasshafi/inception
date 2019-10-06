@@ -166,8 +166,7 @@ public class ChartPanel
         }
 
         ObjectMapper mapper = new ObjectMapper();
-        String json = mapper.writeValueAsString(lines);
+        return mapper.writeValueAsString(lines);
 
-        return json;
     }
 }

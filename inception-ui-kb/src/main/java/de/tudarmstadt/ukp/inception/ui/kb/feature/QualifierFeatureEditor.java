@@ -320,9 +320,9 @@ public class QualifierFeatureEditor
         String linkedType = this.getModelObject().feature.getType();
         AnnotationLayer linkedLayer = annotationService
             .findLayer(this.stateModel.getObject().getProject(), linkedType);
-        AnnotationFeature linkedAnnotationFeature = annotationService
+        return annotationService
             .getFeature(FactLinkingConstants.LINKED_LAYER_FEATURE, linkedLayer);
-        return linkedAnnotationFeature;
+       
     }
 
     private KBHandle getSelectedKBItem(Item<LinkWithRoleModel> aItem) {
@@ -406,8 +406,8 @@ public class QualifierFeatureEditor
     {
         FeatureSupport<ConceptFeatureTraits> fs = featureSupportRegistry
             .getFeatureSupport(aAnnotationFeature);
-        ConceptFeatureTraits traits = fs.readTraits(aAnnotationFeature);
-        return traits;
+        return fs.readTraits(aAnnotationFeature);
+       
     }
 
     private CAS getEditorCas(AnnotationActionHandler aHandler) throws IOException
@@ -417,7 +417,7 @@ public class QualifierFeatureEditor
 
     private AutoCompleteTextField<KBProperty> createSelectPropertyAutoCompleteTextField()
     {
-        AutoCompleteTextField<KBProperty> field = new AutoCompleteTextField<KBProperty>("newRole",
+        return new AutoCompleteTextField<KBProperty>("newRole",
             new PropertyModel<KBProperty>(this, "selectedRole"),
             new TextRenderer<KBProperty>("uiLabel"), KBProperty.class)
         {
@@ -448,7 +448,7 @@ public class QualifierFeatureEditor
             }
         };
 
-        return field;
+
     }
 
     @Override

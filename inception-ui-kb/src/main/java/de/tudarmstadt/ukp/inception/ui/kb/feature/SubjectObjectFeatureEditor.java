@@ -263,7 +263,7 @@ public class SubjectObjectFeatureEditor
 
     private AutoCompleteTextField<KBHandle> createAutoCompleteTextField()
     {
-        AutoCompleteTextField<KBHandle> field = new AutoCompleteTextField<KBHandle>("value",
+        return new AutoCompleteTextField<KBHandle>("value",
             LambdaModelAdapter.of(this::getSelectedKBItem, this::setSelectedKBItem),
             new TextRenderer<KBHandle>("uiLabel"), KBHandle.class)
         {
@@ -290,7 +290,7 @@ public class SubjectObjectFeatureEditor
             }
         };
 
-        return field;
+
     }
 
     private void setSelectedKBItem(KBHandle value)
@@ -387,16 +387,16 @@ public class SubjectObjectFeatureEditor
         String linkedType = this.getModelObject().feature.getType();
         AnnotationLayer linkedLayer = annotationService
             .findLayer(this.stateModel.getObject().getProject(), linkedType);
-        AnnotationFeature linkedAnnotationFeature = annotationService
+       return annotationService
             .getFeature(FactLinkingConstants.LINKED_LAYER_FEATURE, linkedLayer);
-        return linkedAnnotationFeature;
+       
     }
 
     private ConceptFeatureTraits readFeatureTraits(AnnotationFeature aAnnotationFeature) {
         FeatureSupport<ConceptFeatureTraits> fs = featureSupportRegistry
             .getFeatureSupport(aAnnotationFeature);
-        ConceptFeatureTraits traits = fs.readTraits(aAnnotationFeature);
-        return traits;
+       return fs.readTraits(aAnnotationFeature);
+       
     }
 
     private CAS getEditorCas(AnnotationActionHandler aHandler) throws IOException

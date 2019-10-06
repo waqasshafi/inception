@@ -144,10 +144,9 @@ public class LearningRecordServiceImpl
     @Override
     public LearningRecord getRecordById(long recordId) {
         String sql = "FROM LearningRecord l where l.id = :id";
-        LearningRecord learningRecord = entityManager.createQuery(sql, LearningRecord.class)
+        return entityManager.createQuery(sql, LearningRecord.class)
                 .setParameter("id",recordId)
                 .getSingleResult();
-        return learningRecord;
     }
 
     @Transactional

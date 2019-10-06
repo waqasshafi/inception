@@ -148,7 +148,7 @@ public class Index
     @Override
     public int hashCode()
     {
-        int result = project != null ? project.hashCode() : 0;
-        return result;
+        return project != null ? project.hashCode() : 0;
+
     }
 }

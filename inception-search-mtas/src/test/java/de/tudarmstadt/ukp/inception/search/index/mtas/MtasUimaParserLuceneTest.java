@@ -257,7 +257,7 @@ public class MtasUimaParserLuceneTest
     {
         Reader reader = new BufferedReader(new StringReader(cql));
         MtasCQLParser p = new MtasCQLParser(reader);
-        MtasSpanQuery q = p.parse(field, null, null, null, null);
-        return q;
+        return p.parse(field, null, null, null, null);
+
     }
 }

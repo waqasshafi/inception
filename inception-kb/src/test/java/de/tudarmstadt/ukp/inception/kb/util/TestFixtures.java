@@ -146,18 +146,18 @@ public class TestFixtures
     public KBStatement buildStatement(KBHandle conceptHandle, KBProperty aProperty, String value)
     {
         ValueFactory vf = SimpleValueFactory.getInstance();
-        KBStatement statement = new KBStatement(null, conceptHandle, aProperty,
+        return new KBStatement(null, conceptHandle, aProperty,
                 vf.createLiteral(value));
-        return statement;
+
     }
 
     public KBQualifier buildQualifier(KBStatement kbStatement, KBProperty propertyHandle,
         String value)
     {
         ValueFactory vf = SimpleValueFactory.getInstance();
-        KBQualifier qualifier = new KBQualifier(kbStatement, propertyHandle,
+        return new KBQualifier(kbStatement, propertyHandle,
             vf.createLiteral(value));
-        return qualifier;
+
     }
 
     public static boolean isReachable(String aUrl)

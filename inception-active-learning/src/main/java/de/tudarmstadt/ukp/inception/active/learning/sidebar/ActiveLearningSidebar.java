@@ -454,9 +454,9 @@ public class ActiveLearningSidebar
         AnnotationFeature feat = annotationService.getFeature(aCurrentRecommendation.getFeature(),
                 alStateModel.getObject().getLayer());
         FeatureSupport<?> featureSupport = featureSupportRegistry.getFeatureSupport(feat);
-        String labelValue = featureSupport.renderFeatureValue(feat,
+        return featureSupport.renderFeatureValue(feat,
                 aCurrentRecommendation.getLabel());
-        return labelValue;
+
     }
 
     private LambdaAjaxLink createJumpToSuggestionLink()

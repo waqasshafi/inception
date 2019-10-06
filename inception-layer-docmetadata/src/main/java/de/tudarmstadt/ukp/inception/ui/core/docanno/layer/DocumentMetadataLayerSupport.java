@@ -97,11 +97,10 @@ public class DocumentMetadataLayerSupport
     @Override
     public DocumentMetadataLayerAdapter createAdapter(AnnotationLayer aLayer)
     {
-        DocumentMetadataLayerAdapter adapter = new DocumentMetadataLayerAdapter(
+        return new DocumentMetadataLayerAdapter(
                 featureSupportRegistry, eventPublisher, aLayer, 
                 schemaService.listAnnotationFeature(aLayer));
 
-        return adapter;
     }
     
     @Override

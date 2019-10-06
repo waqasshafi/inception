@@ -312,7 +312,7 @@ public class AccessSpecificSettingsPanel
     }
 
     private  AjaxLink<Void> clearLink(String aId) {
-        AjaxLink<Void> clearLink = new LambdaAjaxLink(aId, this::actionClear)
+        return new LambdaAjaxLink(aId, this::actionClear)
         {
 
             private static final long serialVersionUID = -6272361381689154558L;
@@ -322,11 +322,11 @@ public class AccessSpecificSettingsPanel
                 return !kbService.isEmpty(kbModel.getObject().getKb());
             }
         };
-        return clearLink;
+
     }
 
     private ListView<String> fileExtensionsExportList(String aId) {
-        ListView<String> fileExListView = new ListView<String>(aId,
+        return new ListView<String>(aId,
             EXPORT_FORMAT_FILE_EXTENSIONS)
         {
 
@@ -346,7 +346,7 @@ public class AccessSpecificSettingsPanel
                 item.add(exportLink);
             }
         };
-        return fileExListView;
+
     }
 
     private ListView<KnowledgeBaseProfile> localSuggestionsList(String aId,

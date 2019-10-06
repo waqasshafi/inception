@@ -92,9 +92,9 @@ public class PubAnnotationProvider
             PubAnnotationProviderTraits aTraits, String aCollectionId, String aDocumentId)
         throws IOException
     {
-        ExternalSearchResult result = new ExternalSearchResult(aRepository, aCollectionId,
+        return new ExternalSearchResult(aRepository, aCollectionId,
                 aDocumentId);
-        return result;
+
     }
 
     @Override
