@@ -231,7 +231,8 @@ public class RecommenderEditorPanel
         }));
         form.add(toolChoice);
 
-        form.add(activationContainer = new WebMarkupContainer(MID_ACTIVATION_CONTAINER));
+        activationContainer = new WebMarkupContainer(MID_ACTIVATION_CONTAINER);
+        form.add(activationContainer);
         activationContainer.setOutputMarkupPlaceholderTag(true);
         activationContainer.add(visibleWhen(() -> toolChoice.getModel().map(_tool ->
                 recommenderRegistry.getFactory(_tool.getKey()).isEvaluable())
@@ -327,7 +328,8 @@ public class RecommenderEditorPanel
                 .onConfigure(_this -> _this.setVisible(form.getModelObject().getId() != null)));
         form.add(new LambdaAjaxLink(MID_CANCEL, this::actionCancel));
 
-        form.add(traitsContainer = new WebMarkupContainer(MID_TRAITS_CONTAINER));
+        traitsContainer = new WebMarkupContainer(MID_TRAITS_CONTAINER);
+        form.add(traitsContainer);
         traitsContainer.setOutputMarkupPlaceholderTag(true);
         traitsContainer.add(new EmptyPanel(MID_TRAITS));
     }

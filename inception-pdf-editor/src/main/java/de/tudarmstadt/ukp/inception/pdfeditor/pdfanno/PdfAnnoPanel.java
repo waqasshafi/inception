@@ -63,7 +63,7 @@ public class PdfAnnoPanel
     {
         super(aId, aModel);
 
-        add(pdfProvider = new AbstractAjaxBehavior()
+        pdfProvider = new AbstractAjaxBehavior()
         {
             private static final long serialVersionUID = 7715393703216199195L;
 
@@ -78,9 +78,10 @@ public class PdfAnnoPanel
                     new ResourceStreamRequestHandler(new FileResourceStream(pdfFile),
                         doc.getName()));
             }
-        });
+        };
+        add(pdfProvider);
 
-        add(pdftxtProvider = new AbstractDefaultAjaxBehavior()
+        pdftxtProvider = new AbstractDefaultAjaxBehavior()
         {
             private static final long serialVersionUID = -8676150164372852265L;
 
@@ -94,16 +95,19 @@ public class PdfAnnoPanel
                         new StringResourceStream(pdftext))
                 );
             }
-        });
+        };
+        add(pdftxtProvider);
 
-        add(apiProvider = new AbstractDefaultAjaxBehavior() {
+        apiProvider = new AbstractDefaultAjaxBehavior() {
             private static final long serialVersionUID = 3816087744638629290L;
 
             @Override
             protected void respond(AjaxRequestTarget aTarget) {
                 aPdfAnnotationEditor.handleAPIRequest(aTarget, getRequest().getPostParameters());
             }
-        });
+        };
+        
+        add(apiProvider);
 
         add(new WebMarkupContainer("frame")
         {

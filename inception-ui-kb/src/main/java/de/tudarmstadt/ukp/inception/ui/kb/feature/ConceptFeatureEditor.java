@@ -77,11 +77,13 @@ public class ConceptFeatureEditor
             IModel<AnnotatorState> aStateModel, AnnotationActionHandler aHandler)
     {
         super(aId, aItem, new CompoundPropertyModel<>(aModel));
-        add(iriBadge = new IriInfoBadge("iriInfoBadge",
-                LoadableDetachableModel.of(this::iriTooltipValue)));
+        iriBadge = new IriInfoBadge("iriInfoBadge",
+                LoadableDetachableModel.of(this::iriTooltipValue));
+        add(iriBadge);
         iriBadge.add(visibleWhen(() -> isNotBlank(iriBadge.getModelObject())));
-        add(focusComponent = new KnowledgeBaseItemAutoCompleteField(MID_VALUE, _query -> 
-                getCandidates(aStateModel, aHandler, _query)));
+        focusComponent = new KnowledgeBaseItemAutoCompleteField(MID_VALUE, _query -> 
+        getCandidates(aStateModel, aHandler, _query));
+        add(focusComponent);
         add(new DisabledKBWarning("disabledKBWarning", Model.of(getModelObject().feature)));
     }
 

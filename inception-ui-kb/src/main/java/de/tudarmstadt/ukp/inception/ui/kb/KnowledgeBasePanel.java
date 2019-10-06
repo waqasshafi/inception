@@ -125,10 +125,11 @@ public class KnowledgeBasePanel
         add(ddc);
 
         add(createSearchField("searchBar", searchHandleModel, aProjectModel));
-
-        add(conceptTreePanel = new ConceptTreePanel("concepts", kbModel, selectedConceptHandle));
-        add(propertyListPanel = new PropertyListPanel("properties", kbModel,
-                selectedPropertyHandle));
+        
+        conceptTreePanel = new ConceptTreePanel("concepts", kbModel, selectedConceptHandle);
+        add(conceptTreePanel);
+        propertyListPanel = new PropertyListPanel("properties", kbModel, selectedPropertyHandle);
+        add(propertyListPanel);
         
         detailContainer = new WebMarkupContainer(DETAIL_CONTAINER_MARKUP_ID);
         detailContainer.setOutputMarkupId(true);

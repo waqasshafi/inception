@@ -153,7 +153,8 @@ public class DocumentRepositoryEditorPanel
         form.add(new LambdaAjaxLink("cancel", this::actionCancel)
                 .onConfigure(_this -> _this.setVisible(form.getModelObject().getId() == null)));
 
-        form.add(propertiesContainer = new WebMarkupContainer(MID_PROPERTIES_CONTAINER));
+        propertiesContainer = new WebMarkupContainer(MID_PROPERTIES_CONTAINER);
+        form.add(propertiesContainer);
         propertiesContainer.setOutputMarkupId(true);
 
         propertiesContainer.add(new EmptyPanel(MID_PROPERTIES));

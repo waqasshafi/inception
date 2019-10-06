@@ -120,13 +120,16 @@ public class ProjectsOverviewPage
     
     public ProjectsOverviewPage()
     {
-        add(projectListContainer = createProjectList());
+        projectListContainer = createProjectList();
+        add(projectListContainer);
         add(createNewProjectLink());
         add(createImportProjectForm());
-        add(roleFilters = createRoleFilters());
-        add(confirmLeaveDialog = new ConfirmationDialog(MID_CONFIRM_LEAVE,
+        roleFilters = createRoleFilters();
+        add(roleFilters);
+        confirmLeaveDialog = new ConfirmationDialog(MID_CONFIRM_LEAVE,
                 new StringResourceModel("leaveDialog.title", this),
-                new StringResourceModel("leaveDialog.text", this)));
+                new StringResourceModel("leaveDialog.text", this));
+        add(confirmLeaveDialog);
         activeRoleFilters = Model.ofSet(new HashSet<>());
     }
     
@@ -155,7 +158,7 @@ public class ProjectsOverviewPage
         config.removeIcon("<i class=\"fa fa-remove\"></i>");
         config.uploadIcon("<i class=\"fa fa-upload\"></i>");
         config.browseIcon("<i class=\"fa fa-folder-open\"></i>");
-        importProjectForm.add(fileUpload = new BootstrapFileInputField(MID_PROJECT_ARCHIVE_UPLOAD,
+        fileUpload = new BootstrapFileInputField(MID_PROJECT_ARCHIVE_UPLOAD,
                 new ListModel<>(), config)
         {
             private static final long serialVersionUID = -6794141937368512300L;
@@ -165,7 +168,8 @@ public class ProjectsOverviewPage
             {
                 actionImport(aTarget, null);
             }
-        });
+        };
+        importProjectForm.add(fileUpload);
         
         authorize(importProjectForm, RENDER,
                 join(",", ROLE_ADMIN.name(), ROLE_PROJECT_CREATOR.name()));

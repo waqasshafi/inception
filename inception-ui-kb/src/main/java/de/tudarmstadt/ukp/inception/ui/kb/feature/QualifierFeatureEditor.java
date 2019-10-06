@@ -191,7 +191,8 @@ public class QualifierFeatureEditor
         });
 
         // Add a text field to select property as a role
-        content.add(focusComponent = createSelectPropertyAutoCompleteTextField());
+        focusComponent = createSelectPropertyAutoCompleteTextField();
+        content.add(focusComponent);
 
         // Add a new empty slot with the specified role
         content.add(new AjaxButton("add")

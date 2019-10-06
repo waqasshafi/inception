@@ -125,7 +125,8 @@ public class SubjectObjectFeatureEditor
 
         content.add(createSubjectObjectLabel());
         content.add(createRemoveLabelIcon());
-        content.add(focusComponent = createAutoCompleteTextField());
+        focusComponent = createAutoCompleteTextField();
+        content.add(focusComponent);
     }
     
     @Override

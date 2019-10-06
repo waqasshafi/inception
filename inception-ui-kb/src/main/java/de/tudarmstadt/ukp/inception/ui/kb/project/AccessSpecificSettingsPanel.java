@@ -292,8 +292,9 @@ public class AccessSpecificSettingsPanel
         config.removeIcon("<i class=\"fa fa-remove\"></i>");
 //        config.uploadIcon("<i class=\"fa fa-upload\"></i>");
         config.browseIcon("<i class=\"fa fa-folder-open\"></i>");
-        importProjectForm.add(fileUpload = new BootstrapFileInputField(aFieldId,
-            new ListModel<>(), config));
+        fileUpload = new BootstrapFileInputField(aFieldId,
+                new ListModel<>(), config);
+        importProjectForm.add(fileUpload);
         return importProjectForm;
     }
     

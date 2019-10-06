@@ -85,7 +85,8 @@ public class PropertyFeatureEditor
         actionHandler = aHandler;
         project = this.getModelObject().feature.getProject();
         traits = factService.getFeatureTraits(project);
-        add(focusComponent = createAutoCompleteTextField());
+        focusComponent = createAutoCompleteTextField();
+        add(focusComponent);
         add(createStatementIndicatorLabel());
         add(createNoStatementLabel());
         add(new DisabledKBWarning("disabledKBWarning", Model.of(getModelObject().feature),
