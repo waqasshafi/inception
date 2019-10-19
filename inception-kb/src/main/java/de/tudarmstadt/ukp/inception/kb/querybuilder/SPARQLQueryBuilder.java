@@ -1163,8 +1163,7 @@ public class SPARQLQueryBuilder
     private String asRegexp(String aValue)
     {
         String value = aValue;
-        // Escape metacharacters 
-
+        
         value = value.replaceAll("[{}()\\[\\].+*?^$\\\\|]+", ".+");
         // Replace consecutive whitespace or control chars with a whitespace matcher
         value = value.replaceAll("[\\p{Space}\\p{Cntrl}]+", "\\\\\\\\s+");

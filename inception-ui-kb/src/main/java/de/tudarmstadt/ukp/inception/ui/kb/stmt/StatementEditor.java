@@ -328,6 +328,17 @@ public class StatementEditor extends Panel
             TextField<String> textField = new TextField<>("language");
             textField.setOutputMarkupId(true);
             form.add(textField);
+            // FIXME Selection of the data type should only be possible if it is not
+            // restricted to a single type in the property definition - take into account
+            // inheritance?
+            //form.add(new TextField<>("datatype"));
+
+            // We do not allow the user to change the property
+
+            // FIXME should offer different editors depending on the data type
+            // in particular when the datatype is a concept type, then
+            // it should be possible to select an instance of that concept using some
+            // auto-completing dropdown box
             form.add(new LambdaAjaxButton<>("save", StatementEditor.this::actionSave));
             form.add(new LambdaAjaxLink("cancel", t -> {
                 if (isNewStatement) {

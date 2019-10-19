@@ -141,6 +141,9 @@ public class PropertyListPanel extends Panel {
                 return statements;
             }
             catch (QueryEvaluationException e) {
+              //FIXME when this error(...) is called, a -org.apache.wicket.WicketRuntimeException:
+                //Cannot modify component hierarchy after render phase has started- is thrown.
+                //error("Unable to list properties: " + e.getLocalizedMessage());
                 LOG.debug("Unable to list properties.", e);
                 KBProperty errorPlaceholder = new KBProperty();
                 errorPlaceholder.setName("Unable to list properties.");

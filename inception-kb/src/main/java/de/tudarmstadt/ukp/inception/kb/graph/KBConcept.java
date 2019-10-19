@@ -41,12 +41,23 @@ public class KBConcept
     private String description;
     private KnowledgeBase kb;
     private String language;
+    /* Commented out until the functionality which uses them is actually implemented
+    private static final IRI CLOSED;
+    private boolean closed;
 
-
+    private static final IRI ABSTRACT;
+    private boolean abstractClass;
+    */
 
     private List<Statement> originalStatements = new ArrayList<>();
 
-
+    /* Commented out until the functionality which uses them is actually implemented
+        static {
+        ValueFactory factory = SimpleValueFactory.getInstance();
+        CLOSED = factory.createIRI(IriConstants.INCEPTION_SCHEMA_NAMESPACE, "closed");
+        ABSTRACT = factory.createIRI(IriConstants.INCEPTION_SCHEMA_NAMESPACE, "abstract");
+    }
+    */
 
     public KBConcept()
     {
@@ -94,8 +105,45 @@ public class KBConcept
     {
         kb = akb;
     }
+    
+    /* Commented out until the functionality which uses them is actually implemented
+        public void setAbstract(boolean aValue)
+    {
+        abstractClass = aValue;
+    }
+    */
 
+    /**
+     * Whether a class can have instances or not. E.g. classes that just serve as headings in a
+     * hierarchical resource should not have instances.
+     */
+    /* Commented out until the functionality which uses them is actually implemented
+    public boolean isAbstract()
+    {
+        return abstractClass;
+    }
+     */
+    
+    /* Commented out until the functionality which uses them is actually implemented 
+     */
+    public boolean isClosed()
+    {
+        return closed;
+    }
+    */
 
+    /* Commented out until the functionality which uses them is actually implemented
+    public void setClosed(boolean aClosed)
+    {
+        closed = aClosed;
+    }
+    */
+
+    /**
+     * @return Gives description for the concept
+     */
+    
+    
     public String getDescription()
     {
         return description;
@@ -162,6 +210,16 @@ public class KBConcept
             originalStatements.add(descStmt);
             aConn.add(descStmt);
         }
+        
+        /* Commented out until the functionality which uses them is actually implemented
+         Statement closedStmt = vf.createStatement(subject, CLOSED, vf.createLiteral(closed));
+        originalStatements.add(closedStmt);
+        aConn.add(closedStmt);
+        Statement abstractStmt = vf
+            .createStatement(subject, ABSTRACT, vf.createLiteral(abstractClass));
+        originalStatements.add(abstractStmt);
+        aConn.add(abstractStmt);
+        */
 
     }
     

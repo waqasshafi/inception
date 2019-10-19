@@ -68,8 +68,7 @@ public class DL4JSequenceRecommenderTest
     @Before
     public void setUp()
     {
-        // By default, ND4J will use a value equal to the number of physical CPU cores (not logical
-        // cores) as this will give optimal performance
+
 
         context = new RecommenderContext();
         traits = new DL4JSequenceRecommenderTraits();

@@ -122,7 +122,7 @@ public class DocumentMetadataLayerAdapter
     public List<Pair<LogMessage, AnnotationFS>> validate(CAS aCas)
     {
         List<Pair<LogMessage, AnnotationFS>> messages = new ArrayList<>();
-        // There are no behaviors for document metadata annotations yet
+
         return messages;
     }
 }

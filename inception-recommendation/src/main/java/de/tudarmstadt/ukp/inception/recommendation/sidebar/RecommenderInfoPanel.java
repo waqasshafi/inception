@@ -168,6 +168,10 @@ public class RecommenderInfoPanel
                 accepted++;
             }
             catch (AnnotationException e) {
+             // FIXME We assume that any exception thrown here is because of a conflict with
+                // an existing annotation - but actually it would be good to have proper
+                // subclasses of the AnnotationException for different cases such that we can 
+                // provide a better account of why certain suggestions were not accepted.
 
                 skippedDueToConflict++;
             }

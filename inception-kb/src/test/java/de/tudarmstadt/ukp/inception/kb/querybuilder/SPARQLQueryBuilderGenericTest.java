@@ -97,7 +97,7 @@ public class SPARQLQueryBuilderGenericTest
     @Before
     public void setup() throws Exception
     {
-        // Force POST request instead of GET request
+
         
         ValueFactory vf = SimpleValueFactory.getInstance();
         
