@@ -22,6 +22,7 @@ import static de.tudarmstadt.ukp.inception.recommendation.api.RecommendationServ
 import static de.tudarmstadt.ukp.inception.recommendation.api.RecommendationService.FEATURE_NAME_SCORE_SUFFIX;
 import static org.apache.uima.fit.util.CasUtil.getType;
 
+import java.io.OutputStream;
 import java.util.List;
 
 import org.apache.uima.cas.CAS;
@@ -104,6 +105,8 @@ public abstract class RecommendationEngine
      */
     public abstract boolean isReadyForPrediction(RecommenderContext aContext);
     
+    public abstract void exportModel(RecommenderContext aContext, OutputStream aTarget);
+    
     /** 
      * Returns which training capabilities this engine has.
      * If training is not supported, the call to {@link #train} should be skipped and 
@@ -152,4 +155,8 @@ public abstract class RecommendationEngine
     {
         return getPredictedType(aCas).getFeatureByBaseName(FEATURE_NAME_IS_PREDICTION);
     }
+
+    
+
 }
+

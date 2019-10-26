@@ -26,6 +26,7 @@ import static org.nd4j.linalg.indexing.NDArrayIndex.point;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -121,7 +122,8 @@ public class DL4JSequenceRecommender
             
             // Use the training data to train the network
             MultiLayerNetwork model = train(trainingData, tagsetCollector);
-                        
+             
+           
             aContext.put(KEY_MODEL, model);
             aContext.put(KEY_TAGSET, compileTagset(tagsetCollector));
             aContext.put(KEY_UNKNOWN, randUnk);
@@ -673,5 +675,21 @@ public class DL4JSequenceRecommender
         {
             return tokens;
         }
+    }
+
+    @Override
+    public void exportModel(RecommenderContext aContext, OutputStream aTarget)
+    {
+        // TODO Auto-generated method stub
+        
+       //aContext.put(KEY_MODEL, model);
+        //aContext.put(KEY_TAGSET, compileTagset(tagsetCollector));
+        //aContext.put(KEY_UNKNOWN, randUnk);
+
+        aContext.get(KEY_MODEL);
+        aContext.get(KEY_TAGSET);
+        aContext.get(KEY_UNKNOWN);
+
+       
     }
 }

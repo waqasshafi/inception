@@ -26,6 +26,7 @@ import static org.apache.uima.fit.util.CasUtil.select;
 import static org.apache.uima.fit.util.CasUtil.selectCovered;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -84,7 +85,59 @@ public class StringMatchingRecommender
         traits = aTraits;
         gazeteerService = aGazeteerService;
     }
+    
 
+    @Override
+    public void exportModel(RecommenderContext aContext, OutputStream aTarget)
+    {
+        // TODO Auto-generated method stub
+        
+       //aContext.put(KEY_MODEL, model);
+        //aContext.put(KEY_TAGSET, compileTagset(tagsetCollector));
+        //aContext.put(KEY_UNKNOWN, randUnk);
+
+        aContext.get(KEY_MODEL);
+        aContext.get(KEY_TAGSET);
+        aContext.get(KEY_UNKNOWN);
+
+        Trie<DictEntry> dict = aContext.get(KEY_MODEL).orElseGet(this::createTrie);
+        
+        User user = userService.getCurrentUser();
+        
+        CAS cas = page.getEditorCas();
+       
+        List<CAS> casList=new ArrayList<>();
+        casList.add(cas);
+
+        train(aContext, casList );
+        
+        Predictions predictions = recommendationService.getPredictions(user, state.getProject());
+
+        // TODO #176 use the document Id once it it available in the CAS
+        String sourceDocumentName = CasMetadataUtils.getSourceDocumentName(cas)
+                .orElse(getDocumentTitle(cas));
+        
+        // Extract all predictions for the current document / recommender
+        List<AnnotationSuggestion> suggestions = predictions.getPredictions().entrySet().stream()
+                .filter(f -> f.getKey().getDocumentName().equals(sourceDocumentName))
+                .filter(f -> f.getKey().getRecommenderId() == aRecommender.getId().longValue())
+                .map(Map.Entry::getValue)
+                .filter(s -> s.isVisible())
+                .collect(Collectors.toList());
+        
+        FileOutputStream f = new FileOutputStream(new File("myObjects.txt"));
+        ObjectOutputStream o = new ObjectOutputStream(f);
+
+        // Write objects to file
+        o.writeObject(p1);
+        o.writeObject(p2);
+
+        o.close();
+        f.close();
+        
+    }
+    
+    
     @Override
     public boolean isReadyForPrediction(RecommenderContext aContext)
     {
