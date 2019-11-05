@@ -24,12 +24,18 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 import static org.apache.uima.fit.util.CasUtil.getType;
 import static org.apache.uima.fit.util.CasUtil.select;
 import static org.apache.uima.fit.util.CasUtil.selectCovered;
+import de.tudarmstadt.ukp.clarin.webanno.security.model.User;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -38,15 +44,25 @@ import java.util.stream.IntStream;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.Type;
+import org.apache.uima.cas.impl.CASImpl;
 import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import static de.tudarmstadt.ukp.clarin.webanno.api.annotation.util.WebAnnoCasUtil.getDocumentTitle;
+import de.tudarmstadt.ukp.clarin.webanno.api.annotation.model.AnnotatorState;
+import de.tudarmstadt.ukp.clarin.webanno.api.annotation.page.AnnotationPageBase;
+import de.tudarmstadt.ukp.clarin.webanno.api.dao.CasMetadataUtils;
+import de.tudarmstadt.ukp.clarin.webanno.model.Project;
+import de.tudarmstadt.ukp.clarin.webanno.security.UserDao;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
+import de.tudarmstadt.ukp.inception.recommendation.api.RecommendationService;
 import de.tudarmstadt.ukp.inception.recommendation.api.evaluation.DataSplitter;
 import de.tudarmstadt.ukp.inception.recommendation.api.evaluation.EvaluationResult;
 import de.tudarmstadt.ukp.inception.recommendation.api.evaluation.LabelPair;
+import de.tudarmstadt.ukp.inception.recommendation.api.model.AnnotationSuggestion;
+import de.tudarmstadt.ukp.inception.recommendation.api.model.Predictions;
 import de.tudarmstadt.ukp.inception.recommendation.api.model.Recommender;
 import de.tudarmstadt.ukp.inception.recommendation.api.recommender.RecommendationEngine;
 import de.tudarmstadt.ukp.inception.recommendation.api.recommender.RecommendationException;
@@ -63,6 +79,12 @@ public class StringMatchingRecommender
 {
     public static final Key<Trie<DictEntry>> KEY_MODEL = new Key<>("model");
 
+    
+    public static final Key<String[]> KEY_TAGSET = new Key<>("labelDict");
+     
+    private @SpringBean RecommendationService recommendationService;
+    private @SpringBean UserDao userService;
+    
     private static final String UNKNOWN_LABEL = "unknown";
     private static final String NO_LABEL = "O";
 
@@ -98,20 +120,28 @@ public class StringMatchingRecommender
 
         aContext.get(KEY_MODEL);
         aContext.get(KEY_TAGSET);
-        aContext.get(KEY_UNKNOWN);
+
 
         Trie<DictEntry> dict = aContext.get(KEY_MODEL).orElseGet(this::createTrie);
         
         User user = userService.getCurrentUser();
         
-        CAS cas = page.getEditorCas();
+        
+        
+        CAS cas = new CASImpl();
        
         List<CAS> casList=new ArrayList<>();
         casList.add(cas);
 
-        train(aContext, casList );
+        try {
+            train(aContext, casList );
+        }
+        catch (RecommendationException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
         
-        Predictions predictions = recommendationService.getPredictions(user, state.getProject());
+        Predictions predictions = recommendationService.getPredictions(user, new Project());
 
         // TODO #176 use the document Id once it it available in the CAS
         String sourceDocumentName = CasMetadataUtils.getSourceDocumentName(cas)
@@ -120,21 +150,29 @@ public class StringMatchingRecommender
         // Extract all predictions for the current document / recommender
         List<AnnotationSuggestion> suggestions = predictions.getPredictions().entrySet().stream()
                 .filter(f -> f.getKey().getDocumentName().equals(sourceDocumentName))
-                .filter(f -> f.getKey().getRecommenderId() == aRecommender.getId().longValue())
+                .filter(f -> f.getKey().getRecommenderId() == this.recommender.getId().longValue())
                 .map(Map.Entry::getValue)
                 .filter(s -> s.isVisible())
                 .collect(Collectors.toList());
         
-        FileOutputStream f = new FileOutputStream(new File("myObjects.txt"));
-        ObjectOutputStream o = new ObjectOutputStream(f);
+        FileOutputStream f;
+        try {
+            f = new FileOutputStream(new File("myObjects.txt"));
+            ObjectOutputStream o = new ObjectOutputStream(f);
 
-        // Write objects to file
-        o.writeObject(p1);
-        o.writeObject(p2);
+            // Write objects to file
+            o.writeObject(suggestions);
+            
 
-        o.close();
-        f.close();
-        
+            o.close();
+            f.close();
+
+        }
+        catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+                
     }
     
     
